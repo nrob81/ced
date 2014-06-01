@@ -17,10 +17,12 @@ Main page, menu, missions, map
 ![Missions](http://ced.wline.hu/screenshots/ced-missions.png)
 ![Map](http://ced.wline.hu/screenshots/ced-map.png)
 
+
 Player vs. Player, Item sets, Profile
 ![PVP](http://ced.wline.hu/screenshots/ced-pvp.png)
 ![Sets](http://ced.wline.hu/screenshots/ced-sets.png)
 ![Profile](http://ced.wline.hu/screenshots/ced-profile.png)
+
 
 Club, Contest, Leaderboards, Help
 ![Club](http://ced.wline.hu/screenshots/ced-club.png)
