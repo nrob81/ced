@@ -1,10 +1,9 @@
 <?php
-
 // change the following paths if necessary
-$yiit=dirname(__FILE__).'/../../yii/framework/yiit.php';
+require(dirname(__FILE__) . '/../../yii/framework/yiit.php');
 $test = require(dirname(__FILE__) . '/../config/test.php');
+$local = require(dirname(__FILE__) . '/../config/test-local.php');
+$config = CMap::mergeArray($test, $local);
 
-require_once($yiit);
 require_once(dirname(__FILE__).'/WebTestCase.php');
-
-Yii::createWebApplication($test);
+Yii::createWebApplication($config);
