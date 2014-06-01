@@ -118,6 +118,7 @@ class Item extends CModel
 
     public function buy($amount) {
         //echo __FUNCTION__ . "\n";
+        $decr = [];
         $amount = (int)$amount;
         if ($amount < 1) {
             $this->_errors['amount'] = true;
@@ -171,6 +172,7 @@ class Item extends CModel
     
     public function sell($amount) {
         //echo __FUNCTION__ . "\n";
+        $incr = [];
         $amount = (int)$amount;
         if ($amount < 1) {
             $this->_errors['amount'] = true;

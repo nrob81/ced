@@ -121,6 +121,7 @@ class DuelList extends CModel
             ->limit($limit)
             ->queryAll();
         $club = new Club();
+        $cache = [];
         foreach ($res as $item) {
             $item['uid'] = $item['caller'];
 
