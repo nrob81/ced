@@ -16,7 +16,7 @@ class BackgroundController extends CronController
         $user = Yii::app()->request->getParam('user', 'x');
         echo $user . "<br/>";
         
-        if ($user) $uid = $mp->setUid($user);
+        if ($user) $mp->setUid($user);
         $mp->reset();
         
         $this->render('//site/dummy', ['log'=>$mp->log]);
@@ -75,7 +75,7 @@ class BackgroundController extends CronController
         $log = print_r($users, 1);
         $wall = new Wall();
         foreach ($users as $uid => $award) {
-            $cmd = Yii::app()->db->createCommand("UPDATE main SET gold=gold+{$award['gold']} WHERE uid={$uid}")->execute();
+            Yii::app()->db->createCommand("UPDATE main SET gold=gold+{$award['gold']} WHERE uid={$uid}")->execute();
             
             $wall->content_type = Wall::TYPE_NEW_AWARD;
             $wall->uid = $uid;
@@ -93,7 +93,6 @@ class BackgroundController extends CronController
 
         $xpAll = 10;
         $xpRecommended = 10;
-        $last = 0;
         $rec = 10;
             $log .= "0. xpRec:0, -------, [{$rec}]<br/>";
 
@@ -103,23 +102,11 @@ class BackgroundController extends CronController
             //$log .= "{$l} => {$xpAll},<br/>";
             $xpRecommended += $rec;
             $xpAll += $xpRecommended;
-            $last = $rec;
         }
     
         $this->render('//site/dummy', ['log'=>$log]);
     }
     private function nextXpRecommended($level) {
-        $recommendations = [
-            //fromLevel => recommended xp gain to the NEXT level
-            1 => 3,
-            5 => 5,
-            10 => 10,
-            20 => 15,
-            30 => 20,
-            40 => 25,
-            50 => 30,
-            100 => 50,
-            ];
         $recommendations = [
             //fromLevel => recommended xp gain to the NEXT level
             1 => 3,

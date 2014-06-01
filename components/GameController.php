@@ -68,7 +68,7 @@ class GameController extends Controller
 
 
         if (time() - $this->lastRefresh < 30) return false;
-        $res = Yii::app()->dbWline->createCommand()->update(Yii::app()->params['wlineUsersTable'], [
+        Yii::app()->dbWline->createCommand()->update(Yii::app()->params['wlineUsersTable'], [
             Yii::app()->params['wlineRefreshAttribute'] => time(),
             ], 'uid=' . Yii::app()->player->uid);
 
