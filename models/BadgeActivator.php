@@ -101,11 +101,6 @@ class BadgeActivator extends Badge
         return (int)$redis->hGet($key, 'cnt');
     }
 
-    private function isActive($id) {
-        $redis = Yii::app()->redis->getClient();
-        return (bool)$redis->sismember('badges:owned:'.$this->_uid, $id);        
-    }
-
     private function activate($id) {
         $redis = Yii::app()->redis->getClient();
         $saved = $redis->sadd('badges:owned:'.$this->_uid, $id);
