@@ -14,3 +14,4 @@ models/Sms.php
 models/MaintenanceChallenge.php
 models/MaintenancePlayer.php
 views/site/sms.php
+www/screenshots/
