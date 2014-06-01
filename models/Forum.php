@@ -77,7 +77,7 @@ class Forum extends CModel
             'private'=>$this->_private
             ];
 
-        $insert = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
                 ->insert('forum', $parameters);
 
         $parameters['created'] = 'most';

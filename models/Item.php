@@ -149,7 +149,7 @@ class Item extends CModel
             ->execute();
         
         if (!$update) {
-            $insert = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
                 ->insert('users_'.$this->item_type.'s', [
                 'uid'=>$uid,
                 'item_id'=>(int)$this->id,
@@ -194,7 +194,7 @@ class Item extends CModel
         }
 
         //remove from inventory
-        $update = Yii::app()->db
+        Yii::app()->db
             ->createCommand("UPDATE users_{$this->item_type}s SET item_count=item_count-:amount WHERE uid=:uid AND item_id=:item_id")
             ->bindValues([':uid'=>$player->uid, 'item_id'=>(int)$this->id, ':amount'=>$amount])
             ->execute();

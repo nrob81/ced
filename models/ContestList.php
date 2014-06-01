@@ -131,6 +131,7 @@ class ContestList extends CModel
         $this->_collect = $redis->get('contest:list:'.$this->_id.':collect'); 
         $this->_prize = $redis->get('contest:list:'.$this->_id.':prize'); 
     }
+
     public function fetchList() {
         $redis = Yii::app()->redis->getClient();
 
@@ -222,19 +223,5 @@ class ContestList extends CModel
             Yii::app()->redis->getClient()->set('contest:lastcheck:'.$this->_uid, time());            
             echo 'checked';
         }
-    }
-
-    public function printDebug() {
-        return false;
-        $this->fetchDetails();
-        echo $this->collect . ', ';
-        echo $this->descriptionId . ', ';
-        echo $this->prize . ', ';
-        echo 'maxScore: ' . $this->maxScore . ', ';
-
-        $this->_uid = 1981;
-        $this->fetchList();
-        print_r($this->_list);
-        print_r($this->leaders);
     }
 }
