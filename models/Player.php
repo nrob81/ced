@@ -82,23 +82,7 @@ class Player extends CModel
         if ($remaining < 0) $remaining = 0;
         return $remaining;
     }
-    public function getDollarImprovement() {
-        return 30 + (5 * $this->level);
-    }
-    public function getSkillImprovement() {
-        $di = $this->dollarImprovement;
-
-        //strongest bait
-        $bait = Yii::app()->db->createCommand()
-            ->select('id, skill, price')
-            ->from('baits')
-            ->where('level<=:level', [':level'=>(int)$this->level])
-            ->order('level DESC')
-            ->limit(1)
-            ->queryRow();
-        $skill = round($di / $bait['price'] * $bait['skill'] / 2 * 0.8);
-        return (int)$skill;
-    }
+    
     public function getJustAdvanced() { return (int)$this->justAdvanced; }
     public function getFreeSlots() { return $this->strength - ($this->owned_items + $this->owned_baits); }
     public function getBlack_market() { 
@@ -222,34 +206,7 @@ class Player extends CModel
             ->update('main', ['energy'=>$this->energy, 'energy_incr_at'=>$this->energy_incr_at], 'uid=:uid', [':uid'=>(int)$this->uid]);
     }
 
-    public function incrementForStatuspoint($id) {
-        if (!$this->itsMe()) return false;
-        if ($this->status_points < 1) return false;
-
-        $mapIdAttribute = [1=>['energy_max'=>1, 'energy'=>1], ['skill'=>2, 'skill_extended'=>2], ['strength'=>2], ['dollar'=>$this->dollarImprovement]];
-        $mapIdAttribute[2]['skill'] = $mapIdAttribute[2]['skill_extended'] = $this->skillImprovement;
-
-        $increment = isset($mapIdAttribute[$id]) ? $mapIdAttribute[$id] : false;
-
-        if ($increment) {
-            $this->updateAttributes($increment, ['status_points'=>1]);
-            //badge
-            $b = Yii::app()->badge->model;
-            if ($id==1) {
-                $b->trigger('max_nrg_35', ['energy_max'=>$this->energy_max]);
-                $b->trigger('max_nrg_100', ['energy_max'=>$this->energy_max]);
-            }
-            if ($id==2) {
-                $b->trigger('skill_35', ['skill'=>$this->skill]);
-                $b->trigger('skill_100', ['skill'=>$this->skill]);
-            }
-            if ($id==3) {
-                $b->trigger('strength_35', ['strength'=>$this->strength]);
-                $b->trigger('strength_100', ['strength'=>$this->strength]);
-            }
-        }
-        return true;
-    }
+    
 
     public function updateAttributes($toIncrement, $toDecrement) {
         $this->logEnergyUsage($toDecrement);

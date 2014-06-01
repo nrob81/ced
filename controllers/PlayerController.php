@@ -19,9 +19,8 @@ class PlayerController extends GameController
                 throw new CHttpException(404, 'A keresett felhasználó nem található.');
             }
         }
-        //complete selected mission
-        $increment_id = Yii::app()->request->getPost('increment_id', 0);
-        $player->incrementForStatuspoint($increment_id);
+        
+        $advancement = $this->advancement($player);
 
         //stats
         $playerStats->fetchStats();
@@ -34,7 +33,8 @@ class PlayerController extends GameController
         $this->render('profile', [
             'player' => $player,
             'playerStats' => $playerStats,
-            'badgeList' => $badgeList
+            'badgeList' => $badgeList,
+            'advancement' => $advancement
             ]);
 	}
 
@@ -46,5 +46,21 @@ class PlayerController extends GameController
         $this->render('badges', [
             'badgeList' => $badgeList
             ]);
+    }
+
+    protected function advancement($player)
+    {
+        $advancement = null;
+        if ($player->status_points) {
+            $advancement = new Advancement;
+            $advancement->uid = $player->uid;
+
+            $increment_id = Yii::app()->request->getPost('increment_id', 0);
+            if ($increment_id) {
+                $advancement->incrementForStatuspoint($increment_id);
+            }
+        }
+
+        return $advancement;
     }
 }

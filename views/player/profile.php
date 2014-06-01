@@ -20,9 +20,9 @@ $this->pageTitle='Adatlap: ' . $player->user;
         <form action="<?= $this->createUrl(''); ?>" method="post">
             <div data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <button name="increment_id" value="1">+1 max. energia</button>
-                <button name="increment_id" value="2">+<?= $player->skillImprovement ?> szakértelem</button>
+                <button name="increment_id" value="2">+<?= $advancement->skillImprovement ?> szakértelem</button>
                 <button name="increment_id" value="3">+2 teherbírás</button>
-                <button name="increment_id" value="4">+<?= $player->dollarImprovement ?>$</button>
+                <button name="increment_id" value="4">+<?= $advancement->dollarImprovement ?>$</button>
             </div>
         </form>
         <p class="sp">Státuszpontok: <span><?= $player->status_points ?></span></p>
