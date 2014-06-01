@@ -18,6 +18,7 @@ class PlayerStats extends CModel
         return [];
     }
 
+    public function getUid() { return $this->uid; }
     public function getStats() { return $this->stats; }
 
     public function setUid($uid) {
