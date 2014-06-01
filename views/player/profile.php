@@ -53,27 +53,27 @@ $this->pageTitle='Adatlap: ' . $player->user;
             <tbody>
             <tr>
                 <td>teljesített küldetések</td>
-                <td><?= $player->stats['completed_missions'] ?></td>
+                <td><?= $playerStats->stats['completed_missions'] ?></td>
             </tr>
             <tr>
                 <td>meglátogatott vizek</td>
-                <td><?= $player->stats['visited_waters'] ?></td>
+                <td><?= $playerStats->stats['visited_waters'] ?></td>
             </tr>
             <tr>
                 <td>meglátogatott megyék</td>
-                <td><?= $player->stats['visited_counties'] ?></td>
+                <td><?= $playerStats->stats['visited_counties'] ?></td>
             </tr>
             <tr>
                 <td>megnyert párbajok</td>
-                <td><?= $player->stats['duel_success'] ?></td>
+                <td><?= $playerStats->stats['duel_success'] ?></td>
             </tr>
             <tr>
                 <td>elveszített párbajok</td>
-                <td><?= $player->stats['duel_fail'] ?></td>
+                <td><?= $playerStats->stats['duel_fail'] ?></td>
             </tr>
             <tr>
                 <td>párbajsikerek aránya</td>
-                <td><?= $player->stats['duel_rate'] ?>%</td>
+                <td><?= $playerStats->stats['duel_rate'] ?>%</td>
             </tr>
             <tr>
                 <td>felszerelések</td>
@@ -85,15 +85,15 @@ $this->pageTitle='Adatlap: ' . $player->user;
             </tr>
             <tr>
                 <td>szettek</td>
-                <td><?= $player->stats['owned_setitems'] ?></td>
+                <td><?= $playerStats->stats['owned_setitems'] ?></td>
             </tr>
             <tr>
                 <td>aktuális rang</td>
-                <td><?= $player->stats['rankActual']?'#'.$player->stats['rankActual']:'-' ?></td>
+                <td><?= $playerStats->stats['rankActual']?'#'.$playerStats->stats['rankActual']:'-' ?></td>
             </tr>
             <tr>
                 <td>összesített rang</td>
-                <td><?= $player->stats['rank']?'#'.$player->stats['rank']:'-' ?></td>
+                <td><?= $playerStats->stats['rank']?'#'.$playerStats->stats['rank']:'-' ?></td>
             </tr>
             <tr>
                 <td>klub</td>
@@ -106,15 +106,15 @@ $this->pageTitle='Adatlap: ' . $player->user;
 
         <ul data-role="listview" data-inset="true">
             <li data-role="list-divider">3 legjobb felszerelés</li>
-            <?php foreach ($player->stats['items'] as $i): ?>
+            <?php foreach ($playerStats->stats['items'] as $i): ?>
             <li><?= $i ?></li>
             <?php endforeach; ?>
             <li data-role="list-divider">3 legjobb csali</li>
-            <?php foreach ($player->stats['baits'] as $i): ?>
+            <?php foreach ($playerStats->stats['baits'] as $i): ?>
             <li><?= $i ?></li>
             <?php endforeach; ?>
             <li data-role="list-divider">3 legjobb szett</li>
-            <?php foreach ($player->stats['sets'] as $i): ?>
+            <?php foreach ($playerStats->stats['sets'] as $i): ?>
             <li><?= $i ?></li>
             <?php endforeach; ?>
         </ul>

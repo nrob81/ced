@@ -6,11 +6,14 @@ class PlayerController extends GameController
 	public function actionProfile($uid = 0)
     {
         $player = Yii::app()->player->model;
+        $playerStats = new PlayerStats;
+        $playerStats->uid = $player->uid;
 
         //other player
         if ($uid) {
-            $player = new Player();
+            $player = new Player;
             $player->setAllAttributes($uid);
+            $playerStats->uid = $uid;
 
             if (!$player->uid) {
                 throw new CHttpException(404, 'A keresett felhasználó nem található.');
@@ -21,7 +24,7 @@ class PlayerController extends GameController
         $player->incrementForStatuspoint($increment_id);
 
         //stats
-        $player->fetchStats();
+        $playerStats->fetchStats();
 
         //badges
         $badgeList = new BadgeList;
@@ -30,6 +33,7 @@ class PlayerController extends GameController
         
         $this->render('profile', [
             'player' => $player,
+            'playerStats' => $playerStats,
             'badgeList' => $badgeList
             ]);
 	}
