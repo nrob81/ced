@@ -9,6 +9,11 @@ At this time, the users can't join the game with registration, because the game 
 
 The game's language is hungarian, now.
 
+Todo:
+-----
+* create unit tests
+* refactor the code
+
 Screenshots
 -----------
 Main page, menu, missions, map
