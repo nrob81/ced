@@ -24,7 +24,6 @@ class LeaderboardController extends GameController
             $board->setRange(Leaderboard::RANGE_LAST_SIX);
             break;
         default: 
-            $range = 'actual';
             $board->setRange(Leaderboard::RANGE_ACTUAL);
             break;
         }

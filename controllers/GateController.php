@@ -43,11 +43,9 @@ class GateController extends Controller
     }
     
     public function actionBackToMenu() {
-        $wid =  @Yii::app()->request->cookies['PHPSESSID']->value;
         $this->redirect(Yii::app()->params['wlineHost'] . 'menu.php#btm');
     }
     public function actionBackToForum() {
-        $wid =  @Yii::app()->request->cookies['PHPSESSID']->value;
         $this->redirect(Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
     }
 
