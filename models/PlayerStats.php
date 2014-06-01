@@ -2,7 +2,17 @@
 class PlayerStats extends CModel
 {
     private $uid;
-    private $stats = [];
+    private $stats = [
+        'completed_missions'=>0,
+        'visited_waters'=>0,
+        'visited_counties'=>0,
+        'owned_setitems'=>0,
+        'setitems'=>[],
+        'items'=>[],
+        'baits'=>[],
+        'sets'=>[],
+        'counties'=>[],
+        ];
 
     public function attributeNames() {
         return [];
@@ -15,26 +25,29 @@ class PlayerStats extends CModel
     }
 
     public function fetchStats() {
-        $s = [
-            'visited_waters'=>0,
-            'visited_counties'=>0,
-            'owned_setitems'=>0,
-            'setitems'=>[],
-            'items'=>[],
-            'baits'=>[],
-            'sets'=>[],
-            'counties'=>[],
-            ];       
+        $this->fetchCompletedMissions();
+        $this->fetchVisitedMissions();
+        $this->fetchDuel();
+        $this->fetchCountSets();
+        $this->fetchItems();
+        $this->fetchBaits();
+        $this->fetchSets();
+        $this->fetchRank();
+    }
 
-        //mission counter
+    protected function fetchCompletedMissions()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('COUNT(*)')
             ->from('users_missions')
             ->where('uid=:uid', [':uid'=>$this->uid])
             ->queryScalar();
-        $s['completed_missions'] = $res;
 
-        //water,county counter
+        $this->stats['completed_missions'] = $res;
+    }
+
+    protected function fetchVisitedMissions()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('v.*, w.county_id, w.title')
             ->from('visited v')
@@ -42,26 +55,32 @@ class PlayerStats extends CModel
             ->where('v.uid=:uid', [':uid'=>$this->uid])
             ->order('v.water_id')
             ->queryAll();
-        foreach ($res as $dat) {
-            $s['routine'][$dat['water_id']] = $dat['routine'];
-            $s['visited_waters']++;
-            if (!array_key_exists($dat['county_id'], $s['counties'])) $s['visited_counties']++;
-            $s['counties'][$dat['county_id']] = 1;
-        }
 
+        foreach ($res as $dat) {
+            $this->stats['routine'][$dat['water_id']] = $dat['routine'];
+            $this->stats['visited_waters']++;
+            if (!array_key_exists($dat['county_id'], $this->stats['counties'])) $this->stats['visited_counties']++;
+            $this->stats['counties'][$dat['county_id']] = 1;
+        }
+    }
+
+    protected function fetchDuel()
+    {
         $logger = new Logger; 
         $logger->uid = $this->uid;
         $stat = $logger->getCounters();
 
         //duels
-        $s['duel_success'] = @(int)$stat['duel_success'];
-        $s['duel_fail'] = @(int)$stat['duel_fail'];
-        $s['duel_rate'] = '?';
-        if ($s['duel_success'] or $s['duel_fail']) {
-            $s['duel_rate'] = round( $s['duel_success'] / (($s['duel_success'] + $s['duel_fail'])/100) ,1);
+        $this->stats['duel_success'] = @(int)$stat['duel_success'];
+        $this->stats['duel_fail'] = @(int)$stat['duel_fail'];
+        $this->stats['duel_rate'] = '?';
+        if ($this->stats['duel_success'] or $this->stats['duel_fail']) {
+            $this->stats['duel_rate'] = round( $this->stats['duel_success'] / (($this->stats['duel_success'] + $this->stats['duel_fail'])/100) ,1);
         }
+    }
 
-        //sets
+    protected function fetchCountSets()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('item_id, item_count')
             ->from('users_items')
@@ -71,13 +90,15 @@ class PlayerStats extends CModel
         $best = 0;
         foreach ($res as $dat) {
             if ($best < 3 and $dat['item_count']) {
-                $s['setitems'][$dat['item_id']] = $dat['item_count'];
+                $this->stats['setitems'][$dat['item_id']] = $dat['item_count'];
                 $best++;
             }
-            $s['owned_setitems'] += $dat['item_count'];
+            $this->stats['owned_setitems'] += $dat['item_count'];
         }
+    }
 
-        //best items/baits/sets
+    protected function fetchItems()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('item_id')
             ->from('users_items')
@@ -90,9 +111,12 @@ class PlayerStats extends CModel
             $i->item_type = Item::TYPE_ITEM;
             $i->id = $dat['item_id'];
             $i->fetch();
-            $s['items'][] = $i->title;
+            $this->stats['items'][] = $i->title;
         }
+    }
 
+    protected function fetchBaits()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('item_id')
             ->from('users_baits')
@@ -105,26 +129,29 @@ class PlayerStats extends CModel
             $i->item_type = Item::TYPE_BAIT;
             $i->id = $dat['item_id'];
             $i->fetch();
-            $s['baits'][] = $i->title;
+            $this->stats['baits'][] = $i->title;
         }
+    }
 
-        foreach ($s['setitems'] as $dat => $cnt) {
+    protected function fetchSets()
+    {
+        foreach ($this->stats['setitems'] as $dat => $cnt) {
             $i = new Item;
             $i->item_type = Item::TYPE_ITEMSET;
             $i->id = $dat;
             $i->fetchSet();
-            $s['sets'][] = $i->title;
+            $this->stats['sets'][] = $i->title;
         }
+    }
 
+    protected function fetchRank()
+    {
         $redis = Yii::app()->redis->getClient();
 
         $rank  = $redis->zRevRank('board_p:'.date('Ym'), $this->uid);
-        //var_dump($rank);
-        $s['rankActual'] = $rank === false ? false : ++$rank;
+        $this->stats['rankActual'] = $rank === false ? false : ++$rank;
 
         $rank  = $redis->zRevRank('board_p:6month', $this->uid);
-        $s['rank'] = $rank === false ? false : ++$rank;
-
-        $this->stats = $s;
+        $this->stats['rank'] = $rank === false ? false : ++$rank;
     }
 }
