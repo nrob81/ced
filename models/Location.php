@@ -43,7 +43,7 @@ class Location extends CModel
 
         if (!$visited and $id==1) {
             //visit 1. location
-            $insert = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
                 ->insert('visited', [
                 'uid'=>$uid,
                 'water_id'=>$id,
@@ -137,13 +137,13 @@ class Location extends CModel
         $uid = Yii::app()->player->model->uid;
 
         //increment location routine
-        $update = Yii::app()->db
+        Yii::app()->db
             ->createCommand("UPDATE visited SET routine=routine+1 WHERE uid=:uid AND water_id=:water_id")
             ->bindValues([':uid'=>$uid, ':water_id'=>$this->_id])
             ->execute();
 
         //reset all missions routine on this location
-        $update = Yii::app()->db
+        Yii::app()->db
             ->createCommand("UPDATE users_missions SET routine=0 WHERE uid=:uid AND water_id=:water_id")
             ->bindValues([':uid'=>$uid, ':water_id'=>$this->_id])
             ->execute();
@@ -210,7 +210,7 @@ class Location extends CModel
             ->queryScalar();
 
         if (!$location) {
-            $insert = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
                 ->insert('visited', [
                 'uid'=>$player->uid,
                 'water_id'=>$gate,
@@ -249,7 +249,6 @@ class Location extends CModel
     }
     public function getRoutineStars($r = 0) {
         if (!$r) $r = $this->_routine;
-        $d = $e = $g = $s = $b = 0;
 
         $d = floor($r / 81);
 

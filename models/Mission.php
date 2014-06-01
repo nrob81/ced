@@ -334,7 +334,7 @@ class Mission extends CModel
         $logger = new Logger;
         $logger->uid = Yii::app()->player->model->uid;
         $logger->level = Yii::app()->player->model->level;
-        $found = $logger->increment($cell, 1);
+        $logger->increment($cell, 1);
 
         return $success;
     }
@@ -358,7 +358,7 @@ class Mission extends CModel
             ->execute();
 
         if (!$update) {
-            $insert = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
                 ->insert('users_missions', [
                 'uid'=>$uid,
                 'id'=>(int)$this->id,

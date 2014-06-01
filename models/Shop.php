@@ -93,7 +93,6 @@ class Shop extends CModel
 
     public function fetchItems() {
         $limit = Yii::app()->params['listPerPage'];
-        $player = Yii::app()->player->model;
         $levelLimit = $this->levelLimit;
 
         //echo __FUNCTION__ . "\n";
@@ -224,7 +223,7 @@ class Shop extends CModel
         foreach ($set['items'] as $i) {
             $remaining = $i->owned - 1;
             //remove from inventory
-            $update = Yii::app()->db
+            Yii::app()->db
                 ->createCommand("UPDATE users_parts SET item_count=:remaining WHERE uid=:uid AND item_id=:item_id")
                 ->bindValues([':uid'=>$player->uid, 'item_id'=>(int)$i->id, ':remaining'=>$remaining])
                 ->execute();
@@ -249,7 +248,7 @@ class Shop extends CModel
                 ->limit(1)
                 ->queryRow();
 
-            $insert = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
                 ->insert('users_items', [
                 'uid'=>$player->uid,
                 'item_id'=>(int)$itemId,

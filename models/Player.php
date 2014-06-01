@@ -221,7 +221,7 @@ class Player extends CModel
 
         $this->energy_incr_at = date("Y-m-d H:i:s", $now-$remain);
 
-        $cmd = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->update('main', ['energy'=>$this->energy, 'energy_incr_at'=>$this->energy_incr_at], 'uid=:uid', [':uid'=>(int)$this->uid]);
     }
 
@@ -288,27 +288,21 @@ class Player extends CModel
 
 
         if (!empty($attributes)) {
-            $cmd = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
             ->update('main', $attributes, 'uid=:uid', [':uid'=>(int)$this->uid]);
         }
     }
     protected function logEnergyUsage($attributes)
     {
-        return false; //todo: implement redis log
-
-        if (!@$attributes['energy']) {
-            return false;
-        }
-
-        $used = $attributes['energy'];
-        $percent = round($used / ($this->energy_max / 100), 2);
+        //todo: implement redis log
+        return false;
     }
     public function rewriteAttributes($attributes) {
         foreach ($attributes as $k => $v) {
             $this->$k = $v;
         }
 
-        $cmd = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->update('main', $attributes, 'uid=:uid', [':uid'=>(int)$this->uid]);
     }
     private function incrementLevel($incr) {
@@ -442,7 +436,7 @@ class Player extends CModel
         $all = $skillMission + $skillPlayer;
 
         $percentPlayer = round($skillPlayer / ($all / 100), 1);
-        $percentMission = round($skillMission / ($all / 100), 1);
+        //$percentMission = round($skillMission / ($all / 100), 1);
         //echo "$percentPlayer% vs. $percentMission% \n"; 
 
         if ($percentPlayer >= 90) {
