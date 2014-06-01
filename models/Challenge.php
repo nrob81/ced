@@ -145,7 +145,7 @@ class Challenge extends CModel
             ->queryRow();
         if (!$callerClub['would_compete']) throw new CFlashException('Mielőtt versenyre hívsz egy klubot, kapcsold be a saját klubodban a \'versenyezne\' beállítást.');
 
-        $insert = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->insert('challenge', [
                 'caller'=>$this->caller,
                 'opponent'=>$this->opponent,
@@ -198,7 +198,7 @@ class Challenge extends CModel
     }
 
     private function addCommandToStack($params) {
-        $cmd = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->insert('command_stack', [
             'command'=>'endChallenge',
             'process_time'=>date('Y-m-d H:i:s', time()+3600), //1800+1800

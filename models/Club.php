@@ -88,7 +88,6 @@ class Club extends CModel
         $this->name = $name;
     }
     public function fetchItems($would_compete = false) {
-        $player = Yii::app()->player->model;
         $where = $would_compete ? 'would_compete=1' : '';
         $limit = Yii::app()->params['listPerPage'];
         
@@ -128,7 +127,7 @@ class Club extends CModel
         if ($this->getJoinRequestSent()) throw new CFlashException('Már jelentkeztél egy másik klubba.');
         if (count($this->_entrants) + count($this->_members) >= 8) throw new CFlashException('A klubtagok és jelentkezők száma elérte a 8-et, ezért nem jelentkezhetnek többen.');
 
-        $insert = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->insert('club_members', [
                 'club_id'=>(int)$id,
                 'uid'=>$player->uid
@@ -145,7 +144,7 @@ class Club extends CModel
     public function deleteOwnJoinRequest($id) {
         $player = Yii::app()->player->model;
 
-        $del = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->delete('club_members', 
                 'club_id=:club_id AND uid=:uid AND approved=0', 
                 ['club_id'=>(int)$id, 'uid'=>$player->uid]
@@ -177,8 +176,6 @@ class Club extends CModel
 
         if ($player->in_club != $this->_id) return false;
 
-        $selfMod = $uid == $player->uid;
-
         $del = Yii::app()->db->createCommand()
             ->delete('club_members', 
                 'club_id=:club_id AND uid=:uid AND approved=1', 
@@ -186,7 +183,7 @@ class Club extends CModel
             );
 
         if ($del) {
-            $cmd = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
             ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$uid]);
 
             unset($this->_members[$uid]);
@@ -208,7 +205,7 @@ class Club extends CModel
             );
 
         if ($update) {
-            $cmd = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
             ->update('main', ['in_club'=>$this->_id], 'uid=:uid', [':uid'=>(int)$uid]);
             
             $this->_members[$uid] = $this->_entrants[$uid];
@@ -247,7 +244,7 @@ class Club extends CModel
         if (md5($pass) !== $_SESSION['pass']) throw new CFlashException('A jelszó helytelen.');
         
         //delete members
-        $del = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->delete('club_members', 
                 'club_id=:club_id', 
                 [':club_id'=>$this->_id]
@@ -255,7 +252,7 @@ class Club extends CModel
         //update in_club
         $this->_members[$this->owner] = ['uid'=>$this->owner];
         foreach ($this->_members as $member) {
-            $cmd = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
             ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$member['uid']]);
         }
         //delete forum
@@ -265,7 +262,7 @@ class Club extends CModel
                 [':club_id'=>$this->_id]
             );
         //delete club
-        $del = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->delete('club', 
                 'id=:club_id', 
                 [':club_id'=>$this->_id]
@@ -275,7 +272,7 @@ class Club extends CModel
     }
     public function switchCompete() {
         $compete = (int)$this->would_compete ? 0 : 1;
-        $cmd = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->update('club', ['would_compete'=>$compete], 'id=:id', [':id'=>$this->_id]);
         $this->would_compete = $compete;
     }
