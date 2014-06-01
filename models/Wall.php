@@ -32,7 +32,7 @@ class Wall extends CModel
         $data['type'] = $this->_content_type;
         $body = CJSON::encode($data);
         
-        $insert = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->insert('wall', [
                 'uid'=>$this->_uid,
                 'body'=>$body
