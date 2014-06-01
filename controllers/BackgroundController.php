@@ -72,7 +72,7 @@ class BackgroundController extends CronController
             }         
         }       
         
-        $log = print_r($users, 1);
+        $log = print_r($users, true);
         $wall = new Wall();
         foreach ($users as $uid => $award) {
             Yii::app()->db->createCommand("UPDATE main SET gold=gold+{$award['gold']} WHERE uid={$uid}")->execute();
