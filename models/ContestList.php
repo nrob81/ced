@@ -9,7 +9,7 @@
  * @property boolean $isActive
  * @property integer $secUntilEnd
  * @property array $leaders
- * @property array $winner
+ * @property array $winners
  * @property array $list
  * @property array $history
  * @property string $rankDescription

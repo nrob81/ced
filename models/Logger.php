@@ -2,6 +2,7 @@
 /**
  * @property integer $uid
  * @property string $key
+ * @property integer $level
  * @property array $counters
  */
 class Logger extends CModel
