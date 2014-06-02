@@ -1,4 +1,11 @@
 <?php
+/**
+ * @property integer $caller
+ * @property integer $opponent
+ * @property boolean $isChallenge
+ * @property boolean $played
+ * @property array $competitors
+ */
 class Duel extends CModel
 {
     const LIMIT_WEAKER_OPPONENT_LEVEL_DIFF = 5;

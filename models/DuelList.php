@@ -1,4 +1,10 @@
 <?php
+/**
+ * @property array $opponents
+ * @property CPagination $pagination
+ * @property integer $count
+ * @property string $clubName
+ */
 class DuelList extends CModel
 {
     const LIMIT_WEAKER_OPPONENT_LEVEL_DIFF = 5;
@@ -28,7 +34,17 @@ class DuelList extends CModel
     { 
         return $this->count; 
     }
-    
+
+    public function getClubName($club, $id) 
+    {
+        if ($id) {
+            $club->id = $id;
+            $club->fetchName();
+            return '<span> | ' .  $club->name . '</span>';
+        }
+        return '';
+    }
+
     public function setPage($page) 
     {
         $this->page = $page;
@@ -148,15 +164,5 @@ class DuelList extends CModel
             $item['clubName'] = $this->getClubName($club, $item['in_club']);
             $this->opponents[] = $item;
         }
-    }
-    
-    public function getClubName($club, $id) 
-    {
-        if ($id) {
-            $club->id = $id;
-            $club->fetchName();
-            return '<span> | ' .  $club->name . '</span>';
-        }
-        return '';
     }
 }
