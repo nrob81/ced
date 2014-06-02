@@ -4,6 +4,7 @@
  * @property CPagination $pagination
  * @property integer $count
  * @property string $clubName
+ * @property integer $page
  */
 class DuelList extends CModel
 {

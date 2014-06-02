@@ -15,6 +15,7 @@
  * @property integer $awardXp
  * @property integer $awardDollar
  * @property integer $awardPoints
+ * @property integer $duelId
  */
 class Competitor extends CModel
 {
