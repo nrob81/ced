@@ -2,7 +2,7 @@
 /**
  * @property integer $activeId
  * @property string $recommendedCollect
- * @property int $recommendedPrize
+ * @property integer $recommendedPrize
  * @property string $collect
  */
 class Contest extends CModel

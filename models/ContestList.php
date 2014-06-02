@@ -1,4 +1,21 @@
 <?php
+/**
+ * @property integer $id
+ * @property string $collect
+ * @property integer $prize
+ * @property string $desciptionId
+ * @property boolean $isValid
+ * @property boolean $isActive
+ * @property integer $secUntilEnd
+ * @property array $leaders
+ * @property array $winner
+ * @property array $list
+ * @property array $history
+ * @property string $rankDescription
+ * @property integer $maxScore
+ * @property integer $lastId
+ * @property integer $prizePerWinner
+ */
 class ContestList extends CModel
 {
     const LIFETIME = 172800; //2 days
@@ -39,12 +56,7 @@ class ContestList extends CModel
         return $this->collect;
     }
 
-    public function setId($id) {
-        $this->_id = (int)$id;
-    }
-    public function setUid($uid) {
-        $this->_uid = (int)$uid;
-    }
+    
     public function getIsValid() {
         if (is_null($this->_isValid)) {
             $this->_isValid = Yii::app()->redis->getClient()->exists('contest:list:'.$this->_id.':created');
@@ -125,7 +137,14 @@ class ContestList extends CModel
 
         return ceil(Contest::PRIZE / count($this->_winners));
     }
-    
+
+    public function setId($id) {
+        $this->_id = (int)$id;
+    }
+    public function setUid($uid) {
+        $this->_uid = (int)$uid;
+    }
+
     public function fetchDetails() {
         $redis = Yii::app()->redis->getClient();
         $this->_collect = $redis->get('contest:list:'.$this->_id.':collect'); 
