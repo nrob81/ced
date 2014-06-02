@@ -1,4 +1,14 @@
 <?php
+/**
+ * @property integer $uid
+ * @property integer $inClub
+ * @property array $items
+ * @property string $boardType
+ * @property string $range
+ * @property string $title
+ * @property string $playerRankDescription
+ * @property string $clubRankDescription
+ */
 class Leaderboard extends CModel
 {
     const BOARD_RANGE = 5;
@@ -21,25 +31,57 @@ class Leaderboard extends CModel
     }
 
     public function getUid() { return $this->_uid; }
-        public function getInClub() { return $this->_inClub; }
-        public function getItems() { return $this->_items; }
-        public function getBoardType() { return $this->_boardType; }
-        public function getRange() { return $this->_range; }
-        public function getTitle() {
-            $titles = [
-                self::TYPE_PLAYER => [
-                self::RANGE_ACTUAL => 'Aktuális hónap legjobb játékosai',
-                self::RANGE_PREVIOUS => 'Előző hónap legjobb játékosai',
-                self::RANGE_LAST_SIX => 'Utolsó 6 hónap legjobb játékosai',
-                ],
-                self::TYPE_CLUB => [
-                self::RANGE_ACTUAL => 'Aktuális hónap legjobb klubjai',
-                self::RANGE_PREVIOUS => 'Előző hónap legjobb klubjai',
-                self::RANGE_LAST_SIX => 'Utolsó 6 hónap legjobb klubjai',
-                ]
-                ];
-            return $titles[$this->boardType][$this->range];
+    public function getInClub() { return $this->_inClub; }
+    public function getItems() { return $this->_items; }
+    public function getBoardType() { return $this->_boardType; }
+    public function getRange() { return $this->_range; }
+    public function getTitle() {
+        $titles = [
+            self::TYPE_PLAYER => [
+            self::RANGE_ACTUAL => 'Aktuális hónap legjobb játékosai',
+            self::RANGE_PREVIOUS => 'Előző hónap legjobb játékosai',
+            self::RANGE_LAST_SIX => 'Utolsó 6 hónap legjobb játékosai',
+            ],
+            self::TYPE_CLUB => [
+            self::RANGE_ACTUAL => 'Aktuális hónap legjobb klubjai',
+            self::RANGE_PREVIOUS => 'Előző hónap legjobb klubjai',
+            self::RANGE_LAST_SIX => 'Utolsó 6 hónap legjobb klubjai',
+            ]
+            ];
+        return $titles[$this->boardType][$this->range];
+    }
+
+    public function getPlayerRankDescription() {
+        $redis = Yii::app()->redis->getClient();
+
+        $total = $redis->zCard($this->_key);
+        $rank  = $redis->zRevRank($this->_key, $this->_uid) + 1;
+
+        if ($rank == 1) {
+            return 'Te vagy a király!';
+        } else {
+            $percent = round((1 - ($rank / $total)) * 100, 1);
+            if (!$percent) return 'Több párbajgyőzelemre van szükséged.';
+
+            return 'Jobb vagy, mint a játékosok ' . $percent . '%-a!';
         }
+    }
+
+    public function getClubRankDescription() {
+        $redis = Yii::app()->redis->getClient();
+
+        $total = $redis->zCard($this->_key);
+        $rank  = $redis->zRevRank($this->_key, $this->_inClub) + 1;
+
+        if ($rank == 1) {
+            return 'A te klubod a király!';
+        } else {
+            $percent = round((1 - ($rank / $total)) * 100, 1);
+            if (!$percent) return 'Több versenygyőzelemre van szükségetek.';
+
+            return 'Jobb a klubod, mint a többi klub ' . $percent . '%-a!';
+        }
+    }
 
     public function setBoardType ($type) {
         $this->_boardType = $type;
@@ -142,35 +184,5 @@ class Leaderboard extends CModel
             $ret = $this->getPlayerRankDescription();
         }
         return $ret;
-    }
-    public function getPlayerRankDescription() {
-        $redis = Yii::app()->redis->getClient();
-
-        $total = $redis->zCard($this->_key);
-        $rank  = $redis->zRevRank($this->_key, $this->_uid) + 1;
-
-        if ($rank == 1) {
-            return 'Te vagy a király!';
-        } else {
-            $percent = round((1 - ($rank / $total)) * 100, 1);
-            if (!$percent) return 'Több párbajgyőzelemre van szükséged.';
-
-            return 'Jobb vagy, mint a játékosok ' . $percent . '%-a!';
-        }
-    }
-    public function getClubRankDescription() {
-        $redis = Yii::app()->redis->getClient();
-
-        $total = $redis->zCard($this->_key);
-        $rank  = $redis->zRevRank($this->_key, $this->_inClub) + 1;
-
-        if ($rank == 1) {
-            return 'A te klubod a király!';
-        } else {
-            $percent = round((1 - ($rank / $total)) * 100, 1);
-            if (!$percent) return 'Több versenygyőzelemre van szükségetek.';
-
-            return 'Jobb a klubod, mint a többi klub ' . $percent . '%-a!';
-        }
     }
 }

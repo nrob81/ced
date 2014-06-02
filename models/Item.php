@@ -1,4 +1,18 @@
 <?php
+/**
+ * @property integer $id
+ * @property string $item_type
+ * @property integer $skill
+ * @property integer $level
+ * @property string $title
+ * @property integer $price
+ * @property integer $price_sell
+ * @property integer $owned
+ * @property integer $buy_amount
+ * @property integer $sell_amount
+ * @property array $errors
+ * @property boolean $success
+ */
 class Item extends CModel
 {
     const TYPE_BAIT = 'bait';
