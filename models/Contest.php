@@ -2,6 +2,8 @@
 /**
  * @property integer $activeId
  * @property string $recommendedCollect
+ * @property int $recommendedPrize
+ * @property string $collect
  */
 class Contest extends CModel
 {
