@@ -1,4 +1,7 @@
 <?php
+/**
+ * @property array $posts
+ */
 class Wall extends CModel
 {
     const TYPE_DUEL = 'duel';

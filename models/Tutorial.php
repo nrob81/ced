@@ -1,4 +1,8 @@
 <?php
+/**
+ * @property integer $state
+ * @property integer $descriptionToShow
+ */
 class Tutorial extends CModel
 {
     private $_state;

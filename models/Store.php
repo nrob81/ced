@@ -1,4 +1,9 @@
 <?php
+/**
+ * @property integer $uid
+ * @property array $blackBait
+ * @property array $packagesSms
+ */
 class Store extends CModel
 {
     private $_uid;
@@ -8,10 +13,17 @@ class Store extends CModel
         return [];
     }
 
-    public function getUid() { return $this->_uid; }
-    public function getBlackBait() { return $this->_blackBait; }
-    public function getPackagesSms() { return Yii::app()->params['packagesSms']; }
-    
+    public function getUid() { 
+        return $this->_uid; 
+    }
+
+    public function getBlackBait() {
+        return $this->_blackBait;
+    }
+
+    public function getPackagesSms() {
+        return Yii::app()->params['packagesSms'];
+    }    
 
     public function setUid($uid) {
         $this->_uid = (int)$uid;
@@ -50,6 +62,7 @@ class Store extends CModel
         Yii::app()->badge->model->trigger('energy_drink');
         return true;
     }
+
     public function activateBlackMarket() {
         $player = Yii::app()->player->model;
         $logger = new Logger;
@@ -70,5 +83,4 @@ class Store extends CModel
 
         return true;
     }
-
 }
