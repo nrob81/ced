@@ -1,4 +1,20 @@
 <?php
+/**
+ * @property integer $id
+ * @property integer $owner
+ * @property string $ownerName
+ * @property string $name
+ * @property integer $would_compete
+ * @property string $created
+ * @property CPagination $pagination
+ * @property integer $count
+ * @property array $items
+ * @property array $members
+ * @property array $entrants
+ * @property array $challenges
+ * @property integer $rank
+ * @property integer $rankActual
+ */
 class Club extends CModel
 {
     private $_id;
@@ -31,23 +47,7 @@ class Club extends CModel
     public function getMembers() { return $this->_members; }
     public function getEntrants() { return $this->_entrants; }
     public function getChallenges() { return $this->_challenges; }
-
-    public function setId($id) {
-        $this->_id = (int)$id;
-    }
-    public function setPage($page) {
-        $this->_page = $page;
-    }
-
-    public function getRankActual() {
-        $redis = Yii::app()->redis->getClient();
-
-        $key = 'board_c:' . date('Ym');
-        $rank  = $redis->zRevRank($key, $this->id);
-        if ($rank !== false) $rank++;
-
-        return $rank;
-    }
+    
     public function getRank() {
         $redis = Yii::app()->redis->getClient();
 
@@ -57,6 +57,24 @@ class Club extends CModel
 
         return $rank;
     }
+    
+    public function getRankActual() {
+        $redis = Yii::app()->redis->getClient();
+
+        $key = 'board_c:' . date('Ym');
+        $rank  = $redis->zRevRank($key, $this->id);
+        if ($rank !== false) $rank++;
+
+        return $rank;
+    }
+
+    public function setId($id) {
+        $this->_id = (int)$id;
+    }
+    public function setPage($page) {
+        $this->_page = $page;
+    }    
+    
 
     public function fetch() {
         if (!$this->id) return false;
