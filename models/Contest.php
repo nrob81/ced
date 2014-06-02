@@ -1,4 +1,8 @@
 <?php
+/**
+ * @property integer $activeId
+ * @property string $recommendedCollect
+ */
 class Contest extends CModel
 {
     const LIFETIME = 172800; //2 days
