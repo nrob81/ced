@@ -1,4 +1,9 @@
 <?php
+/**
+ * @property integer $uid
+ * @property integer $dollarImprovement
+ * @property integer $skillImprovement
+ */
 class Advancement extends CModel
 {
     private $uid;
