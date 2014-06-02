@@ -1,4 +1,38 @@
 <?php
+/**
+ * @property integer $uid
+ * @property string $user
+ * @property string $registered
+ * @property integer $level
+ * @property integer $status_points
+ * @property integer $energy
+ * @property integer $energy_max
+ * @property integer $energy_missing
+ * @property integer $energyRequiredForDuel
+ * @property integer $skill
+ * @property integer $strength
+ * @property integer $dollar
+ * @property integer $gold
+ * @property integer $xp_all
+ * @property integer $xp_delta
+ * @property integer $xp_remaining
+ * @property integer $last_location
+ * @property integer $owned_items
+ * @property integer $owned_baits
+ * @property string $found_setitem_time
+ * @property integer $found_setitem_xp
+ * @property integer $tutorial_mission
+ * @property integer $in_club
+ * @property integer $level_percent
+ * @property integer $refillPerInterval
+ * @property integer $energyRefillPerInterval
+ * @property integer $remainingTimeToRefill
+ * @property integer $justAdvanced
+ * @property integer $freeSlots
+ * @property boolean $black_market
+ * @property integer $skill_extended
+ * @property string $clubName
+ */
 class Player extends CModel
 {
     const ENERGY_REFILL_INTERVAL = 300; //5min
@@ -62,6 +96,7 @@ class Player extends CModel
     public function getFound_setitem_xp() { return (int)$this->found_setitem_xp; }
     public function getTutorial_mission() { return (int)$this->tutorial_mission; }
     public function getIn_club() { return (int)$this->in_club; }
+
     public function getLevel_percent() { 
         if (!$this->xp_recommended) return 0;
         $percent = (int)$this->xp_delta / ((int)$this->xp_recommended / 100);
@@ -69,12 +104,15 @@ class Player extends CModel
         if ($percent > 100) $percent = 100;
         return $percent;
     }
+
     public function getRefillPerInterval() {
         return round($this->energy_max / 10);
     }
+
     public function getEnergyRefillInterval() {
         return self::ENERGY_REFILL_INTERVAL;
     }
+
     public function getRemainingTimeToRefill() {
         $last = strtotime($this->energy_incr_at);
         if ($last < 0) $last = 0;
@@ -83,8 +121,14 @@ class Player extends CModel
         return $remaining;
     }
     
-    public function getJustAdvanced() { return (int)$this->justAdvanced; }
-    public function getFreeSlots() { return $this->strength - ($this->owned_items + $this->owned_baits); }
+    public function getJustAdvanced() { 
+        return (int)$this->justAdvanced; 
+    }
+
+    public function getFreeSlots() { 
+        return $this->strength - ($this->owned_items + $this->owned_baits); 
+    }
+
     public function getBlack_market() { 
         return (bool)(strtotime($this->black_market) >= time());
     }
@@ -92,7 +136,19 @@ class Player extends CModel
     public function itsMe() {
         return $this->uid == $_SESSION['uid'];
     }
-    public function getSkill_extended() { return $this->skill_extended>0 ? $this->skill_extended : 1; }
+
+    public function getSkill_extended() { 
+        return $this->skill_extended>0 ? $this->skill_extended : 1; 
+    }
+    
+    public function getClubName() {
+        if (!$this->in_club) return false;
+
+        $club = new Club;
+        $club->id = $this->in_club;
+        $club->fetchName();
+        return $club->name;
+    }
 
     public function setSkill_extended() {
         //echo __FUNCTION__ . "\n";
@@ -399,13 +455,4 @@ class Player extends CModel
         }
         return $percentPlayer;      
     }
-
-    public function getClubName() {
-        if (!$this->in_club) return false;
-
-        $club = new Club;
-        $club->id = $this->in_club;
-        $club->fetchName();
-        return $club->name;
-    } 
 }
