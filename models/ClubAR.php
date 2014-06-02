@@ -47,7 +47,7 @@ class ClubAR extends CActiveRecord
 		);
     }
 
-    public function clean($attribute, $params) {
+    public function clean($attribute) {
         $this->$attribute = trim($this->$attribute);
         $this->$attribute = strip_tags($this->$attribute);
         $this->$attribute = htmlspecialchars($this->$attribute);
