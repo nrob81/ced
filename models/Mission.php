@@ -1,4 +1,36 @@
 <?php
+/**
+ * @property integer $id
+ * @property integer $water_id
+ * @property integer $gate
+ * @property integer $req_energy
+ * @property integer $req_bait_1
+ * @property integer $req_bait_1_count
+ * @property integer $req_bait_2
+ * @property integer $req_bait_2_count
+ * @property array $req_baits
+ * @property integer $award_xp
+ * @property integer $award_dollar_min
+ * @property integer $award_dollar_max
+ * @property integer $award_setpart
+ * @property integer $routine_gain
+ * @property integer $skill
+ * @property string $title
+ * @property string $txt
+ * @property string $gate_name
+ * @property boolean $gate_visited
+ * @property string $award_dollar
+ * @property integer $routine
+ * @property integer $chance
+ * @property integer $gained_xp
+ * @property integer $gained_dollar
+ * @property integer $gained_routine
+ * @property boolean $gained_visit
+ * @property array $reqPassed
+ * @property array $errors
+ * @property boolean $success
+ * @property Item $found_setpart
+ */
 class Mission extends CModel
 {
     private $id;
