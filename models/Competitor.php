@@ -1,4 +1,21 @@
 <?php
+/**
+ * @property integer $uid
+ * @property integer $skill
+ * @property integer $chance
+ * @property integer $energy
+ * @property integer $avgEnergy
+ * @property integer $dollar
+ * @property string $club
+ * @property boolean $isCaller
+ * @property boolean $winner
+ * @property integer $opponent
+ * @property integer $reqEnergy
+ * @property integer $reqDollar
+ * @property integer $awardXp
+ * @property integer $awardDollar
+ * @property integer $awardPoints
+ */
 class Competitor extends CModel
 {
     protected $uid;

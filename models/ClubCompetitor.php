@@ -1,4 +1,7 @@
 <?php
+/**
+ * @property integer $lootDollar
+ */
 class ClubCompetitor extends Competitor
 {
     protected $lootDollar = 0;
