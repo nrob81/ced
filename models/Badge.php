@@ -1,4 +1,8 @@
 <?php
+/**
+ * @property integer $uid
+ * @property array $badges
+ */
 class Badge extends CModel
 {
     const LEVEL_BRONZE = 1;

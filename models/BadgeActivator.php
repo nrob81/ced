@@ -1,9 +1,4 @@
 <?php
-/*
-HSET "fish:badges:d:" "title" ""
-HSET "fish:badges:d:" "level" ""
-HSET "fish:badges:d:" "body" ""
- * */
 class BadgeActivator extends Badge
 {
     public function triggerHer($uid, $id, $data = []) {
