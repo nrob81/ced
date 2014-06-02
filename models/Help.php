@@ -1,4 +1,9 @@
 <?php
+/**
+ * @property array $items
+ * @property array $topics
+ * @property string $randomItemByType
+ */
 class Help extends CModel
 {
     const TYPE_PROFILE = 1;
@@ -16,9 +21,18 @@ class Help extends CModel
         ];
     private $_topic = 'profile';
 
+    public function attributeNames() { return []; }
+
     public function getItems() { return $this->_items; }
     public function getTopics() { return $this->_topics; }
-    public function attributeNames() { return []; }
+    public function getRandomItemByType() {
+        $this->fetchItems(5);
+        $items = $this->_items;
+        
+        $rnd = array_rand($items);
+        $selected = $items[$rnd];
+        return $selected;     
+    }
 
     public function setTopic($topic) {
         $this->_topic = $topic;
@@ -39,14 +53,7 @@ class Help extends CModel
             }
         }
     }
-    public function getRandomItemByType() {
-        $this->fetchItems(5);
-        $items = $this->_items;
-        
-        $rnd = array_rand($items);
-        $selected = $items[$rnd];
-        return $selected;     
-    }
+    
 
     private function fetchMax() {
         return (int)Yii::app()->redis->getClient()

@@ -1,4 +1,10 @@
 <?php
+/**
+ * @property integer $id
+ * @property CPagination $pagination
+ * @property integer $count
+ * @property array $items
+ */
 class Forum extends CModel
 {
     private $_id;
