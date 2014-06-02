@@ -23,7 +23,7 @@ class Logger extends CModel
         Yii::app()->redis->getClient()->rPush('debug:'.$this->_key, $value);
     }
 
-    public function increment($field, $value, $uid = 0) {
+    public function increment($field, $value) {
         if (!$this->_uid) return false;
 
         $redis = Yii::app()->redis->getClient();

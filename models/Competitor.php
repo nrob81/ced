@@ -291,7 +291,7 @@ class Competitor extends CModel
         $logger = new Logger;
         $logger->uid = $this->uid;
         $logger->level = $player->level;
-        $logger->increment($cell, 1, $this->uid);
+        $logger->increment($cell, 1);
         return $logger->getCounters();
     }
 
