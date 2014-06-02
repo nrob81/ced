@@ -1,5 +1,7 @@
 <?php
 /**
+ * @property integer $uid
+ * @property string $key
  * @property array $counters
  */
 class Logger extends CModel

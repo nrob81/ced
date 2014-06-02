@@ -2,6 +2,7 @@
 /**
  * @property integer $id
  * @property array $items
+ * @property integer $page
  * @property integer $owned_baits
  * @property integer $owned_items
  * @property array $success

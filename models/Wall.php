@@ -1,5 +1,6 @@
 <?php
 /**
+ * @property integer $uid
  * @property array $posts
  * @property string $content_type
  */

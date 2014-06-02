@@ -1,6 +1,7 @@
 <?php
 /**
  * @property integer $id
+ * @property integer $uid
  * @property string $collect
  * @property integer $prize
  * @property string $desciptionId
