@@ -256,7 +256,7 @@ class Club extends CModel
             ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$member['uid']]);
         }
         //delete forum
-        $del = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->delete('forum', 
                 'club_id=:club_id', 
                 [':club_id'=>$this->_id]

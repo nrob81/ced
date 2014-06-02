@@ -191,7 +191,7 @@ class Competitor extends CModel
         $contest = new Contest;
         $contest->addPoints($this->uid, Contest::ACT_DUEL, $this->reqEnergy, $this->awardXp, $this->awardDollar);
 
-        $this->log($player);
+        $this->log();
         $stat = $this->incrementCounters($player);
         $this->addBadges($stat);
 
@@ -260,7 +260,7 @@ class Competitor extends CModel
         return true;
     }
 
-    protected function log($player)
+    protected function log()
     {
         $role = $this->isCaller ? 'caller' : 'opponent';
 
