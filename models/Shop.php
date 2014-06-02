@@ -1,4 +1,16 @@
 <?php
+/**
+ * @property integer $id
+ * @property array $items
+ * @property integer $owned_baits
+ * @property integer $owned_items
+ * @property array $success
+ * @property CPagination $pagination
+ * @property integer $count
+ * @property integer $transactionId
+ * @property integer $levelLimit
+ * @property integer $nextItemsLevel
+ */
 class Shop extends CModel
 {
     const TYPE_BAIT = 'bait';
@@ -17,33 +29,67 @@ class Shop extends CModel
     public function attributeNames() {
         return [];
     }
-    public function setId($id) {
-        $this->_id = (int)$id;
-    }
+    
     public function getId() {
         return $this->_id;
     }
+
     public function getItems() {
         return $this->_items;
     }
+
     public function getOwned_baits() {
         return Yii::app()->player->model->owned_baits;
     }
+
     public function getOwned_items() {
         return Yii::app()->player->model->owned_items;
     }
+
     public function getSuccess() {
         return $this->_success;
     }
+
+    public function getPagination() { 
+        return $this->_pagination;
+    }
+
+    public function getCount() {
+        return $this->_count;
+    }
+
+    public function getTransactionId() {
+        return $this->_transactionId;
+    }
+
+    public function getLevelLimit () {
+        $player = Yii::app()->player->model;
+        $levelLimit = $player->level;
+        if ($player->black_market) $levelLimit += 2;
+        return (int)$levelLimit;    
+    }
+    
+    public function getNextItemsLevel() {
+        $nextLevel = Yii::app()->db->createCommand()
+            ->select('level')
+            ->from($this->_item_type.'s')
+            ->where('level > :level', [':level'=>Yii::app()->player->model->level])
+            ->order('level ASC')
+            ->limit(1)
+            ->queryScalar();
+        return (int)$nextLevel;
+    }
+
     public function setItem_type($type) {
         $this->_item_type = $type;
     }
     public function setPage($page) {
         $this->_page = $page;
     }
-    public function getPagination() { return $this->_pagination; }
-    public function getCount() { return $this->_count; }
-    public function getTransactionId() { return $this->_transactionId; }
+    public function setId($id) {
+        $this->_id = (int)$id;
+    }
+    
 
     public function fetchSets() {
         //echo __FUNCTION__ . "\n";
@@ -83,14 +129,7 @@ class Shop extends CModel
         }
     }
 
-    public function getLevelLimit () {
-        $player = Yii::app()->player->model;
-        $levelLimit = $player->level;
-        if ($player->black_market) $levelLimit += 2;
-        return (int)$levelLimit;    
-    }
     
-
     public function fetchItems() {
         $limit = Yii::app()->params['listPerPage'];
         $levelLimit = $this->levelLimit;
@@ -270,16 +309,5 @@ class Shop extends CModel
         $b->trigger('set_b', ['id'=>$set['id']]);            
         $b->trigger('set_s', ['id'=>$set['id']]);            
         $b->trigger('set_g', ['id'=>$set['id']]);            
-    }
-
-    public function getNextItemsLevel() {
-        $nextLevel = Yii::app()->db->createCommand()
-            ->select('level')
-            ->from($this->_item_type.'s')
-            ->where('level > :level', [':level'=>Yii::app()->player->model->level])
-            ->order('level ASC')
-            ->limit(1)
-            ->queryScalar();
-        return (int)$nextLevel;
     }
 }

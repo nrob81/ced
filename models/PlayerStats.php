@@ -1,4 +1,8 @@
 <?php
+/**
+ * @property integer $uid
+ * @property array $stats
+ */
 class PlayerStats extends CModel
 {
     private $uid;
