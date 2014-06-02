@@ -20,9 +20,6 @@ class Help extends CModel
     public function getTopics() { return $this->_topics; }
     public function attributeNames() { return []; }
 
-    public function setPage($page) {
-        $this->_page = $page;
-    }
     public function setTopic($topic) {
         $this->_topic = $topic;
     }
