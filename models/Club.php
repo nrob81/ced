@@ -9,6 +9,7 @@
  * @property CPagination $pagination
  * @property integer $count
  * @property array $items
+ * @property integer $page
  * @property array $members
  * @property array $entrants
  * @property array $challenges

@@ -4,6 +4,8 @@
  * @property CPagination $pagination
  * @property integer $count
  * @property array $items
+ * @property integer $page
+ * @property boolean $private
  */
 class Forum extends CModel
 {

@@ -1,6 +1,7 @@
 <?php
 /**
  * @property array $posts
+ * @property string $content_type
  */
 class Wall extends CModel
 {
