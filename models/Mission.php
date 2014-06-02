@@ -30,6 +30,8 @@
  * @property array $errors
  * @property boolean $success
  * @property Item $found_setpart
+ * @property integer $skill_extended_at_visit
+ * @property integer $req_energy_expansion
  */
 class Mission extends CModel
 {
