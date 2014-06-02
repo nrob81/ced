@@ -1,10 +1,30 @@
 <?php
+/**
+ * @property int $id
+ * @property boolean $active
+ * @property string $opponentLink
+ * @property integer $caller
+ * @property integer $opponent
+ * @property string $name_caller
+ * @property string $name_opponent
+ * @property integer $cnt_won_caller
+ * @property integer $cnt_won_opponent
+ * @property integer $point_caller
+ * @property integer $point_opponent
+ * @property integer $loot_caller
+ * @property integer $loot_opponent
+ * @property integer $startTime
+ * @property integer $endTime
+ * @property array $listDuels
+ * @property string $winner
+ */
 class Challenge extends CModel
 {
     const TIME_LIMIT_HOURS = 8;
     const TIME_LIMIT_LASTCALL_HOURS = 4;
 
     private $id;
+    private $_active = false;
     private $caller;
     private $opponent;
     private $loot_caller;
@@ -17,9 +37,6 @@ class Challenge extends CModel
     private $name_opponent;
     private $winner;
     private $created;
-    private $_active = false;
-
-    //list
     private $_listDuels = [];
 
     public function attributeNames() {
