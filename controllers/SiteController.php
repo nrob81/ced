@@ -67,7 +67,7 @@ class SiteController extends GameController
             'package'=>$store->packagesSms[$id],
             ]);
     }
-    public function actionStore($id = 0)
+    public function actionStore()
     {
         $store = new Store;
         $store->uid = Yii::app()->player->model->uid;
