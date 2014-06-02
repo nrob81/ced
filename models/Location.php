@@ -1,4 +1,16 @@
 <?php
+/**
+ * @property integer $id
+ * @property array $missions
+ * @property array $missionTypes
+ * @property integer $completedId
+ * @property string $name
+ * @property string $county
+ * @property integer $routine
+ * @property array $routineStars
+ * @property string $routineImages
+ * @property array $navigationLinks
+ */
 class Location extends CModel
 {
     private $_id;
@@ -14,20 +26,122 @@ class Location extends CModel
     public function attributeNames() {
         return [];
     }
+
     public function setId($id) {
         $this->_id = (int)$id;
     }
+
     public function getId() {
         return $this->_id;
     }
+
     public function getMissions() {
         return $this->_missions;
     }
+
     public function getMissionTypes() {
         return $this->_missionTypes;
     }
+
     public function getCompletedId() {
         return $this->_completedId;
+    }
+
+    public function getName($id = 0) {
+        //echo __FUNCTION__ . "\n";
+        if (!$id) $id = $this->_id;
+        $res = $this->fetchWater($id);
+        return $res['title'];
+    }
+
+    public function getCounty($id = 0) {
+        //echo __FUNCTION__ . "\n";
+        if (!$id) $id = $this->_id;
+        $res = $this->fetchWater($id);
+        $countyId = $res['county_id'];
+
+        $county = @$this->_county[$countyId];
+        if (!$county) $county = '?';
+
+        return $county;
+    }
+
+    public function getRoutine() {
+        //echo __FUNCTION__ . "\n";
+        return $this->_routine;
+    }
+    public function getRoutineStars($r = 0) {
+        if (!$r) $r = $this->_routine;
+
+        $d = floor($r / 81);
+
+        $eRem = $r % 81;
+        $e = floor($eRem / 27);
+
+        $gRem = $r % 27;
+        $g = floor($gRem / 9);
+
+        $sRem = $r % 9;
+        $s = floor($sRem / 3);
+
+        $bRem = $r % 3;
+        $b = $bRem;
+
+        $ret = ['routine'=>$r, 'diamant'=>$d, 'emerald'=>$e, 'gold'=>$g, 'silver'=>$s, 'bronze'=>$b];
+        return $ret;
+    }
+    public function getRoutineImages($routine) {
+        $txt = '';
+        foreach (['diamant', 'emerald', 'gold', 'silver', 'bronze'] as $star) {
+            for ($i=0; $i<$routine[$star]; $i++) {
+                $txt .= '<span class="spr star-'.$star[0].'"></span>';
+            }
+        }
+        return $txt;
+    }
+    
+    public function getNavigationLinks() {
+        $nav = [];
+        //previous locations
+        $res = $this->fetchWater($this->_id);
+
+        if ($res['from']) {
+            $navId = (int)$res['from'];
+            $link = [
+                'id' => $navId,
+                'type' => 'prev',
+                'title' => $this->getName($navId),
+                'active' => true,
+                ];
+            $nav[] = $link;
+        }
+        if ($res['from2']) {
+            $navId = (int)$res['from2'];
+            $link = [
+                'id' => $navId,
+                'type' => 'prev',
+                'title' => $this->getName($navId),
+                'active' => true,
+                ];
+            $nav[] = $link;
+        }
+
+        //next locations
+        foreach ($this->missionTypes['gate'] as $missionId) {
+            $nextId = (int)$this->missions[$missionId]->gate;
+            $visited = $this->isVisited($nextId);
+            $this->_visitedGates[$nextId] = $visited;
+
+            $link = [
+                'id' => $nextId,
+                'type' => 'next',
+                'title' => $this->getName($nextId),
+                'active' => $this->_visitedGates[$nextId],
+                ];
+            $nav[] = $link;
+        }
+
+        return $nav;
     }
 
     public function isVisited($id = 0) {
@@ -224,58 +338,7 @@ class Location extends CModel
         Yii::app()->badge->model->trigger('travel_county9', ['county_id'=>$gate]);
     }
 
-    public function getName($id = 0) {
-        //echo __FUNCTION__ . "\n";
-        if (!$id) $id = $this->_id;
-        $res = $this->fetchWater($id);
-        return $res['title'];
-    }
-
-    public function getCounty($id = 0) {
-        //echo __FUNCTION__ . "\n";
-        if (!$id) $id = $this->_id;
-        $res = $this->fetchWater($id);
-        $countyId = $res['county_id'];
-
-        $county = @$this->_county[$countyId];
-        if (!$county) $county = '?';
-
-        return $county;
-    }
-
-    public function getRoutine() {
-        //echo __FUNCTION__ . "\n";
-        return $this->_routine;
-    }
-    public function getRoutineStars($r = 0) {
-        if (!$r) $r = $this->_routine;
-
-        $d = floor($r / 81);
-
-        $eRem = $r % 81;
-        $e = floor($eRem / 27);
-
-        $gRem = $r % 27;
-        $g = floor($gRem / 9);
-
-        $sRem = $r % 9;
-        $s = floor($sRem / 3);
-
-        $bRem = $r % 3;
-        $b = $bRem;
-
-        $ret = ['routine'=>$r, 'diamant'=>$d, 'emerald'=>$e, 'gold'=>$g, 'silver'=>$s, 'bronze'=>$b];
-        return $ret;
-    }
-    public function getRoutineImages($routine) {
-        $txt = '';
-        foreach (['diamant', 'emerald', 'gold', 'silver', 'bronze'] as $star) {
-            for ($i=0; $i<$routine[$star]; $i++) {
-                $txt .= '<span class="spr star-'.$star[0].'"></span>';
-            }
-        }
-        return $txt;
-    }
+    
     private function getReduction() {
         $reduction = 0;
         if ($this->_routine >= 3) $reduction = 1; // silver
@@ -312,50 +375,7 @@ class Location extends CModel
         $this->_skill_extended_at_visit = (int)$res;
     }
 
-    public function getNavigationLinks() {
-        //echo __FUNCTION__ . "\n";
-        $nav = [];
-        //previous locations
-        $res = $this->fetchWater($this->_id);
-
-        if ($res['from']) {
-            $navId = (int)$res['from'];
-            $link = [
-                'id' => $navId,
-                'type' => 'prev',
-                'title' => $this->getName($navId),
-                'active' => true,
-                ];
-            $nav[] = $link;
-        }
-        if ($res['from2']) {
-            $navId = (int)$res['from2'];
-            $link = [
-                'id' => $navId,
-                'type' => 'prev',
-                'title' => $this->getName($navId),
-                'active' => true,
-                ];
-            $nav[] = $link;
-        }
-
-        //next locations
-        foreach ($this->missionTypes['gate'] as $missionId) {
-            $nextId = (int)$this->missions[$missionId]->gate;
-            $visited = $this->isVisited($nextId);
-            $this->_visitedGates[$nextId] = $visited;
-
-            $link = [
-                'id' => $nextId,
-                'type' => 'next',
-                'title' => $this->getName($nextId),
-                'active' => $this->_visitedGates[$nextId],
-                ];
-            $nav[] = $link;
-        }
-
-        return $nav;
-    }
+    
 
     public function listVisited() {
         $res = Yii::app()->db->createCommand()
