@@ -1,4 +1,10 @@
 <?php
+/**
+ * @property array $ownedKeys
+ * @property array $owned
+ * @property array $all
+ * @property integer $percentOwned
+ */
 class BadgeList extends Badge
 {
     private $_ownedKeys = [];
@@ -12,6 +18,12 @@ class BadgeList extends Badge
     public function getOwnedKeys() { return $this->_ownedKeys; }
     public function getOwned() { return $this->_owned; }
     public function getAll() { return $this->_all; }
+    public function getPercentOwned() {
+        $redis = Yii::app()->redis->getClient();
+        $cntOwned = $redis->sCard("badges:owned:{$this->_uid}");
+        $cntAll = $redis->zCard("badges:all");
+        return round(($cntOwned / $cntAll) * 100);
+    }
 
     public function fetchOwned() {
         if (!$this->_uid) $this->setUid(Yii::app()->player->model->uid); //set default uid
@@ -48,13 +60,5 @@ class BadgeList extends Badge
             }
             $this->_all[$categ][$item] = $b;
         }
-    }
-
-
-    public function getPercentOwned() {
-        $redis = Yii::app()->redis->getClient();
-        $cntOwned = $redis->sCard("badges:owned:{$this->_uid}");
-        $cntAll = $redis->zCard("badges:all");
-        return round(($cntOwned / $cntAll) * 100);
     }
 }
