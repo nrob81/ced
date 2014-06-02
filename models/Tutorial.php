@@ -2,6 +2,7 @@
 /**
  * @property integer $state
  * @property integer $descriptionToShow
+ * @property Location $location
  */
 class Tutorial extends CModel
 {

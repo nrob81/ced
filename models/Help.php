@@ -2,6 +2,7 @@
 /**
  * @property array $items
  * @property array $topics
+ * @property string $topic
  * @property string $randomItemByType
  */
 class Help extends CModel
