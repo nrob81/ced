@@ -209,7 +209,7 @@ class Player extends CModel
     
 
     public function updateAttributes($toIncrement, $toDecrement) {
-        $this->logEnergyUsage($toDecrement);
+        //$this->logEnergyUsage($toDecrement);
         $attributes = [];
 
         $toIncrement = $this->incrementLevel($toIncrement);
@@ -246,11 +246,11 @@ class Player extends CModel
             ->update('main', $attributes, 'uid=:uid', [':uid'=>(int)$this->uid]);
         }
     }
-    protected function logEnergyUsage($attributes)
+    /*protected function logEnergyUsage($attributes)
     {
         //todo: implement redis log
         return false;
-    }
+    }*/
     public function rewriteAttributes($attributes) {
         foreach ($attributes as $k => $v) {
             $this->$k = $v;
