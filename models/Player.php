@@ -277,8 +277,7 @@ class Player extends CModel
             $this->$k = $newValue;
 
             if ($k=='dollar') {
-                Yii::app()->badge->model->triggerHer($this->uid, 'dollar_50', ['dollar'=>$newValue]);
-                Yii::app()->badge->model->triggerHer($this->uid, 'dollar_5000', ['dollar'=>$newValue]);
+                Yii::app()->badge->model->triggerDollar($this->uid, $newValue);
             }
         }
 
@@ -333,8 +332,7 @@ class Player extends CModel
 
         $this->justAdvanced = true;
 
-        Yii::app()->badge->model->triggerHer($this->uid, 'level_10', ['level'=>$this->level+1]);
-        Yii::app()->badge->model->triggerHer($this->uid, 'level_100', ['level'=>$this->level+1]);
+        Yii::app()->badge->model->triggerLevel($this->uid, $this->level+1);
         return $incr;
     }
 

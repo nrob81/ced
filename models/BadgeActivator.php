@@ -34,6 +34,28 @@ class BadgeActivator extends Badge
         }
     }
 
+    public function triggerDollar($uid, $dollar)
+    {
+        $this->setUid($uid);
+        if ($dollar >= 50) {
+            $this->activate('dollar_50');
+        }
+        if ($dollar >= 5000){
+            $this->activate('dollar_5000');
+        }
+    }
+    
+    public function triggerLevel($uid, $level)
+    {
+        $this->setUid($uid);
+        if ($level >= 10) {
+            $this->activate('level_10');
+        }
+        if ($level >= 100){
+            $this->activate('level_100');
+        }
+    }
+
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
         return $this->trigger($id, $data);
@@ -46,11 +68,6 @@ class BadgeActivator extends Badge
         $activate = false;
         switch ($id) {
             case 'energy_drink': $activate = true; break;
-            case 'level_10': if ($data['level'] >= 10) $activate = true; break;
-            case 'level_100': if ($data['level'] >= 100) $activate = true; break;
-            case 'dollar_50': if ($data['dollar'] >= 50) $activate = true; break;
-            case 'dollar_5000': if ($data['dollar'] >= 5000) $activate = true; break;
-
             case 'travel_loc3': if ($data['water_id'] == 3) $activate = true; break;
             case 'travel_county2': if ($data['county_id'] == 2) $activate = true; break;
             case 'travel_county9': if ($data['county_id'] == 9) $activate = true; break;
@@ -140,6 +157,7 @@ class BadgeActivator extends Badge
 
             $this->postToWall($badge);
         }
+        //echo "active: $this->uid:$id:$saved \n";
         return $saved;
     }
 
