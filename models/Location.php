@@ -180,7 +180,7 @@ class Location extends CModel
         }
         
         $player->rewriteAttributes($attr);
-        Yii::app()->badge->model->trigger('travel_loc3', ['water_id'=>$this->id]);
+        Yii::app()->badge->model->triggerTravel($this->id);
         return true;
     }
 
@@ -267,15 +267,7 @@ class Location extends CModel
             $mission->routine = 0;
         }
         $this->_routine++;
-        Yii::app()->badge->model->trigger('loc_routine_4b', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_13s', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_28s', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_37g', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_52b', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_61s', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_71g', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_72e', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
-        Yii::app()->badge->model->trigger('loc_routine_46d', ['water_id'=>$this->_id, 'routine'=>$this->_routine]);
+        Yii::app()->badge->model->triggerLocationRoutine($this->_id, $this->_routine);
 
         //add routine awards
         $this->addAwardForRoutine();
@@ -334,10 +326,8 @@ class Location extends CModel
         $mission->gained_visit = true;
         Yii::app()->gameLogger->log(['type'=>'travel', 'traveled_to'=>$gate]);
 
-        Yii::app()->badge->model->trigger('travel_county2', ['county_id'=>$gate]);
-        Yii::app()->badge->model->trigger('travel_county9', ['county_id'=>$gate]);
+        Yii::app()->badge->model->triggerTravel($gate);
     }
-
     
     private function getReduction() {
         $reduction = 0;

@@ -318,25 +318,16 @@ class Competitor extends CModel
         $role = $this->isCaller ? 'caller' : 'opponent';
         $b = Yii::app()->badge->model;
 
-        $b->triggerHer($this->uid, 'first_duel_win', ['winner'=>$this->winner, 'role'=>$role]);
-        $b->triggerHer($this->uid, 'duel_success_100', ['cnt'=>(int)@$stat['duel_success']]);
-        $b->triggerHer($this->uid, 'duel_fail_100', ['cnt'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_rate_10', ['success'=>(int)@$stat['duel_success'], 'fail'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_rate_25', ['success'=>(int)@$stat['duel_success'], 'fail'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_rate_40', ['success'=>(int)@$stat['duel_success'], 'fail'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_rate_60', ['success'=>(int)@$stat['duel_success'], 'fail'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_rate_75', ['success'=>(int)@$stat['duel_success'], 'fail'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_rate_90', ['success'=>(int)@$stat['duel_success'], 'fail'=>(int)@$stat['duel_fail']]);
-        $b->triggerHer($this->uid, 'duel_money_100', ['dollar'=>$this->awardDollar]);
-        $b->triggerHer($this->uid, 'duel_money_1000', ['dollar'=>$this->awardDollar]);
-
-        $b->triggerHer($this->uid, 'duel_win_chance35', ['winner'=>(int)$this->winner, 'chance'=>$this->chance]);
-        $b->triggerHer($this->uid, 'duel_win_chance20', ['winner'=>(int)$this->winner, 'chance'=>$this->chance]);
-        $b->triggerHer($this->uid, 'duel_win_chance5', ['winner'=>(int)$this->winner, 'chance'=>$this->chance]);
-        $b->triggerHer($this->uid, 'duel_lose_chance65', ['winner'=>(int)$this->winner, 'chance'=>$this->chance]);
-        $b->triggerHer($this->uid, 'duel_lose_chance80', ['winner'=>(int)$this->winner, 'chance'=>$this->chance]);
-        $b->triggerHer($this->uid, 'duel_lose_chance95', ['winner'=>(int)$this->winner, 'chance'=>$this->chance]);
-        $b->triggerHer($this->uid, 'duel_2h', ['role'=>$role]);
+        $b->uid = $this->uid;
+        $b->triggerFirstDuelWin($this->winner, $role);
+        $b->triggerDuelSuccess((int)@$stat['duel_success']);
+        $b->triggerDuelFail((int)@$stat['duel_fail']);
+        $b->triggerDuelRate((int)@$stat['duel_success'], (int)@$stat['duel_fail']);
+        $b->triggerDuelMoney($this->awardDollar);
+        $b->triggerDuelWinChance($this->winner, $this->chance);
+        $b->triggerDuelLoseChance($this->winner, $this->chance);
+        $b->triggerDuel2h($role);
+        $b->uid = $player->uid; //reset uid
     }
 
     protected function sendWallMessage()

@@ -350,9 +350,7 @@ class Mission extends CModel
         $logger->uid = $player->uid;
         $logger->level = $player->level;
         $found = $logger->increment('found_part', 1);
-        if ($found >= 3) Yii::app()->badge->model->trigger('setpart_3', ['cnt'=>$found]);
-        if ($found >= 10) Yii::app()->badge->model->trigger('setpart_10', ['cnt'=>$found]);
-        if ($found >= 30) Yii::app()->badge->model->trigger('setpart_30', ['cnt'=>$found]);
+        Yii::app()->badge->model->triggerSetPart($found);
     }
 
     private function beatMission() {
@@ -402,7 +400,7 @@ class Mission extends CModel
         }
         $this->routine += $routine;
         $this->gained_routine = $routine;
-        Yii::app()->badge->model->trigger('routine_100', ['routine'=>$this->routine]);
+        Yii::app()->badge->model->triggerRoutine($this->routine);
     }
 
     private function gainXP() {

@@ -131,7 +131,7 @@ class ClubAR extends CActiveRecord
         $forum->id = $this->id;
         $forum->save(Yii::app()->player->model->user . ' megalapította a klubot.', true);
         
-        Yii::app()->badge->model->trigger('club_create');
+        Yii::app()->badge->model->triggerSimple('club_create');
 
         //delete inactive join request
         Yii::app()->db->createCommand()->delete('club_members', 'uid=:uid AND approved=0', [':uid'=>Yii::app()->player->model->uid]);

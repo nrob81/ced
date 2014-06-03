@@ -1,92 +1,256 @@
 <?php
 class BadgeActivator extends Badge
 {
-    public function triggerHer($uid, $id, $data = []) {
-        $this->setUid($uid);
-        return $this->trigger($id, $data);
+    public function triggerMaxNrg($max)
+    {
+        if ($max >= 35) {
+            $this->activate('max_nrg_35');
+        }
+        
+        if ($max >= 100) {
+            $this->activate('max_nrg_100');
+        }
     }
-    public function trigger($id, $data = []) {
-        //echo "{$this->_uid}:trigger({$id})\n";
-        if (!$this->_uid) $this->setUid(Yii::app()->player->model->uid); //set default uid
+    
+    public function triggerSkill($max)
+    {
+        if ($max >= 35) {
+            $this->activate('skill_35');
+        }
+        
+        if ($max >= 100) {
+            $this->activate('skill_100');
+        }
+    }
+    
+    public function triggerStrength($max)
+    {
+        if ($max >= 35) {
+            $this->activate('strength_35');
+        }
+        
+        if ($max >= 100) {
+            $this->activate('strength_100');
+        }
+    }
 
+    public function triggerDollar($uid, $dollar)
+    {
+        $this->setUid($uid);
+        if ($dollar >= 50) {
+            $this->activate('dollar_50');
+        }
+        if ($dollar >= 5000){
+            $this->activate('dollar_5000');
+        }
+    }
+    
+    public function triggerLevel($uid, $level)
+    {
+        $this->setUid($uid);
+        if ($level >= 10) {
+            $this->activate('level_10');
+        }
+        if ($level >= 100){
+            $this->activate('level_100');
+        }
+    }
+
+    public function triggerTravel($id)
+    {
+        if ($id == 3) {
+            $this->activate('travel_loc3');
+        }
+
+        if ($id == 5) {
+            $this->activate('travel_county2');
+        }
+
+        if ($id == 33) {
+            $this->activate('travel_county9');
+        }   
+    }
+    
+    public function triggerLocationRoutine($id, $routine)
+    {
+        $map = [
+            '4b' => [4, 1],
+            '13s' => [13, 3],
+            '28s' => [28, 3],
+            '37g' => [37, 9],
+            '52b' => [52, 1],
+            '61s' => [61, 3],
+            '71g' => [71, 9],
+            '72e' => [72, 27],
+            '46d' => [46, 81]
+            ];
+        foreach ($map as $key => $params) {
+            if ($id == $params[0] and $routine >= $params[1]) {
+                $this->activate('loc_routine_' . $key);
+            }
+        }
+    }
+
+    public function triggerSimple($id)
+    {
         $activate = false;
         switch ($id) {
-            //case 'login_1': $activate = true; break;
-            case 'max_nrg_35': if ($data['energy_max'] >= 35) $activate = true; break;
-            case 'max_nrg_100': if ($data['energy_max'] >= 100) $activate = true; break;
-            case 'skill_35': if ($data['skill'] >= 35) $activate = true; break;
-            case 'skill_100': if ($data['skill'] >= 100) $activate = true; break;
-            case 'strength_35': if ($data['strength'] >= 35) $activate = true; break;
-            case 'strength_100': if ($data['strength'] >= 100) $activate = true; break;
             case 'energy_drink': $activate = true; break;
-            case 'level_10': if ($data['level'] >= 10) $activate = true; break;
-            case 'level_100': if ($data['level'] >= 100) $activate = true; break;
-            case 'dollar_50': if ($data['dollar'] >= 50) $activate = true; break;
-            case 'dollar_5000': if ($data['dollar'] >= 5000) $activate = true; break;
-
-            case 'travel_loc3': if ($data['water_id'] == 3) $activate = true; break;
-            case 'travel_county2': if ($data['county_id'] == 2) $activate = true; break;
-            case 'travel_county9': if ($data['county_id'] == 9) $activate = true; break;
-            case 'routine_100': if ($data['routine'] >= 100) $activate = true; break;
-            case 'loc_routine_4b': if ($data['water_id']==4 and $data['routine'] > 0) $activate = true; break;
-            case 'loc_routine_13s': if ($data['water_id']==13 and $data['routine'] >= 3) $activate = true; break;
-            case 'loc_routine_28s': if ($data['water_id']==28 and $data['routine'] >= 3) $activate = true; break;
-            case 'loc_routine_37g': if ($data['water_id']==37 and $data['routine'] >= 9) $activate = true; break;
-            case 'loc_routine_52b': if ($data['water_id']==52 and $data['routine'] > 0) $activate = true; break;
-            case 'loc_routine_61s': if ($data['water_id']==61 and $data['routine'] >= 3) $activate = true; break;
-            case 'loc_routine_71g': if ($data['water_id']==71 and $data['routine'] >= 9) $activate = true; break;
-            case 'loc_routine_72e': if ($data['water_id']==72 and $data['routine'] >= 27) $activate = true; break;
-            case 'loc_routine_46d': if ($data['water_id']==46 and $data['routine'] >= 81) $activate = true; break;
-            case 'setpart_3': if ($data['cnt'] >= 3) $activate = true; break;
-            case 'setpart_10': if ($data['cnt'] >= 10) $activate = true; break;
-            case 'setpart_30': if ($data['cnt'] >= 30) $activate = true; break;
-            case 'first_duel_win': if ($data['role'] == 'caller' and $data['winner'] == 'caller') $activate = true; break;
-            case 'duel_success_100': if ($data['cnt'] >= 100) $activate = true; break;
-            case 'duel_fail_100': if ($data['cnt'] >= 100) $activate = true; break;
-            case 'duel_rate_40': if ($this->getSuccessRate(100, $data) <= 40) $activate = true; break;
-            case 'duel_rate_25': if ($this->getSuccessRate(300, $data) <= 25) $activate = true; break;
-            case 'duel_rate_10': if ($this->getSuccessRate(600, $data) <= 10) $activate = true; break;
-            case 'duel_rate_60': if ($this->getSuccessRate(100, $data) >= 60) $activate = true; break;
-            case 'duel_rate_75': if ($this->getSuccessRate(300, $data) >= 75) $activate = true; break;
-            case 'duel_rate_90': if ($this->getSuccessRate(900, $data) >= 90) $activate = true; break;
-            case 'duel_money_100': if ($data['dollar'] >= 100) $activate = true; break;
-            case 'duel_money_1000': if ($data['dollar'] >= 1000) $activate = true; break;
-            case 'duel_win_chance35': if ($data['winner'] and $data['chance'] <= 35) $activate = true; break;
-            case 'duel_win_chance20': if ($data['winner'] and $data['chance'] <= 20) $activate = true; break;
-            case 'duel_win_chance5': if ($data['winner'] and $data['chance'] <= 5) $activate = true; break;
-            case 'duel_lose_chance65': if (!$data['winner'] and $data['chance'] >= 65) $activate = true; break;
-            case 'duel_lose_chance80': if (!$data['winner'] and $data['chance'] >= 80) $activate = true; break;
-            case 'duel_lose_chance95': if (!$data['winner'] and $data['chance'] >= 95) $activate = true; break;
-            case 'duel_2h': if ($data['role'] == 'caller' and date('G')==2) $activate = true; break;
-            case 'shop_item10': if (Yii::app()->player->model->owned_items >= 10) $activate = true; break;
-            case 'shop_bait20': if (Yii::app()->player->model->owned_baits >= 20) $activate = true; break;
-            case 'set_b': if ($data['id']==1) $activate = true; break;
-            case 'set_s': if ($data['id']==2) $activate = true; break;
-            case 'set_g': if ($data['id']==3) $activate = true; break;
-            case 'set_sell_b': if ($data['id']==1) $activate = true; break;
-            case 'set_sell_s': if ($data['id']==2) $activate = true; break;
-            case 'set_sell_g': if ($data['id']==3) $activate = true; break;
+            case 'win_contest': $activate = true; break;
             case 'club_join': $activate = true; break;
             case 'club_create': $activate = true; break;
-            case 'club_members_8': if ($data['cnt'] >= 8) $activate = true; break;
-            case 'login_days_7': if ($this->getLoginDays() >= 7) $activate = true; break;
-            case 'login_days_30': if ($this->getLoginDays() >= 30) $activate = true; break;
-            case 'login_days_60': if ($this->getLoginDays() >= 60) $activate = true; break;
-            case 'win_contest': $activate = true; break;
         }
-
+        
         if ($activate) {
-           return $this->activate($id);
+           $this->activate($id);
         }
-        return false;
+    }
+    
+    public function triggerRoutine($routine)
+    {
+        if ($routine >= 100) {
+            $this->activate('routine_100');
+        }
+    }
+    public function triggerSetPart($part)
+    {
+        foreach ([3, 10, 30] as $cnt) {
+            if ($part >= $cnt) {
+                $this->activate('setpart_' . $cnt);
+            }
+        }
     }
 
-    private function getSuccessRate($limit, $data) {
-        $rate = 50;
-        if ($data['success'] + $data['fail'] >= $limit) {
-            if ($data['success'] or $data['fail']) {
-                $rate = round( $data['success'] / (($data['success'] + $data['fail'])/100) ,1);
+    public function triggerFirstDuelWin($role, $winner)
+    {
+        if ($role == 'caller' and $winner == 'caller') {
+            $this->activate('first_duel_win');
+        }
+    }
+
+    public function triggerDuelSuccess($cnt)
+    {
+        if ($cnt >= 100) {
+            $this->activate('duel_success_100');
+        }
+    }
+    
+    public function triggerDuelFail($cnt)
+    {
+        if ($cnt >= 100) {
+            $this->activate('duel_fail_100');
+        }
+    }
+
+    public function triggerDuelRate($cntSuccess, $cntFail)
+    {
+        $mapMax = [
+            ['limit'=>100, 'percent'=>40],
+            ['limit'=>300, 'percent'=>25],
+            ['limit'=>600, 'percent'=>10],
+            ];
+        foreach ($mapMax as $params) {
+            if ($this->getSuccessRate($params['limit'], $cntSuccess, $cntFail) <= $params['percent']) {
+                $this->activate('duel_rate_' . $params['percent']);
             }
+        }
+        
+        $mapMin = [
+            ['limit'=>100, 'percent'=>60],
+            ['limit'=>300, 'percent'=>75],
+            ['limit'=>900, 'percent'=>90],
+            ];
+        foreach ($mapMin as $params) {
+            if ($this->getSuccessRate($params['limit'], $cntSuccess, $cntFail) >= $params['percent']) {
+                $this->activate('duel_rate_' . $params['percent']);
+            }
+        }
+    }
+
+    public function triggerDuelMoney($dollar)
+    {
+        foreach ([100, 1000] as $limit) {
+            if ($dollar >= $limit) {
+                $this->activate('duel_money_' . $limit);
+            }
+        }
+    }
+
+    public function triggerDuelWinChance($isWinner, $chance)
+    {
+        if (!$isWinner) return false;
+
+        foreach ([35, 20, 5] as $limit) {
+            if ($chance <= $limit) {
+                $this->activate('duel_win_chance' . $limit);
+            }
+        }
+    }
+    
+    public function triggerDuelLoseChance($isWinner, $chance)
+    {
+        if ($isWinner) return false;
+
+        foreach ([65, 80, 95] as $limit) {
+            if ($chance >= $limit) {
+                $this->activate('duel_lose_chance' . $limit);
+            }
+        }
+    }
+
+    public function triggerDuel2h($role)
+    {
+        if ($role == 'caller' and date('G') == 2) {
+            $this->activate('duel_2h');
+        }
+    }
+
+    public function triggerItems($cnt)
+    {
+        if ($cnt >= 10) {
+            $this->activate('shop_item10');
+        }
+    }
+    
+    public function triggerBaits($cnt)
+    {
+        if ($cnt >= 20) {
+            $this->activate('shop_bait20');
+        }
+    }
+
+    public function triggerSet($id, $sold = false)
+    {
+        $key = $sold ? 'set_sell_': 'set_';
+
+        foreach ([1=>'b', 2=>'s', 3=>'g'] as $search => $type) {
+            if ($id == $search) {
+                $this->activate($key . $type);
+            }
+        }
+    }
+
+    public function triggerClubMembers($cnt)
+    {
+        if ($cnt >= 8) {
+            $this->activate('club_members_8');
+        }
+    }
+    
+    public function triggerLoginDays()
+    {
+        $cnt = $this->getLoginDays();
+        foreach ([7, 30, 60] as $limit) {
+            if ($cnt >= $limit) {
+                $this->activate('login_days_' . $limit);
+            }
+        }
+    }
+    
+    private function getSuccessRate($limit, $cntSuccess, $cntFail) {
+        $rate = 50;
+        if ($cntSuccess + $cntFail >= $limit) {
+            $rate = round( $cntSuccess / (($cntSuccess + $cntFail)/100) ,1);
         }
         return $rate;
     }

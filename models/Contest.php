@@ -126,9 +126,11 @@ class Contest extends CModel
         if (!$winners) return false;
 
         $redis = Yii::app()->redis->getClient();
+        $b = Yii::app()->badge->model;
         foreach ($winners as $winner) {
             //add badges
-            Yii::app()->badge->model->triggerHer($winner, 'win_contest', []);
+            $b->uid = $winner;
+            $b->triggerSimple('win_contest');
 
             //add winner to the log
             $redis->sadd(self::ID_LIST . $this->activeId . ':winners', $winner);
