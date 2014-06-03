@@ -230,9 +230,14 @@ class Club extends CModel
             $this->_members[$uid] = $this->_entrants[$uid];
             unset($this->_entrants[$uid]);
             $cnt++;
+            
             $b = Yii::app()->badge->model;
-            $b->triggerHer($uid, 'club_join');
+            $b->uid = $uid;
+            $b->triggerSimple('club_join');
+
+            $b->uid = $this->owner;
             $b->triggerHer($this->owner, 'club_members_8', ['cnt'=>$cnt]);
+            $b->uid - $player->uid; //reset
         }
         
         return (bool)$update;

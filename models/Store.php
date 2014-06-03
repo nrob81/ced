@@ -59,7 +59,7 @@ class Store extends CModel
         
         $logger->addToSet('---- end: '.date('H:i:s').'----');
         
-        Yii::app()->badge->model->trigger('energy_drink');
+        Yii::app()->badge->model->triggerSimple('energy_drink');
         return true;
     }
 

@@ -91,6 +91,21 @@ class BadgeActivator extends Badge
         }
     }
 
+    public function triggerSimple($id)
+    {
+        $activate = false;
+        switch ($id) {
+            case 'energy_drink': $activate = true; break;
+            case 'win_contest': $activate = true; break;
+            case 'club_join': $activate = true; break;
+            case 'club_create': $activate = true; break;
+        }
+        
+        if ($activate) {
+           $this->activate($id);
+        }
+    }
+
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
         return $this->trigger($id, $data);
@@ -102,7 +117,7 @@ class BadgeActivator extends Badge
 
         $activate = false;
         switch ($id) {
-            case 'energy_drink': $activate = true; break;
+            //case 'energy_drink': $activate = true; break;
             case 'routine_100': if ($data['routine'] >= 100) $activate = true; break;
             case 'setpart_3': if ($data['cnt'] >= 3) $activate = true; break;
             case 'setpart_10': if ($data['cnt'] >= 10) $activate = true; break;
@@ -133,13 +148,10 @@ class BadgeActivator extends Badge
             case 'set_sell_b': if ($data['id']==1) $activate = true; break;
             case 'set_sell_s': if ($data['id']==2) $activate = true; break;
             case 'set_sell_g': if ($data['id']==3) $activate = true; break;
-            case 'club_join': $activate = true; break;
-            case 'club_create': $activate = true; break;
             case 'club_members_8': if ($data['cnt'] >= 8) $activate = true; break;
             case 'login_days_7': if ($this->getLoginDays() >= 7) $activate = true; break;
             case 'login_days_30': if ($this->getLoginDays() >= 30) $activate = true; break;
             case 'login_days_60': if ($this->getLoginDays() >= 60) $activate = true; break;
-            case 'win_contest': $activate = true; break;
         }
 
         if ($activate) {
