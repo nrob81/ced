@@ -56,6 +56,21 @@ class BadgeActivator extends Badge
         }
     }
 
+    public function triggerTravel($id)
+    {
+        if ($id == 3) {
+            $this->activate('travel_loc3');
+        }
+
+        if ($id == 5) {
+            $this->activate('travel_county2');
+        }
+
+        if ($id == 33) {
+            $this->activate('travel_county9');
+        }   
+    }
+
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
         return $this->trigger($id, $data);
@@ -68,9 +83,6 @@ class BadgeActivator extends Badge
         $activate = false;
         switch ($id) {
             case 'energy_drink': $activate = true; break;
-            case 'travel_loc3': if ($data['water_id'] == 3) $activate = true; break;
-            case 'travel_county2': if ($data['county_id'] == 2) $activate = true; break;
-            case 'travel_county9': if ($data['county_id'] == 9) $activate = true; break;
             case 'routine_100': if ($data['routine'] >= 100) $activate = true; break;
             case 'loc_routine_4b': if ($data['water_id']==4 and $data['routine'] > 0) $activate = true; break;
             case 'loc_routine_13s': if ($data['water_id']==13 and $data['routine'] >= 3) $activate = true; break;
