@@ -10,9 +10,7 @@ class GateController extends Controller
         
         $b = new BadgeActivator;
         $b->uid = @$_SESSION['uid'];
-        $b->trigger('login_days_7');
-        $b->trigger('login_days_30');
-        $b->trigger('login_days_60');
+        $b->triggerLoginDays();
 
 		$this->redirect(['check']);
     }

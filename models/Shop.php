@@ -214,11 +214,11 @@ class Shop extends CModel
 
             if ($i->item_type == Item::TYPE_BAIT) {
                 Yii::app()->player->model->owned_baits = Yii::app()->player->model->owned_baits + $amount;
-                $b->trigger('shop_bait20');            
+                $b->triggerBaits(Yii::app()->player->model->owned_baits);            
             }
             if ($i->item_type == Item::TYPE_ITEM) {
                 Yii::app()->player->model->owned_items = Yii::app()->player->model->owned_items + $amount;
-                $b->trigger('shop_item10');            
+                $b->triggerItems(Yii::app()->player->model->owned_items);            
             }
             
             //refresh skill_extended
@@ -244,10 +244,7 @@ class Shop extends CModel
             
             $setId = $id > 999 ? $id[0] : 0;
             if ($setId) {
-                $b = Yii::app()->badge->model;
-                $b->trigger('set_sell_b', ['id'=>$setId]);            
-                $b->trigger('set_sell_s', ['id'=>$setId]);            
-                $b->trigger('set_sell_g', ['id'=>$setId]);
+                Yii::app()->badge->model->triggerSet($setId, true);
             }
         }
     }
@@ -307,9 +304,6 @@ class Shop extends CModel
         //decrement energy
         $player->rewriteAttributes(['energy'=>0]);
         
-        $b = Yii::app()->badge->model;
-        $b->trigger('set_b', ['id'=>$set['id']]);            
-        $b->trigger('set_s', ['id'=>$set['id']]);            
-        $b->trigger('set_g', ['id'=>$set['id']]);            
+        Yii::app()->badge->model->triggerSet($set['id']); 
     }
 }

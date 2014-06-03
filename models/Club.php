@@ -236,7 +236,7 @@ class Club extends CModel
             $b->triggerSimple('club_join');
 
             $b->uid = $this->owner;
-            $b->triggerHer($this->owner, 'club_members_8', ['cnt'=>$cnt]);
+            $b->triggerClubMembers($cnt);
             $b->uid - $player->uid; //reset
         }
         

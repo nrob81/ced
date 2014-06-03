@@ -205,36 +205,48 @@ class BadgeActivator extends Badge
         }
     }
 
-    public function triggerHer($uid, $id, $data = []) {
-        $this->setUid($uid);
-        return $this->trigger($id, $data);
+    public function triggerItems($cnt)
+    {
+        if ($cnt >= 10) {
+            $this->activate('shop_item10');
+        }
+    }
+    
+    public function triggerBaits($cnt)
+    {
+        if ($cnt >= 20) {
+            $this->activate('shop_bait20');
+        }
     }
 
-    public function trigger($id, $data = []) {
-        if (!$this->_uid) $this->setUid(Yii::app()->player->model->uid); //set default uid
+    public function triggerSet($id, $sold = false)
+    {
+        $key = $sold ? 'set_sell_': 'set_';
 
-        $activate = false;
-        switch ($id) {
-            case 'shop_item10': if (Yii::app()->player->model->owned_items >= 10) $activate = true; break;
-            case 'shop_bait20': if (Yii::app()->player->model->owned_baits >= 20) $activate = true; break;
-            case 'set_b': if ($data['id']==1) $activate = true; break;
-            case 'set_s': if ($data['id']==2) $activate = true; break;
-            case 'set_g': if ($data['id']==3) $activate = true; break;
-            case 'set_sell_b': if ($data['id']==1) $activate = true; break;
-            case 'set_sell_s': if ($data['id']==2) $activate = true; break;
-            case 'set_sell_g': if ($data['id']==3) $activate = true; break;
-            case 'club_members_8': if ($data['cnt'] >= 8) $activate = true; break;
-            case 'login_days_7': if ($this->getLoginDays() >= 7) $activate = true; break;
-            case 'login_days_30': if ($this->getLoginDays() >= 30) $activate = true; break;
-            case 'login_days_60': if ($this->getLoginDays() >= 60) $activate = true; break;
+        foreach ([1=>'b', 2=>'s', 3=>'g'] as $search => $type) {
+            if ($id == $search) {
+                $this->activate($key . $type);
+            }
         }
-
-        if ($activate) {
-           return $this->activate($id);
-        }
-        return false;
     }
 
+    public function triggerClubMembers($cnt)
+    {
+        if ($cnt >= 8) {
+            $this->activate('club_members_8');
+        }
+    }
+    
+    public function triggerLoginDays()
+    {
+        $cnt = $this->getLoginDays();
+        foreach ([7, 30, 60] as $limit) {
+            if ($cnt >= $limit) {
+                $this->activate('login_days_' . $limit);
+            }
+        }
+    }
+    
     private function getSuccessRate($limit, $cntSuccess, $cntFail) {
         $rate = 50;
         if ($cntSuccess + $cntFail >= $limit) {
@@ -265,7 +277,6 @@ class BadgeActivator extends Badge
 
             $this->postToWall($badge);
         }
-        //echo "active: $this->uid:$id:$saved \n";
         return $saved;
     }
 
