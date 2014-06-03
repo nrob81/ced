@@ -121,6 +121,90 @@ class BadgeActivator extends Badge
         }
     }
 
+    public function triggerFirstDuelWin($role, $winner)
+    {
+        if ($role == 'caller' and $winner == 'caller') {
+            $this->activate('first_duel_win');
+        }
+    }
+
+    public function triggerDuelSuccess($cnt)
+    {
+        if ($cnt >= 100) {
+            $this->activate('duel_success_100');
+        }
+    }
+    
+    public function triggerDuelFail($cnt)
+    {
+        if ($cnt >= 100) {
+            $this->activate('duel_fail_100');
+        }
+    }
+
+    public function triggerDuelRate($cntSuccess, $cntFail)
+    {
+        $mapMax = [
+            ['limit'=>100, 'percent'=>40],
+            ['limit'=>300, 'percent'=>25],
+            ['limit'=>600, 'percent'=>10],
+            ];
+        foreach ($mapMax as $params) {
+            if ($this->getSuccessRate($params['limit'], $cntSuccess, $cntFail) <= $params['percent']) {
+                $this->activate('duel_rate_' . $params['percent']);
+            }
+        }
+        
+        $mapMin = [
+            ['limit'=>100, 'percent'=>60],
+            ['limit'=>300, 'percent'=>75],
+            ['limit'=>900, 'percent'=>90],
+            ];
+        foreach ($mapMin as $params) {
+            if ($this->getSuccessRate($params['limit'], $cntSuccess, $cntFail) >= $params['percent']) {
+                $this->activate('duel_rate_' . $params['percent']);
+            }
+        }
+    }
+
+    public function triggerDuelMoney($dollar)
+    {
+        foreach ([100, 1000] as $limit) {
+            if ($dollar >= $limit) {
+                $this->activate('duel_money_' . $limit);
+            }
+        }
+    }
+
+    public function triggerDuelWinChance($isWinner, $chance)
+    {
+        if (!$isWinner) return false;
+
+        foreach ([35, 20, 5] as $limit) {
+            if ($chance <= $limit) {
+                $this->activate('duel_win_chance' . $limit);
+            }
+        }
+    }
+    
+    public function triggerDuelLoseChance($isWinner, $chance)
+    {
+        if ($isWinner) return false;
+
+        foreach ([65, 80, 95] as $limit) {
+            if ($chance >= $limit) {
+                $this->activate('duel_lose_chance' . $limit);
+            }
+        }
+    }
+
+    public function triggerDuel2h($role)
+    {
+        if ($role == 'caller' and date('G') == 2) {
+            $this->activate('duel_2h');
+        }
+    }
+
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
         return $this->trigger($id, $data);
@@ -131,24 +215,6 @@ class BadgeActivator extends Badge
 
         $activate = false;
         switch ($id) {
-            case 'first_duel_win': if ($data['role'] == 'caller' and $data['winner'] == 'caller') $activate = true; break;
-            case 'duel_success_100': if ($data['cnt'] >= 100) $activate = true; break;
-            case 'duel_fail_100': if ($data['cnt'] >= 100) $activate = true; break;
-            case 'duel_rate_40': if ($this->getSuccessRate(100, $data) <= 40) $activate = true; break;
-            case 'duel_rate_25': if ($this->getSuccessRate(300, $data) <= 25) $activate = true; break;
-            case 'duel_rate_10': if ($this->getSuccessRate(600, $data) <= 10) $activate = true; break;
-            case 'duel_rate_60': if ($this->getSuccessRate(100, $data) >= 60) $activate = true; break;
-            case 'duel_rate_75': if ($this->getSuccessRate(300, $data) >= 75) $activate = true; break;
-            case 'duel_rate_90': if ($this->getSuccessRate(900, $data) >= 90) $activate = true; break;
-            case 'duel_money_100': if ($data['dollar'] >= 100) $activate = true; break;
-            case 'duel_money_1000': if ($data['dollar'] >= 1000) $activate = true; break;
-            case 'duel_win_chance35': if ($data['winner'] and $data['chance'] <= 35) $activate = true; break;
-            case 'duel_win_chance20': if ($data['winner'] and $data['chance'] <= 20) $activate = true; break;
-            case 'duel_win_chance5': if ($data['winner'] and $data['chance'] <= 5) $activate = true; break;
-            case 'duel_lose_chance65': if (!$data['winner'] and $data['chance'] >= 65) $activate = true; break;
-            case 'duel_lose_chance80': if (!$data['winner'] and $data['chance'] >= 80) $activate = true; break;
-            case 'duel_lose_chance95': if (!$data['winner'] and $data['chance'] >= 95) $activate = true; break;
-            case 'duel_2h': if ($data['role'] == 'caller' and date('G')==2) $activate = true; break;
             case 'shop_item10': if (Yii::app()->player->model->owned_items >= 10) $activate = true; break;
             case 'shop_bait20': if (Yii::app()->player->model->owned_baits >= 20) $activate = true; break;
             case 'set_b': if ($data['id']==1) $activate = true; break;
@@ -169,12 +235,10 @@ class BadgeActivator extends Badge
         return false;
     }
 
-    private function getSuccessRate($limit, $data) {
+    private function getSuccessRate($limit, $cntSuccess, $cntFail) {
         $rate = 50;
-        if ($data['success'] + $data['fail'] >= $limit) {
-            if ($data['success'] or $data['fail']) {
-                $rate = round( $data['success'] / (($data['success'] + $data['fail'])/100) ,1);
-            }
+        if ($cntSuccess + $cntFail >= $limit) {
+            $rate = round( $cntSuccess / (($cntSuccess + $cntFail)/100) ,1);
         }
         return $rate;
     }
@@ -201,7 +265,7 @@ class BadgeActivator extends Badge
 
             $this->postToWall($badge);
         }
-        echo "active: $this->uid:$id:$saved \n";
+        //echo "active: $this->uid:$id:$saved \n";
         return $saved;
     }
 
