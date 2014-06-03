@@ -105,6 +105,21 @@ class BadgeActivator extends Badge
            $this->activate($id);
         }
     }
+    
+    public function triggerRoutine($routine)
+    {
+        if ($routine >= 100) {
+            $this->activate('routine_100');
+        }
+    }
+    public function triggerSetPart($part)
+    {
+        foreach ([3, 10, 30] as $cnt) {
+            if ($part >= $cnt) {
+                $this->activate('setpart_' . $cnt);
+            }
+        }
+    }
 
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
@@ -112,16 +127,10 @@ class BadgeActivator extends Badge
     }
 
     public function trigger($id, $data = []) {
-        //echo "{$this->_uid}:trigger({$id})\n";
         if (!$this->_uid) $this->setUid(Yii::app()->player->model->uid); //set default uid
 
         $activate = false;
         switch ($id) {
-            //case 'energy_drink': $activate = true; break;
-            case 'routine_100': if ($data['routine'] >= 100) $activate = true; break;
-            case 'setpart_3': if ($data['cnt'] >= 3) $activate = true; break;
-            case 'setpart_10': if ($data['cnt'] >= 10) $activate = true; break;
-            case 'setpart_30': if ($data['cnt'] >= 30) $activate = true; break;
             case 'first_duel_win': if ($data['role'] == 'caller' and $data['winner'] == 'caller') $activate = true; break;
             case 'duel_success_100': if ($data['cnt'] >= 100) $activate = true; break;
             case 'duel_fail_100': if ($data['cnt'] >= 100) $activate = true; break;
@@ -192,7 +201,7 @@ class BadgeActivator extends Badge
 
             $this->postToWall($badge);
         }
-        //echo "active: $this->uid:$id:$saved \n";
+        echo "active: $this->uid:$id:$saved \n";
         return $saved;
     }
 
