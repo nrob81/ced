@@ -70,6 +70,26 @@ class BadgeActivator extends Badge
             $this->activate('travel_county9');
         }   
     }
+    
+    public function triggerLocationRoutine($id, $routine)
+    {
+        $map = [
+            '4b' => [4, 1],
+            '13s' => [13, 3],
+            '28s' => [28, 3],
+            '37g' => [37, 9],
+            '52b' => [52, 1],
+            '61s' => [61, 3],
+            '71g' => [71, 9],
+            '72e' => [72, 27],
+            '46d' => [46, 81]
+            ];
+        foreach ($map as $key => $params) {
+            if ($id == $params[0] and $routine >= $params[1]) {
+                $this->activate('loc_routine_' . $key);
+            }
+        }
+    }
 
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
@@ -84,15 +104,6 @@ class BadgeActivator extends Badge
         switch ($id) {
             case 'energy_drink': $activate = true; break;
             case 'routine_100': if ($data['routine'] >= 100) $activate = true; break;
-            case 'loc_routine_4b': if ($data['water_id']==4 and $data['routine'] > 0) $activate = true; break;
-            case 'loc_routine_13s': if ($data['water_id']==13 and $data['routine'] >= 3) $activate = true; break;
-            case 'loc_routine_28s': if ($data['water_id']==28 and $data['routine'] >= 3) $activate = true; break;
-            case 'loc_routine_37g': if ($data['water_id']==37 and $data['routine'] >= 9) $activate = true; break;
-            case 'loc_routine_52b': if ($data['water_id']==52 and $data['routine'] > 0) $activate = true; break;
-            case 'loc_routine_61s': if ($data['water_id']==61 and $data['routine'] >= 3) $activate = true; break;
-            case 'loc_routine_71g': if ($data['water_id']==71 and $data['routine'] >= 9) $activate = true; break;
-            case 'loc_routine_72e': if ($data['water_id']==72 and $data['routine'] >= 27) $activate = true; break;
-            case 'loc_routine_46d': if ($data['water_id']==46 and $data['routine'] >= 81) $activate = true; break;
             case 'setpart_3': if ($data['cnt'] >= 3) $activate = true; break;
             case 'setpart_10': if ($data['cnt'] >= 10) $activate = true; break;
             case 'setpart_30': if ($data['cnt'] >= 30) $activate = true; break;
