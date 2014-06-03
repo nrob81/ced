@@ -60,16 +60,13 @@ class Advancement extends CModel
             //badge
             $b = Yii::app()->badge->model;
             if ($id==1) {
-                $b->trigger('max_nrg_35', ['energy_max'=>$player->energy_max]);
-                $b->trigger('max_nrg_100', ['energy_max'=>$player->energy_max]);
+                $b->triggerMaxNrg($player->energy_max);
             }
             if ($id==2) {
-                $b->trigger('skill_35', ['skill'=>$player->skill]);
-                $b->trigger('skill_100', ['skill'=>$player->skill]);
+                $b->triggerSkill($player->skill);
             }
             if ($id==3) {
-                $b->trigger('strength_35', ['strength'=>$player->strength]);
-                $b->trigger('strength_100', ['strength'=>$player->strength]);
+                $b->triggerStrength($player->strength);
             }
         }
         return true;

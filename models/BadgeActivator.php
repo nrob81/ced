@@ -1,23 +1,50 @@
 <?php
 class BadgeActivator extends Badge
 {
+    public function triggerMaxNrg($max)
+    {
+        if ($max >= 35) {
+            $this->activate('max_nrg_35');
+        }
+        
+        if ($max >= 100) {
+            $this->activate('max_nrg_100');
+        }
+    }
+    
+    public function triggerSkill($max)
+    {
+        if ($max >= 35) {
+            $this->activate('skill_35');
+        }
+        
+        if ($max >= 100) {
+            $this->activate('skill_100');
+        }
+    }
+    
+    public function triggerStrength($max)
+    {
+        if ($max >= 35) {
+            $this->activate('strength_35');
+        }
+        
+        if ($max >= 100) {
+            $this->activate('strength_100');
+        }
+    }
+
     public function triggerHer($uid, $id, $data = []) {
         $this->setUid($uid);
         return $this->trigger($id, $data);
     }
+
     public function trigger($id, $data = []) {
         //echo "{$this->_uid}:trigger({$id})\n";
         if (!$this->_uid) $this->setUid(Yii::app()->player->model->uid); //set default uid
 
         $activate = false;
         switch ($id) {
-            //case 'login_1': $activate = true; break;
-            case 'max_nrg_35': if ($data['energy_max'] >= 35) $activate = true; break;
-            case 'max_nrg_100': if ($data['energy_max'] >= 100) $activate = true; break;
-            case 'skill_35': if ($data['skill'] >= 35) $activate = true; break;
-            case 'skill_100': if ($data['skill'] >= 100) $activate = true; break;
-            case 'strength_35': if ($data['strength'] >= 35) $activate = true; break;
-            case 'strength_100': if ($data['strength'] >= 100) $activate = true; break;
             case 'energy_drink': $activate = true; break;
             case 'level_10': if ($data['level'] >= 10) $activate = true; break;
             case 'level_100': if ($data['level'] >= 100) $activate = true; break;
