@@ -565,3 +565,6 @@ ul.board .ui-li-aside { width: 10em; }
     -moz-box-shadow: -5px 0px 5px rgba(0,0,0,.15);
     box-shadow: -5px 0px 5px rgba(0,0,0,.15);
 }
+
+/* ydtb toolbar fix */
+#ydtb-toolbar { overflow:initial; }

@@ -16,3 +16,4 @@ models/MaintenancePlayer.php
 views/site/sms.php
 tests/ocular.phar
 tests/coverage.clover
+lib/vendor/*

@@ -5,12 +5,16 @@ return array(
 
     // preloading 'log' component
     'preload'=>['log'],
+    
+    'aliases' => [
+        'vendor' => realpath(__DIR__ . '/../lib/vendor/'),
+    ],
 
     // autoloading model and component classes
     'import'=>array(
         'application.models.*',
         'application.components.*',
-        'ext.YiiRedis.*',
+        'vendor.codemix.YiiRedis.*',
     ),
 
     'sourceLanguage' => 'en_US',
@@ -20,14 +24,14 @@ return array(
 
     'controllerMap'=>[
 		'min'=>[
-			'class'=>'ext.minScript.controllers.ExtMinScriptController',
+			'class'=>'vendor.limi7less.minscript.controllers.ExtMinScriptController',
 		],
 	],
     
     // application components
     'components'=>array(
         'clientScript'=>[
-			'class'=>'ext.minScript.components.ExtMinScript',
+			'class'=>'vendor.limi7less.minscript.components.ExtMinScript',
 		],
         'user'=>[
             'allowAutoLogin'=>false,
@@ -81,7 +85,7 @@ return array(
             'charset' => 'utf8',
         ),
         "redis" => array(
-            "class" => "ext.YiiRedis.ARedisConnection",
+            "class" => "vendor.codemix.yiiredis.ARedisConnection",
             "hostname" => "localhost",
             "port" => 6379,
             "database" => 1,
