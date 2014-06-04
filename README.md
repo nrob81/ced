@@ -3,6 +3,7 @@ Carp-e-Diem
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/heal25/ced/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/heal25/ced/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/heal25/ced/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/heal25/ced/?branch=master)
+[![Code Climate](https://codeclimate.com/github/heal25/ced.png)](https://codeclimate.com/github/heal25/ced)
 
 CeD is a mobile web based fishing game. 
 Players can make missions, compete, create and join fishing clubs and play in contests.
