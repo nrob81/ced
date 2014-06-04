@@ -8,4 +8,5 @@ $base = require(dirname(__FILE__) . '/../config/main.php');
 $local = require(dirname(__FILE__) . '/../config/main-local.php');
 $config = CMap::mergeArray($base, $local);
 
+require(dirname(__FILE__) . '/../lib/vendor/autoload.php');
 Yii::createWebApplication($config)->run();
