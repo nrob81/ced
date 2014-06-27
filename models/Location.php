@@ -228,12 +228,12 @@ class Location extends CModel
         $this->_completedId = $id;
         $m = $this->missions[$id];
         if ($m->gate) {
-            $m->addReqPassed('routinesFull', $this->allMissionRoutinesAreFull());
+            $m->locationRoutinesFull = $this->allMissionRoutinesAreFull();
         }
 
         $m->routine_reduction = $this->getReduction();
         $m->complete();
-        if ($m->gate && $m->success) {
+        if ($m->gate && $m->action->success) {
             $this->incrementRoutine();
             $this->visitNewLocation($m);
         }
@@ -323,7 +323,7 @@ class Location extends CModel
                 'skill_extended_at_visit'=>(int)$player->skill_extended,
                 ]);
         }
-        $mission->gained_visit = true;
+        $mission->action->gained_visit = true;
         Yii::app()->gameLogger->log(['type'=>'travel', 'traveled_to'=>$gate]);
 
         Yii::app()->badge->model->triggerTravel($gate);

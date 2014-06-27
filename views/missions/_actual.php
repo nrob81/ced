@@ -15,18 +15,18 @@
             <?php endforeach; ?>
         </div>
         <div class="ui-block-b">
-            <?php if ($data->gained_xp): ?>
-            <p>+ <?= $data->gained_xp ?> tp</p>
+            <?php if ($data->action->gained_xp): ?>
+            <p>+ <?= $data->action->gained_xp ?> tp</p>
             <?php endif; ?>
-            <?php if ($data->gained_dollar): ?>
-            <p>+ <?= $data->gained_dollar ?>$</p>
+            <?php if ($data->action->gained_dollar): ?>
+            <p>+ <?= $data->action->gained_dollar ?>$</p>
             <?php endif; ?>
-            <?php if ($data->gained_visit): ?>
+            <?php if ($data->action->gained_visit): ?>
             <p>utazás: <?= $data->gate_name ?></p>
             <p>+10 arany</p>
             <?php endif; ?>
-            <?php if ($data->found_setpart): ?>
-            <p>tárgy: <?= CHtml::link($data->found_setpart->title, ['/shop/makeSets']); ?></p>
+            <?php if ($data->action->found_setpart): ?>
+            <p>tárgy: <?= CHtml::link($data->action->found_setpart->title, ['/shop/makeSets']); ?></p>
             <?php endif; ?>
         </div>
         <div class="ui-block-c">

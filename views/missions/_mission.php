@@ -1,22 +1,22 @@
 <li>
     <h2><?= $data->title ?></h2>
     
-    <?php if ($data->errors['requirements']): ?>
+    <?php if ($data->action->errors['requirements']): ?>
     <p class="error">Nem tudod elvégezni a megbízást, mert nem teljesíted a követelményeket.</p>
     <?php endif; ?>
-    <?php if ($data->errors['inexperienced']): ?>
+    <?php if ($data->action->errors['inexperienced']): ?>
     <p class="error">A követelményeknek megfelelsz, mégsem sikerül teljesíteni a megbízást mivel csak <?= $data['chance'] ?>% esélyed volt rá.<br/>
     Nagyobb szakértelemmel (több felszereléssel és csalival) ez növelhető.</p>
     <?php endif; ?>
-    <?php if ($data->errors['routineFull']): ?>
+    <?php if ($data->action->errors['routineFull']): ?>
     <p class="error">Ezt a megbízást már 100% rutinnal végzed, ezért unalmas lenne ismételgetni.</p>
     <?php endif; ?>
 
     <div class="grid ui-grid-c">
         <div class="ui-block-a"><h3>követelmény</h3>
-            <p<?php if ($notify and !$data->reqPassed['energy']): ?> class="error"<?php endif; ?>><?= $data->req_energy ?> energia</p>
+            <p<?php if ($notify and !$data->action->reqPassed['energy']): ?> class="error"<?php endif; ?>><?= $data->req_energy ?> energia</p>
             <?php if ($data->gate): ?>
-            <p<?php if ($notify and !$data->reqPassed['routinesFull']): ?> class="error"<?php endif; ?>>100% rutin a megbízásokban</p>
+            <p<?php if ($notify and !$data->action->reqPassed['routinesFull']): ?> class="error"<?php endif; ?>>100% rutin a megbízásokban</p>
             <?php endif; ?>
             
             <?php foreach ($data->req_baits as $req): ?>
