@@ -211,7 +211,7 @@ class Competitor extends CModel
 
         $this->log();
         $stat = $this->incrementCounters($player);
-        $this->addBadges($stat);
+        $this->addBadges($player, $stat);
 
         if (!$this->isCaller) {
             $this->sendWallMessage();
@@ -313,13 +313,14 @@ class Competitor extends CModel
         return $logger->getCounters();
     }
 
-    protected function addBadges($stat)
+    protected function addBadges($player, $stat)
     {
         $role = $this->isCaller ? 'caller' : 'opponent';
-        $b = Yii::app()->badge->model;
 
+        $b = new DuelBadgeActivator();
         $b->uid = $this->uid;
-        $b->triggerFirstDuelWin($this->winner, $role);
+
+        $b->triggerDuelFirstWin($this->winner, $role);
         $b->triggerDuelSuccess((int)@$stat['duel_success']);
         $b->triggerDuelFail((int)@$stat['duel_fail']);
         $b->triggerDuelRate((int)@$stat['duel_success'], (int)@$stat['duel_fail']);
@@ -327,6 +328,7 @@ class Competitor extends CModel
         $b->triggerDuelWinChance($this->winner, $this->chance);
         $b->triggerDuelLoseChance($this->winner, $this->chance);
         $b->triggerDuel2h($role);
+
         $b->uid = $player->uid; //reset uid
     }
 

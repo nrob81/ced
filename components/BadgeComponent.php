@@ -12,7 +12,7 @@ class BadgeComponent extends CApplicationComponent
 
     public function init() {
         //echo __FUNCTION__."\n";
-        $this->_model = new BadgeActivator();
+        $this->_model = new CommonBadgeActivator();
         $this->_model->uid = Yii::app()->player->uid;
     }    
 }

@@ -8,7 +8,7 @@ class GateController extends Controller
         $session->open();
         $this->incrementLoginDays();
         
-        $b = new BadgeActivator;
+        $b = new CommonBadgeActivator;
         $b->uid = @$_SESSION['uid'];
         $b->triggerLoginDays();
 
