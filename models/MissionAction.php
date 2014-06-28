@@ -124,7 +124,7 @@ class MissionAction extends CModel
         if ($routine<1) $routine = 1;
         
         if ($this->_mission->routine >= 100) {
-            $this->routine_gain = 0;
+            $this->_mission->routine_gain = 0;
             return false;
         }
 
