@@ -350,22 +350,5 @@ class Player extends CModel
             ->where('uid=:uid AND item_id=:item_id', [':uid'=>$this->uid, ':item_id'=>(int)$id])
             ->queryScalar();
         return (int)$res;
-    }
-
-    public function chanceAgainstMission($skillMission) {
-        $skillPlayer = $this->getSkill_extended();
-        //echo "$skillPlayer vs. $skillMission\n";
-
-        $all = $skillMission + $skillPlayer;
-
-        $percentPlayer = round($skillPlayer / ($all / 100), 1);
-        //$percentMission = round($skillMission / ($all / 100), 1);
-        //echo "$percentPlayer% vs. $percentMission% \n"; 
-
-        if ($percentPlayer >= 90) {
-            $percentPlayer = 100;
-            //echo "new $percentPlayer% \n"; 
-        }
-        return $percentPlayer;      
-    }
+    } 
 }

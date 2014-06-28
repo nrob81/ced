@@ -140,9 +140,8 @@ class Mission extends CModel
         $this->req_energy += $this->req_energy_expansion;
 
         $this->routine = $this->fetchRoutine();
-        //$this->chance = Yii::app()->player->model->chanceAgainstMission($this->missionSkill($this->skill));
         $this->skill = $this->missionSkill($this->chance);
-        $this->chance = Yii::app()->player->model->chanceAgainstMission($this->skill); //recalculate chance
+        $this->chance = $this->chanceOfPlayer(); //recalculate chance
 
         $this->req_baits = $this->fetchBaits();
     }
@@ -202,5 +201,23 @@ class Mission extends CModel
 
         }
         return $baits;
+    }
+    
+    private function chanceOfPlayer() {
+        $skillMission = $this->skill;
+        $skillPlayer = Yii::app()->player->model->skill_extended;
+        //echo "$skillPlayer vs. $skillMission\n";
+
+        $all = $skillMission + $skillPlayer;
+
+        $percentPlayer = round($skillPlayer / ($all / 100), 1);
+        $percentMission = round($skillMission / ($all / 100), 1);
+        //echo "$percentPlayer% vs. $percentMission% \n"; 
+
+        if ($percentPlayer >= 90) {
+            $percentPlayer = 100;
+            //echo "new $percentPlayer% \n"; 
+        }
+        return $percentPlayer;      
     }
 }
