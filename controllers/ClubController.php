@@ -168,8 +168,8 @@ class ClubController extends GameController
 
         try {
             $this->fireMember($club, $ch, $forum);
-            $this->acceptApproval($club, $ch, $forum);
-            $this->deleteApproval($club, $ch, $forum);
+            $this->acceptApproval($club, $forum);
+            $this->deleteApproval($club, $forum);
             $this->switchCompete($club, $ch);
 
         } catch (CFlashException $e) {
@@ -211,7 +211,7 @@ class ClubController extends GameController
         }
     }
 
-    private function acceptApproval($club, $challenge, $forum)
+    private function acceptApproval($club, $forum)
     {
         $player = Yii::app()->player->model;
 
@@ -228,7 +228,7 @@ class ClubController extends GameController
         }
     }
 
-    private function deleteApproval($club, $challenge, $forum)
+    private function deleteApproval($club, $forum)
     {
         $player = Yii::app()->player->model;
 
