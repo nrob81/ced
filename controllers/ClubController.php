@@ -1,6 +1,12 @@
 <?php
 class ClubController extends GameController
 {
+    private $moderation = [
+        'fired'=>0,
+        'approved'=>0,
+        'deleted'=>0
+        ];
+
     public function actionIndex() {
         $controller = Yii::app()->player->model->in_club ? 'own' : 'list';
         $this->redirect('club/' . $controller);
@@ -75,12 +81,6 @@ class ClubController extends GameController
         }
         $club->fetchMembers();
         
-        $moderation = [
-            'fired'=>0,
-            'approved'=>0,
-            'deleted'=>0
-            ];
-
         $r = Yii::app()->request;
         $join = $r->getParam('join', 0);
         if ($join) {
@@ -139,7 +139,7 @@ class ClubController extends GameController
             'count' => $forum->count,
             'page_size' => Yii::app()->params['listPerPage'],
             'page'=>0,
-            'moderation'=>$moderation,
+            'moderation'=>$this->moderation,
             ]);
     }
     public function actionOwn($page = 0) 
@@ -166,9 +166,12 @@ class ClubController extends GameController
         $ch->opponent = $club->id;
         $ch->fetchActiveChallenge();
 
-        $moderation = [];
         try {
-            $moderation = $this->moderation($club, $ch, $forum);
+            $this->fireMember($club, $ch, $forum);
+            $this->acceptApproval($club, $ch, $forum);
+            $this->deleteApproval($club, $ch, $forum);
+            $this->switchCompete($club, $ch);
+
         } catch (CFlashException $e) {
             Yii::app()->user->setFlash('error', $e->getMessage());
         }
@@ -182,21 +185,15 @@ class ClubController extends GameController
             'count' => $forum->count,
             'page_size' => Yii::app()->params['listPerPage'],
             'page'=>$page,
-            'moderation'=>$moderation,
+            'moderation'=>$this->moderation,
             ]);
     }
 
-    private function moderation($club, $challenge, $forum)
+    private function fireMember($club, $challenge, $forum)
     {
         $player = Yii::app()->player->model;
 
-        $moderation = [
-            'fired'=>0,
-            'approved'=>0,
-            'deleted'=>0
-            ];
-        $r = Yii::app()->request;
-        $fire = (int)$r->getParam('fire', false);
+        $fire = (int)Yii::app()->request->getParam('fire', false);
         if ($fire) {
             if ($challenge->active) {
                 throw new CFlashException('Verseny közben nem lehet tagot kidobni.');
@@ -204,7 +201,7 @@ class ClubController extends GameController
 
             $fireUser = isset($club->members[$fire]['user']) ? $club->members[$fire]['user'] : '???';
             if ($club->fireMember($fire)) {
-                $moderation['fired'] = $fire;
+                $this->moderation['fired'] = $fire;
                 //forum notice
                 $message = $fire==$player->uid ? $player->user . ' kilépett a klubból.' : $player->user . ' visszavonta ' . $fireUser . ' tagságát.';
                 $forum->save($message, true);
@@ -212,11 +209,16 @@ class ClubController extends GameController
                 $this->wallNotice($club, Wall::TYPE_CLUB_FIRE, $fire);
             }
         }
-        $approve = (int)$r->getParam('approve', false);
-        if ($approve) {
+    }
 
+    private function acceptApproval($club, $challenge, $forum)
+    {
+        $player = Yii::app()->player->model;
+
+        $approve = (int)Yii::app()->request->getParam('approve', false);
+        if ($approve) {
             if ($club->approveMember($approve)) {
-                $moderation['approved'] = $approve;
+                $this->moderation['approved'] = $approve;
                 //forum notice
                 $message = $player->user . ' elfogadta ' . $club->members[$approve]['user'] . ' felvételi kérelmét.';
                 $forum->save($message, true);
@@ -224,11 +226,17 @@ class ClubController extends GameController
                 $this->wallNotice($club, Wall::TYPE_CLUB_APPROVE, $club->members[$approve]['uid']);
             }
         }
-        $delete = (int)$r->getParam('delete', false);
+    }
+
+    private function deleteApproval($club, $challenge, $forum)
+    {
+        $player = Yii::app()->player->model;
+
+        $delete = (int)Yii::app()->request->getParam('delete', false);
         if ($delete) {
             $deleteUser = isset($club->entrants[$delete]['user']) ? $club->entrants[$delete]['user'] : '???';
             if ($club->deleteJoinRequest($delete)) {
-                $moderation['deleted'] = $delete;
+                $this->moderation['deleted'] = $delete;
                 //forum notice
                 $message = $player->user . ' elutasította ' . $deleteUser . ' felvételi kérelmét.';
                 $forum->save($message, true);
@@ -236,8 +244,11 @@ class ClubController extends GameController
                 $this->wallNotice($club, Wall::TYPE_CLUB_DELETE, $delete);
             }
         }
-        
-        $switch = $r->getParam('switch', '');
+    }
+
+    private function switchCompete($club, $challenge)
+    {
+        $switch = Yii::app()->request->getParam('switch', '');
         if ($switch == 'compete') {
             if ($club->would_compete & $challenge->underLastCallTimeLimit($club->id)) {
                 throw new CFlashException('A \'versenyezne\' beállítást csak akkor kapcsolhatod ki, ha legalább '. Challenge::TIME_LIMIT_LASTCALL_HOURS .' óra eltelt azóta, hogy a klubod valakit versenyre hívott.');
@@ -245,8 +256,6 @@ class ClubController extends GameController
 
             $club->switchCompete();
         }
-
-        return $moderation;
     }
 
     private function wallNotice($club, $type, $uid) {
