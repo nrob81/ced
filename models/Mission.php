@@ -211,8 +211,7 @@ class Mission extends CModel
         $all = $skillMission + $skillPlayer;
 
         $percentPlayer = round($skillPlayer / ($all / 100), 1);
-        $percentMission = round($skillMission / ($all / 100), 1);
-        //echo "$percentPlayer% vs. $percentMission% \n"; 
+        //echo $percentPlayer . '% vs. ' . round($skillMission / ($all / 100), 1) . "% \n"; 
 
         if ($percentPlayer >= 90) {
             $percentPlayer = 100;
