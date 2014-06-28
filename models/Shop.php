@@ -221,8 +221,7 @@ class Shop extends CModel
                 $b->triggerItems(Yii::app()->player->model->owned_items);            
             }
             
-            //refresh skill_extended
-            Yii::app()->player->model->setSkill_extended();
+            (new Skill)->updateExtended();
         }
     }
     
@@ -239,8 +238,8 @@ class Shop extends CModel
         if ($i->success) {
             if ($i->item_type == Item::TYPE_BAIT) Yii::app()->player->model->owned_baits = Yii::app()->player->model->owned_baits - $amount;
             if ($i->item_type == Item::TYPE_ITEM) Yii::app()->player->model->owned_items = Yii::app()->player->model->owned_items - $amount;
-            //refresh skill_extended
-            Yii::app()->player->model->setSkill_extended();
+
+            (new Skill)->updateExtended();
             
             $setId = $id > 999 ? $id[0] : 0;
             if ($setId) {
@@ -298,8 +297,7 @@ class Shop extends CModel
         $this->_items[$id]['sold'] = true;
         $this->_success['setSold'] = true;
         
-        //refresh skill_extended
-        $player->setSkill_extended();
+        (new Skill)->updateExtended();
 
         //decrement energy
         $player->rewriteAttributes(['energy'=>0]);
