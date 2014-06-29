@@ -49,11 +49,9 @@ class ClubController extends GameController
     {
         $model=new ClubAR;
 
-        if (isset($_POST['ClubAR']))
-        {
+        if (isset($_POST['ClubAR'])) {
             $model->attributes=$_POST['ClubAR'];
-            if ($model->validate())
-            {
+            if ($model->validate()) {
                 if ($model->save()) {
                     $this->redirect(['club/own']);
                 }

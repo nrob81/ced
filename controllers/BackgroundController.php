@@ -79,7 +79,7 @@ class BackgroundController extends CronController
                 $users[$d['uid']]['gold'] += 70;
                 @$users[$d['uid']]['r_diamant']++;
             }
-        }       
+        }
         
         $log = print_r($users, true);
         $wall = new Wall();
