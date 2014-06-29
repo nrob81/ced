@@ -1,7 +1,8 @@
 <?php
 class BackgroundController extends CronController
 {
-    public function actionFinishChallenges() {
+    public function actionFinishChallenges()
+    {
         $mc = new MaintenanceChallenge;
         $mc->fetchFinishable();
         $mc->process();
@@ -10,21 +11,27 @@ class BackgroundController extends CronController
         echo 'ok';
     }
 
-    public function actionReset() {
+    public function actionReset()
+    {
         $mp = new MaintenancePlayer;
 
         $user = Yii::app()->request->getParam('user', 'x');
         echo $user . "<br/>";
         
-        if ($user) $mp->setUid($user);
+        if ($user) {
+            $mp->setUid($user);
+        }
         $mp->reset();
         
         $this->render('//site/dummy', ['log'=>$mp->log]);
     }
 
-    public function actionContestStart($addPoints = 0) {
+    public function actionContestStart($addPoints = 0)
+    {
         $contest = new Contest;
-        if ($contest->activeId) return true;
+        if ($contest->activeId) {
+            return true;
+        }
         echo 'started, ';
 
         //Yii::app()->redis->getClient()->set('contest:r_collect', 'xp'); //set recommended collection type for testing
@@ -37,7 +44,8 @@ class BackgroundController extends CronController
         }
     }
     
-    public function actionContestStop() {
+    public function actionContestStop()
+    {
         $contest = new Contest;
         
         if (time() > $contest->activeId + CONTEST::LIFETIME) {
@@ -46,7 +54,8 @@ class BackgroundController extends CronController
         }
     }
     
-    public function actionContestStartStop($addPoints = 0) {
+    public function actionContestStartStop($addPoints = 0)
+    {
         $this->actionContestStart($addPoints);
         $this->actionContestStop();
     }
@@ -69,7 +78,7 @@ class BackgroundController extends CronController
             if ($d['routine'] >= 81) {
                 $users[$d['uid']]['gold'] += 70;
                 @$users[$d['uid']]['r_diamant']++;
-            }         
+            }
         }       
         
         $log = print_r($users, true);
@@ -84,8 +93,7 @@ class BackgroundController extends CronController
                 'r_gold'=>$award['r_gold'],
                 'r_diamant'=>(int)@$award['r_diamant']
                 ]);
-        } 
+        }
         $this->render('//site/dummy', ['log'=>$log]);
     }
-
 }

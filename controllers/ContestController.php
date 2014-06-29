@@ -1,12 +1,14 @@
 <?php
 class ContestController extends GameController
 {
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $cl = new ContestList();
         $this->redirect(['/contest/view', 'id'=>$cl->lastId]);
     }
 
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $cl = new ContestList();
         $cl->id = $id;
         $cl->uid = Yii::app()->player->uid;
@@ -47,15 +49,12 @@ class ContestController extends GameController
             ]);
     }
 
-    public function actionHistory() {
+    public function actionHistory()
+    {
         $cl = new ContestList();
 
         $this->render('history', [
             'contestList'=>$cl,
             ]);
     }
-
-    
-    
-    
 }

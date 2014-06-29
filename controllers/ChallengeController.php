@@ -1,7 +1,8 @@
 <?php
 class ChallengeController extends GameController
 {
-    public function actionDetails($id) {
+    public function actionDetails($id)
+    {
         $ch = new Challenge;
         $ch->id = $id;
         $ch->fetch();

@@ -3,7 +3,7 @@ class PlayerController extends GameController
 {
     public $defaultAction = 'profile';
 
-	public function actionProfile($uid = 0)
+    public function actionProfile($uid = 0)
     {
         $player = Yii::app()->player->model;
         $playerStats = new PlayerStats;
@@ -19,7 +19,7 @@ class PlayerController extends GameController
                 throw new CHttpException(404, 'A keresett felhasználó nem található.');
             }
         }
-        
+
         $advancement = $this->advancement($player);
 
         //stats
@@ -29,16 +29,17 @@ class PlayerController extends GameController
         $badgeList = new BadgeList;
         $badgeList->uid = $uid;
         $badgeList->fetchOwned();
-        
+
         $this->render('profile', [
             'player' => $player,
             'playerStats' => $playerStats,
             'badgeList' => $badgeList,
             'advancement' => $advancement
             ]);
-	}
+    }
 
-    public function actionBadges() {
+    public function actionBadges()
+    {
         $badgeList = new BadgeList;
         $badgeList->fetchOwned();
         $badgeList->fetchAll();

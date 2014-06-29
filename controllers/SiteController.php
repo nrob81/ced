@@ -1,7 +1,8 @@
 <?php
 class SiteController extends GameController
 {
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $wall = new Wall;
         $wall->uid = Yii::app()->player->uid;
         $wall->fetchPosts();
@@ -15,14 +16,18 @@ class SiteController extends GameController
             ]);
     }
 
-    public function actionCredits() {
+    public function actionCredits()
+    {
         $this->render('credits');
     }
-    public function actionStory() {
+
+    public function actionStory()
+    {
         $this->render('story');
     }
 
-    public function actionHelp() {
+    public function actionHelp()
+    {
         $help = new Help;
         $news = [];
         foreach ($help->topics as $topic => $name) {
@@ -40,7 +45,9 @@ class SiteController extends GameController
             'news'=>$news,
             ]);
     }
-    public function actionHelpTopic($t = '') {
+
+    public function actionHelpTopic($t = '')
+    {
         $help = new Help;
         $topics = $help->topics;
         if (!array_key_exists($t, $topics)) {
@@ -56,17 +63,20 @@ class SiteController extends GameController
             'items'=>$help->items,
             ]);
     }
-    
+
     public function actionSms($id = 1)
     {
         $store = new Store;
         $store->uid = Yii::app()->player->model->uid;
-        if (!array_key_exists($id, $store->packagesSms)) $id = 1;
+        if (!array_key_exists($id, $store->packagesSms)) {
+            $id = 1;
+        }
 
         $this->render('sms', [
             'package'=>$store->packagesSms[$id],
             ]);
     }
+
     public function actionStore()
     {
         $store = new Store;
@@ -74,7 +84,7 @@ class SiteController extends GameController
         $store->fetch();
 
         $r = Yii::app()->request;
-                
+
         //energy drink
         $energy = (int)$r->getPost('energy', 0);
         try {

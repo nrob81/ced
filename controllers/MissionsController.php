@@ -1,11 +1,13 @@
 <?php
 class MissionsController extends GameController
 {
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->redirect(['missions/list', 'id'=>Yii::app()->player->model->last_location]);
     }
 
-	public function actionList($id = 1) {
+    public function actionList($id = 1)
+    {
         $location = new Location();
         $location->setId($id);
         if (!$location->isVisited()) {
@@ -32,8 +34,8 @@ class MissionsController extends GameController
         //name of location
         $name = [
             'location' => $location->getName(),
-            'county' => $location->getCounty(),
-            ];
+                'county' => $location->getCounty(),
+                ];
 
         //navigation from current location
         $nav = $location->getNavigationLinks();
@@ -58,9 +60,11 @@ class MissionsController extends GameController
             'tutorialToShow'=>$tutorialToShow,
             'error'=>$error,
             ]);
-        
-	}
-    public function actionMap() {
+
+    }
+
+    public function actionMap()
+    {
         $location = new Location();
         $visited = $location->listVisited();
 
@@ -79,14 +83,16 @@ class MissionsController extends GameController
             }
 
             $locations[] = "[{$v['position']}, '{$v['title']}', {$id}, '{$txtRoutine}']";
-            if (isset($v['last'])) $center = $v['position'];
+            if (isset($v['last'])) {
+                $center = $v['position'];
+            }
         }
 
         $this->render('map', [
             'visited'=>$visited,
             'locations'=>implode(",\n", $locations),
             'center'=>$center,
-            'last'=>implode(', ',$last)
+            'last'=>implode(', ', $last)
             ]);
     }
 }

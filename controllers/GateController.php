@@ -1,21 +1,20 @@
 <?php
-
 class GateController extends Controller
 {
-	public function actionIndex()
-	{
+    public function actionIndex()
+    {
         $session = Yii::app()->session;
         $session->open();
         $this->incrementLoginDays();
-        
+
         $b = new CommonBadgeActivator;
         $b->uid = @$_SESSION['uid'];
         $b->triggerLoginDays();
 
-		$this->redirect(['check']);
+        $this->redirect(['check']);
     }
     public function actionCheck()
-	{
+    {
         $enabledCookie = isset(Yii::app()->request->cookies['PHPSESSID']->value);
         if ($enabledCookie) {
             $this->redirect(Yii::app()->homeUrl);
@@ -23,39 +22,45 @@ class GateController extends Controller
 
         $this->render('check');
     }
-    
+
     public function actionCookie()
-	{
+    {
         $this->render('check');
     }
 
     public function actionError()
-	{
-		if($error=Yii::app()->errorHandler->error)
-		{
-			if(Yii::app()->request->isAjaxRequest)
-				echo $error['message'];
-			else
-				$this->render('error', $error);
-		}
+    {
+        if ($error=Yii::app()->errorHandler->error) {
+            if(Yii::app()->request->isAjaxRequest) {
+                echo $error['message'];
+            } else {
+                $this->render('error', $error);
+            }
+        }
     }
-    
-    public function actionBackToMenu() {
+
+    public function actionBackToMenu()
+    {
         $this->redirect(Yii::app()->params['wlineHost'] . 'menu.php#btm');
     }
-    public function actionBackToForum() {
+
+    public function actionBackToForum()
+    {
         $this->redirect(Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
     }
 
-    private function incrementLoginDays() {
+    private function incrementLoginDays()
+    {
         $uid = @$_SESSION['uid'];
-        if (!$uid) return false;
+        if (!$uid) {
+            return false;
+        }
 
         $redis = Yii::app()->redis->getClient();
         $key = "counter:login:days:".$uid;
         $yesterday = array(
-            'start'	=>	mktime(0,0,0,date('m'),date('d')-1,date('Y')),
-            'end'		=>	mktime(0,0,-1,date('m'),date('d'),date('Y')),
+            'start' => mktime(0, 0, 0, date('m'), date('d')-1, date('Y')),
+            'end' => mktime(0, 0, -1, date('m'), date('d'), date('Y')),
         );
 
         $cnt = 0;

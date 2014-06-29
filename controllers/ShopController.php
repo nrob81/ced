@@ -6,7 +6,7 @@ class ShopController extends GameController
         $this->room(Shop::TYPE_ITEM, $page, 'buy');
     }
 
-	public function actionBuyBaits($page = 0)
+    public function actionBuyBaits($page = 0)
     {
         $this->room(Shop::TYPE_BAIT, $page, 'buy');
     }
@@ -15,12 +15,12 @@ class ShopController extends GameController
     {
         $this->room(Shop::TYPE_ITEM, $page, 'sell');
     }
-    
+
     public function actionSellBaits($page = 0)
     {
         $this->room(Shop::TYPE_BAIT, $page, 'sell');
     }
-    
+
     public function actionMakeSets()
     {
         $item_id = Yii::app()->request->getPost('item_id', 0);
@@ -30,9 +30,12 @@ class ShopController extends GameController
         $shop->fetchSets();
 
         try {
-            if ($item_id) $shop->constructItem($item_id);
+            if ($item_id) {
+                $shop->constructItem($item_id);
+            }
+
             if ($shop->success['setSold']) {
-                Yii::app()->user->setFlash('success', 'A felszerelés elkészült!');                
+                Yii::app()->user->setFlash('success', 'A felszerelés elkészült!');
             }
         } catch (CFlashException $e) {
             Yii::app()->user->setFlash('error', $e->getMessage());
@@ -41,16 +44,17 @@ class ShopController extends GameController
         $this->render('makesets', [
             'list' => $shop->items,
             ]);
-	}
+    }
 
-    private function room($type, $page, $transaction) {
+    private function room($type, $page, $transaction)
+    {
         $item_id = Yii::app()->request->getPost('item_id', 0);
         $amount = Yii::app()->request->getPost('amount', 0);
 
         $shop = new Shop;
         $shop->item_type = $type;
         $shop->page = $page;
-        
+
         if ($transaction == 'buy') {
             $shop->fetchItems();
             //buy selected item

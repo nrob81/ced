@@ -13,7 +13,8 @@ class DuelController extends GameController
     }
 
 
-    public function actionIndex($page = 0) {
+    public function actionIndex($page = 0)
+    {
         $duelList = new DuelList();
         $duelList->page = $page;
         $duelList->fetchOpponents();
@@ -27,7 +28,8 @@ class DuelController extends GameController
             ]);
     }
 
-    public function actionCommon() {
+    public function actionCommon()
+    {
         $duelList = new DuelList();
         $duelList->fetchCommonRivals();
 
@@ -36,7 +38,8 @@ class DuelController extends GameController
             ]);
     }
     
-    public function actionHistory() {
+    public function actionHistory()
+    {
         $duelList = new DuelList();
         $duelList->fetchLastRivals();
 
@@ -45,7 +48,8 @@ class DuelController extends GameController
             ]);
     }
 
-    public function actionGo($opponentId = 0) {
+    public function actionGo($opponentId = 0)
+    {
         $duel = new Duel();
         $duel->caller = Yii::app()->player->uid;
         $duel->opponent = $opponentId;
@@ -64,7 +68,8 @@ class DuelController extends GameController
             ]);
     }
     
-    public function actionReplay($id) {
+    public function actionReplay($id)
+    {
         $duel = new Duel;
         try {
             $duel->replay((int)$id);

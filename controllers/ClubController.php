@@ -7,7 +7,8 @@ class ClubController extends GameController
         'deleted'=>0
         ];
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $controller = Yii::app()->player->model->in_club ? 'own' : 'list';
         $this->redirect('club/' . $controller);
     }
@@ -15,7 +16,7 @@ class ClubController extends GameController
     public function actionList($page = 0)
     {
         $model=new Club;
-        
+
         $model->page = $page;
         $model->fetchItems();
 
@@ -27,10 +28,11 @@ class ClubController extends GameController
             'page'=>$page,
             ]);
     }
+
     public function actionListCompete($page = 0)
     {
         $model=new Club;
-        
+
         $model->page = $page;
         $model->fetchItems(true);
 
@@ -43,13 +45,14 @@ class ClubController extends GameController
             ]);
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model=new ClubAR;
 
-        if(isset($_POST['ClubAR']))
+        if (isset($_POST['ClubAR']))
         {
             $model->attributes=$_POST['ClubAR'];
-            if($model->validate())
+            if ($model->validate())
             {
                 if ($model->save()) {
                     $this->redirect(['club/own']);
@@ -61,8 +64,8 @@ class ClubController extends GameController
             'model'=>$model,
             ]);
     }
-    
-    public function actionDetails($id) 
+
+    public function actionDetails($id)
     {
         $player = Yii::app()->player->model;
 
@@ -75,12 +78,12 @@ class ClubController extends GameController
         $club = new Club;
         $club->id = $clubID;
         $club->fetch();
-        
+
         if (!$club->id) {
             throw new CHttpException(404, 'A keresett klub nem található.');
         }
         $club->fetchMembers();
-        
+
         $r = Yii::app()->request;
         $join = $r->getParam('join', 0);
         if ($join) {
@@ -96,9 +99,9 @@ class ClubController extends GameController
             $club->deleteOwnJoinRequest($club->id);
             Yii::app()->user->setFlash('success', 'A csatlakozási kérelmet visszavontad.');
         }
-        
+
         $forum = new Forum;
-        
+
         //challenge
         $ch = new Challenge;
         $ch->caller = $in_club;
@@ -125,7 +128,7 @@ class ClubController extends GameController
                 Yii::app()->user->setFlash('error', $e->getMessage());
             }
         }
-        
+
 
         $forum->id = $clubID;
         $forum->fetchItems();
@@ -142,7 +145,7 @@ class ClubController extends GameController
             'moderation'=>$this->moderation,
             ]);
     }
-    public function actionOwn($page = 0) 
+    public function actionOwn($page = 0)
     {
         $player = Yii::app()->player->model;
         if (!$player->in_club) {
@@ -159,7 +162,7 @@ class ClubController extends GameController
         $club->id = $player->in_club;
         $club->fetch();
         $club->fetchMembers();
-        
+
         //challenge
         $ch = new Challenge;
         //$ch->caller = $player->in_club;
@@ -258,7 +261,8 @@ class ClubController extends GameController
         }
     }
 
-    private function wallNotice($club, $type, $uid) {
+    private function wallNotice($club, $type, $uid)
+    {
         $player = Yii::app()->player->model;
 
         //wall notice
@@ -272,8 +276,8 @@ class ClubController extends GameController
             'moderator'=>$player->user,
             ]);
     }
-    
-    public function actionForum($id, $page = 0) 
+
+    public function actionForum($id, $page = 0)
     {
         $clubID = (int)$id;
 
@@ -304,7 +308,8 @@ class ClubController extends GameController
             ]);
     }
 
-    public function actionHistory($id = 0) {
+    public function actionHistory($id = 0)
+    {
         if (!$id) {
             $this->redirect(['/club/list']);
         }
@@ -313,33 +318,34 @@ class ClubController extends GameController
         $club->id = (int)$id;
         $club->fetch();
         $club->fetchChallenges();
-        
+
         $this->render('history', [
             'club'=>$club,
             ]);
     }
 
-    public function actionClose() {
+    public function actionClose()
+    {
         $player = Yii::app()->player->model;
         if (!$player->in_club) {
             $this->redirect(['club/list']);
         }
-        
+
         //members
         $club = new Club;
         $club->id = $player->in_club;
         $club->fetch();
         $club->fetchMembers();
-        
+
         $pass = Yii::app()->request->getPost('pass', '');
         if ($pass) {
             try {
                 if ($club->close($pass)) {
                     foreach ($club->members as $member) {
-                        $this->wallNotice($club, Wall::TYPE_CLUB_CLOSE, $member['uid']);                        
+                        $this->wallNotice($club, Wall::TYPE_CLUB_CLOSE, $member['uid']);
                     }
                     Yii::app()->user->setFlash('success', "A klubot megszüntetted.");
-                    $this->redirect(['club/list']);                
+                    $this->redirect(['club/list']);
                 }
             } catch (CFlashException $e) {
                 Yii::app()->user->setFlash('error', $e->getMessage());
