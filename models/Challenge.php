@@ -24,7 +24,7 @@ class Challenge extends CModel
     const TIME_LIMIT_LASTCALL_HOURS = 4;
 
     private $id;
-    private $_active = false;
+    private $active = false;
     private $caller;
     private $opponent;
     private $loot_caller;
@@ -37,46 +37,117 @@ class Challenge extends CModel
     private $name_opponent;
     private $winner;
     private $created;
-    private $_listDuels = [];
+    private $listDuels = [];
 
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getId() { return $this->id; }
-        public function getActive() { return $this->_active; }
-        public function getOpponentLink($clubID) { 
-            $oppID = $clubID == $this->caller ? $this->opponent : $this->caller;
-            $oppName = $clubID == $this->caller ? $this->name_opponent : $this->name_caller;
+    public function getId() {
+        return $this->id;
+    }
 
-            return CHtml::link($oppName, ['club/details', 'id'=>$oppID], ['data-ajax'=>'false']); 
-        }
-    public function getCaller() { return $this->caller; }
-        public function getOpponent() { return $this->opponent; }
-        public function getName_caller() { return $this->name_caller; }
-        public function getName_opponent() { return $this->name_opponent; }
-        public function getCnt_won_caller() { return $this->cnt_won_caller; }
-        public function getCnt_won_opponent() { return $this->cnt_won_opponent; }
-        public function getPoint_caller() { return $this->point_caller; }
-        public function getPoint_opponent() { return $this->point_opponent; }
-        public function getLoot_caller() { return $this->loot_caller; }
-        public function getLoot_opponent() { return $this->loot_opponent; }
-        public function getStartTime() { return strtotime($this->created) + 1800; }
-        public function getEndTime() { return $this->startTime + 1800; }
-        public function getListDuels() { return $this->_listDuels; }
-        public function getWinner() { return $this->winner; }
+    public function getActive()
+    {
+        return $this->active;
+    }
 
-        public function setId($id) {
-            $this->id = (int)$id;
-        }
-    public function setCaller($clubID) {
+    public function getOpponentLink($clubID)
+    {
+        $oppID = $clubID == $this->caller ? $this->opponent : $this->caller;
+        $oppName = $clubID == $this->caller ? $this->name_opponent : $this->name_caller;
+
+        return CHtml::link($oppName, ['club/details', 'id'=>$oppID], ['data-ajax'=>'false']);
+    }
+
+    public function getCaller()
+    {
+        return $this->caller;
+    }
+
+    public function getOpponent()
+    {
+        return $this->opponent;
+    }
+
+    public function getName_caller()
+    {
+        return $this->name_caller;
+    }
+
+    public function getName_opponent()
+    {
+        return $this->name_opponent;
+    }
+
+    public function getCnt_won_caller()
+    {
+        return $this->cnt_won_caller;
+    }
+
+    public function getCnt_won_opponent()
+    {
+        return $this->cnt_won_opponent;
+    }
+
+    public function getPoint_caller()
+    {
+        return $this->point_caller;
+    }
+
+    public function getPoint_opponent()
+    {
+        return $this->point_opponent;
+    }
+
+    public function getLoot_caller()
+    {
+        return $this->loot_caller;
+    }
+
+    public function getLoot_opponent()
+    {
+        return $this->loot_opponent;
+    }
+
+    public function getStartTime()
+    {
+        return strtotime($this->created) + 1800;
+    }
+
+    public function getEndTime()
+    {
+        return $this->startTime + 1800;
+    }
+
+    public function getListDuels()
+    {
+        return $this->listDuels;
+    }
+
+    public function getWinner()
+    {
+        return $this->winner;
+    }
+
+    public function setId($id)
+    {
+        $this->id = (int)$id;
+    }
+
+    public function setCaller($clubID)
+    {
         $this->caller = (int)$clubID;
     }
-    public function setOpponent($clubID) {
+
+    public function setOpponent($clubID)
+    {
         $this->opponent = (int)$clubID;
     }
 
-    public function fetch() {
+    public function fetch()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('*')
             ->from('challenge')
@@ -87,10 +158,11 @@ class Challenge extends CModel
         foreach ($res as $k => $v) {
             $this->$k = $v;
         }
-        $this->_active = !$this->winner;
+        $this->active = !$this->winner;
     }
 
-    public function fetchActiveChallenge() {
+    public function fetchActiveChallenge()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('*')
             ->from('challenge')
@@ -103,10 +175,11 @@ class Challenge extends CModel
         foreach ($res as $k => $v) {
             $this->$k = $v;
         }
-        $this->_active = !$this->winner;
+        $this->active = !$this->winner;
     }
 
-    public function hasActiveChallenge($clubID) {
+    public function hasActiveChallenge($clubID)
+    {
         $res = Yii::app()->db->createCommand()
             ->select('id, winner')
             ->from('challenge')
@@ -117,7 +190,9 @@ class Challenge extends CModel
         if ($res['id'] and !$res['winner']) return true;
         return false;
     }
-    public function underCallTimeLimit($clubID, $opponentID) {
+
+    public function underCallTimeLimit($clubID, $opponentID)
+    {
         $res = Yii::app()->db->createCommand()
             ->select('id, created')
             ->from('challenge')
@@ -130,7 +205,9 @@ class Challenge extends CModel
         }
         return true;
     }
-    public function underLastCallTimeLimit($clubID) {
+
+    public function underLastCallTimeLimit($clubID)
+    {
         $res = Yii::app()->db->createCommand()
             ->select('id, created')
             ->from('challenge')
@@ -144,12 +221,13 @@ class Challenge extends CModel
         return true;
     }
 
-    public function callToChallenge($opponent) {
+    public function callToChallenge($opponent)
+    {
         $player = Yii::app()->player->model;
 
         //requirements
         if (!$player->in_club) throw new CFlashException('Csak egy klub tagjaként vagy alapítójaként hívhatsz ki versenyre másik klubot.');
-        if ($this->_active) throw new CFlashException('Ez a klub már részt vesz egy másik versenyben.');
+        if ($this->active) throw new CFlashException('Ez a klub már részt vesz egy másik versenyben.');
         if (!$opponent->would_compete) throw new CFlashException('Ez a klub nem szeretne versenyezni.');
         if ($this->hasActiveChallenge($player->in_club)) throw new CFlashException('A klubod már részt vesz egy versenyben.');
         if ($this->underCallTimeLimit($player->in_club, $this->opponent)) throw new CFlashException('Az elmúlt '. self::TIME_LIMIT_HOURS .' órában már kihívtátok ezt a klubot. Unalmas volna ilyen gyakran játszani ellenük. :)');
@@ -182,7 +260,8 @@ class Challenge extends CModel
         return true;
     }
 
-    public function fetchListDuels() {
+    public function fetchListDuels()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('*')
             ->from('duel')
@@ -201,11 +280,12 @@ class Challenge extends CModel
 
             $d['awards'] = $this->getAwards($d['id'], $d['winner']);
 
-            $this->_listDuels[] = $d;
+            $this->listDuels[] = $d;
         }
     }
 
-    private function getAwards($id, $role) {
+    private function getAwards($id, $role)
+    {
         $res = Yii::app()->db->createCommand()
             ->select('award_dollar, duel_points, club')
             ->from('duel_player')
@@ -214,7 +294,8 @@ class Challenge extends CModel
         return $res;
     }
 
-    private function addCommandToStack($params) {
+    private function addCommandToStack($params)
+    {
         Yii::app()->db->createCommand()
             ->insert('command_stack', [
             'command'=>'endChallenge',
@@ -223,7 +304,8 @@ class Challenge extends CModel
             ]);
     }
 
-    private function addReminder() {
+    private function addReminder()
+    {
         $redis = Yii::app()->redis->getClient();
 
         $redis->set('reminder:challenge:'.$this->caller, time()+3600);
