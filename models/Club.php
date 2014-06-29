@@ -18,27 +18,28 @@
  */
 class Club extends CModel
 {
-    private $_id;
+    private $id;
     private $owner;
     private $ownerName;
     private $name;
     private $would_compete;
     private $created;
-    private $_items = [];
-    private $_page = 0;
-    private $_pagination;
-    private $_count;
-    private $_members = [];
-    private $_entrants = [];
-    private $_challenges = [];
+    private $items = [];
+    private $page = 0;
+    private $pagination;
+    private $count;
+    private $members = [];
+    private $entrants = [];
+    private $challenges = [];
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
     
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     public function getOwner()
@@ -68,32 +69,32 @@ class Club extends CModel
 
     public function getPagination()
     {
-        return $this->_pagination;
+        return $this->pagination;
     }
 
     public function getCount()
     {
-        return $this->_count;
+        return $this->count;
     }
 
     public function getItems()
     {
-        return $this->_items;
+        return $this->items;
     }
 
     public function getMembers()
     {
-        return $this->_members;
+        return $this->members;
     }
 
     public function getEntrants()
     {
-        return $this->_entrants;
+        return $this->entrants;
     }
 
     public function getChallenges()
     {
-        return $this->_challenges;
+        return $this->challenges;
     }
     
     public function getRank()
@@ -102,7 +103,9 @@ class Club extends CModel
 
         $key = 'board_c:6month';
         $rank  = $redis->zRevRank($key, $this->id);
-        if ($rank !== false) $rank++;
+        if ($rank !== false) {
+            $rank++;
+        }
 
         return $rank;
     }
@@ -113,35 +116,39 @@ class Club extends CModel
 
         $key = 'board_c:' . date('Ym');
         $rank  = $redis->zRevRank($key, $this->id);
-        if ($rank !== false) $rank++;
+        if ($rank !== false) {
+            $rank++;
+        }
 
         return $rank;
     }
 
     public function setId($id)
     {
-        $this->_id = (int)$id;
+        $this->id = (int)$id;
     }
 
     public function setPage($page)
     {
-        $this->_page = $page;
+        $this->page = $page;
     }
 
     public function fetch()
     {
-        if (!$this->id) return false;
+        if (!$this->id) {
+            return false;
+        }
 
         //read all from db
         $res = Yii::app()->db->createCommand()
             ->select('c.owner, c.name, c.created, c.would_compete, m.user AS ownerName')
             ->from('club c')
             ->leftJoin('main m', 'c.owner=m.uid')
-            ->where('c.id=:id', [':id'=>$this->_id])
+            ->where('c.id=:id', [':id'=>$this->id])
             ->queryRow();
         
         if (!is_array($res)) {
-            $this->_id = 0;
+            $this->id = 0;
             return false;
         }
 
@@ -155,9 +162,8 @@ class Club extends CModel
         $name = Yii::app()->db->cache(86400)->createCommand()
             ->select('name')
             ->from('club')
-            ->where('id=:id', [':id'=>$this->_id])
+            ->where('id=:id', [':id'=>$this->id])
             ->queryScalar();
-        //if (!$name) $name = '???';
         $this->name = $name;
     }
 
@@ -166,7 +172,7 @@ class Club extends CModel
         $where = $would_compete ? 'would_compete=1' : '';
         $limit = Yii::app()->params['listPerPage'];
         
-        $this->_count = Yii::app()->db->createCommand()
+        $this->count = Yii::app()->db->createCommand()
             ->select('COUNT(*) AS count')
             ->from('club')
             ->where($where)
@@ -177,13 +183,13 @@ class Club extends CModel
             ->from('club')
             ->where($where)
             ->order('id DESC')
-            ->limit($limit, ($this->_page * $limit) - $limit) // the trick is here!
+            ->limit($limit, ($this->page * $limit) - $limit) // the trick is here!
             ->queryAll();
         
-        $this->_pagination = new CPagination($this->_count);
-        $this->_pagination->setPageSize(Yii::app()->params['listPerPage']);
+        $this->pagination = new CPagination($this->count);
+        $this->pagination->setPageSize(Yii::app()->params['listPerPage']);
 
-        $this->_items = $res;
+        $this->items = $res;
     }
 
     public function getJoinRequestSent()
@@ -199,18 +205,31 @@ class Club extends CModel
     public function joinRequest($id)
     {
         $player = Yii::app()->player->model;
-        if ($player->level < 15) throw new CFlashException('Ahhoz, hogy csatlakozhass, min. 15-ös szintre kell fejlődnöd.');
-        if ($player->in_club) throw new CFlashException('Már tagja vagy egy másik klubnak.');
-        if ($this->getJoinRequestSent()) throw new CFlashException('Már jelentkeztél egy másik klubba.');
-        if (count($this->_entrants) + count($this->_members) >= 8) throw new CFlashException('A klubtagok és jelentkezők száma elérte a 8-et, ezért nem jelentkezhetnek többen.');
+        if ($player->level < 15) {
+            throw new CFlashException('Ahhoz, hogy csatlakozhass, min. 15-ös szintre kell fejlődnöd.');
+        }
+
+        if ($player->in_club) {
+            throw new CFlashException('Már tagja vagy egy másik klubnak.');
+        }
+
+        if ($this->getJoinRequestSent()) {
+            throw new CFlashException('Már jelentkeztél egy másik klubba.');
+        }
+
+        if (count($this->entrants) + count($this->members) >= 8) {
+            throw new CFlashException('A klubtagok és jelentkezők száma elérte a 8-et, ezért nem jelentkezhetnek többen.');
+        }
 
         Yii::app()->db->createCommand()
-            ->insert('club_members', [
-                'club_id'=>(int)$id,
-                'uid'=>$player->uid
+            ->insert(
+                'club_members',
+                [
+                    'club_id'=>(int)$id,
+                    'uid'=>$player->uid
                 ]);
         //refresh list
-        $this->_entrants[$player->uid] = [
+        $this->entrants[$player->uid] = [
             'uid'=>$player->uid,
             'approved'=>0,
             'user'=>$player->user
@@ -224,11 +243,12 @@ class Club extends CModel
         $player = Yii::app()->player->model;
 
         Yii::app()->db->createCommand()
-            ->delete('club_members', 
-                'club_id=:club_id AND uid=:uid AND approved=0', 
+            ->delete(
+                'club_members',
+                'club_id=:club_id AND uid=:uid AND approved=0',
                 ['club_id'=>(int)$id, 'uid'=>$player->uid]
             );
-        unset($this->_entrants[$player->uid]);
+        unset($this->entrants[$player->uid]);
 
         return true;
     }
@@ -240,14 +260,14 @@ class Club extends CModel
             ->select('cm.uid, cm.approved, m.user')
             ->from('club_members cm')
             ->join('main m', 'cm.uid=m.uid')
-            ->where('cm.club_id=:club_id', [':club_id'=>$this->_id])
+            ->where('cm.club_id=:club_id', [':club_id'=>$this->id])
             ->queryAll();
         
         foreach ($res as $u) {
             if ($u['approved']) {
-                $this->_members[$u['uid']] = $u;
+                $this->members[$u['uid']] = $u;
             } else {
-                $this->_entrants[$u['uid']] = $u;
+                $this->entrants[$u['uid']] = $u;
             }
         }
     }
@@ -256,19 +276,22 @@ class Club extends CModel
     {
         $player = Yii::app()->player->model;
 
-        if ($player->in_club != $this->_id) return false;
+        if ($player->in_club != $this->id) {
+            return false;
+        }
 
         $del = Yii::app()->db->createCommand()
-            ->delete('club_members', 
-                'club_id=:club_id AND uid=:uid AND approved=1', 
-                ['club_id'=>$this->_id, 'uid'=>$uid]
+            ->delete(
+                'club_members',
+                'club_id=:club_id AND uid=:uid AND approved=1',
+                ['club_id'=>$this->id, 'uid'=>$uid]
             );
 
         if ($del) {
             Yii::app()->db->createCommand()
             ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$uid]);
 
-            unset($this->_members[$uid]);
+            unset($this->members[$uid]);
         }
         
         return (bool)$del;
@@ -278,21 +301,28 @@ class Club extends CModel
     {
         $player = Yii::app()->player->model;
 
-        if ($player->in_club != $this->_id) return false;
-        if (!array_key_exists($uid, $this->_entrants)) return false;
-        $cnt = count($this->_members) + 1; //with owner
-        if ($cnt >= 8) return false; 
+        if ($player->in_club != $this->id) {
+            return false;
+        }
+
+        if (!array_key_exists($uid, $this->entrants)) {
+            return false;
+        }
+
+        $cnt = count($this->members) + 1; //with owner
+        if ($cnt >= 8) {
+            return false;
+        }
 
         $update = Yii::app()->db->createCommand()
-            ->update('club_members', ['approved'=>1], 'uid=:uid', [':uid'=>(int)$uid]
-            );
+            ->update('club_members', ['approved'=>1], 'uid=:uid', [':uid'=>(int)$uid]);
 
         if ($update) {
             Yii::app()->db->createCommand()
-            ->update('main', ['in_club'=>$this->_id], 'uid=:uid', [':uid'=>(int)$uid]);
+            ->update('main', ['in_club'=>$this->id], 'uid=:uid', [':uid'=>(int)$uid]);
             
-            $this->_members[$uid] = $this->_entrants[$uid];
-            unset($this->_entrants[$uid]);
+            $this->members[$uid] = $this->entrants[$uid];
+            unset($this->entrants[$uid]);
             $cnt++;
             
             $b = Yii::app()->badge->model;
@@ -312,14 +342,17 @@ class Club extends CModel
         $player = Yii::app()->player->model;
 
         $selfMod = $uid == $player->uid;
-        if (!$selfMod and $player->in_club != $this->_id) return false;
+        if (!$selfMod and $player->in_club != $this->id) {
+            return false;
+        }
 
         $del = Yii::app()->db->createCommand()
-            ->delete('club_members', 
-                'club_id=:club_id AND uid=:uid AND approved=0', 
-                [':club_id'=>$this->_id, 'uid'=>$uid]
+            ->delete(
+                'club_members',
+                'club_id=:club_id AND uid=:uid AND approved=0',
+                [':club_id'=>$this->id, 'uid'=>$uid]
             );
-        unset($this->_entrants[$uid]);
+        unset($this->entrants[$uid]);
 
         return (bool)$del;
     }
@@ -329,33 +362,46 @@ class Club extends CModel
         $player = Yii::app()->player->model;
         
         $challenge = new Challenge;
-        if ($challenge->hasActiveChallenge($this->id)) throw new CFlashException('A klub nem szüntethető meg verseny közben.');
-        if ($player->uid <> $this->owner) throw new CFlashException('A klubot csak az alapító szüntetheti meg.');
-        if (md5($pass) !== $_SESSION['pass']) throw new CFlashException('A jelszó helytelen.');
+        if ($challenge->hasActiveChallenge($this->id)) {
+            throw new CFlashException('A klub nem szüntethető meg verseny közben.');
+        }
+
+        if ($player->uid <> $this->owner) {
+            throw new CFlashException('A klubot csak az alapító szüntetheti meg.');
+        }
+
+        if (md5($pass) !== $_SESSION['pass']) {
+            throw new CFlashException('A jelszó helytelen.');
+        }
         
         //delete members
         Yii::app()->db->createCommand()
-            ->delete('club_members', 
-                'club_id=:club_id', 
-                [':club_id'=>$this->_id]
+            ->delete(
+                'club_members',
+                'club_id=:club_id',
+                [':club_id'=>$this->id]
             );
+
         //update in_club
-        $this->_members[$this->owner] = ['uid'=>$this->owner];
-        foreach ($this->_members as $member) {
+        $this->members[$this->owner] = ['uid'=>$this->owner];
+        foreach ($this->members as $member) {
             Yii::app()->db->createCommand()
             ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$member['uid']]);
         }
         //delete forum
         Yii::app()->db->createCommand()
-            ->delete('forum', 
-                'club_id=:club_id', 
-                [':club_id'=>$this->_id]
+            ->delete(
+                'forum',
+                'club_id=:club_id',
+                [':club_id'=>$this->id]
             );
+
         //delete club
         Yii::app()->db->createCommand()
-            ->delete('club', 
-                'id=:club_id', 
-                [':club_id'=>$this->_id]
+            ->delete(
+                'club',
+                'id=:club_id',
+                [':club_id'=>$this->id]
             );
 
         return true;
@@ -365,7 +411,7 @@ class Club extends CModel
     {
         $compete = (int)$this->would_compete ? 0 : 1;
         Yii::app()->db->createCommand()
-            ->update('club', ['would_compete'=>$compete], 'id=:id', [':id'=>$this->_id]);
+            ->update('club', ['would_compete'=>$compete], 'id=:id', [':id'=>$this->id]);
         $this->would_compete = $compete;
     }
 
@@ -374,13 +420,13 @@ class Club extends CModel
         $res = Yii::app()->db->createCommand()
             ->select('id, caller, opponent, name_caller, name_opponent, winner, created')
             ->from('challenge')
-            ->where('caller=:club_id OR opponent=:club_id', [':club_id'=>$this->_id])
+            ->where('caller=:club_id OR opponent=:club_id', [':club_id'=>$this->id])
             ->order('id DESC')
             ->limit((int)$limit)
             ->queryAll();
         
         foreach ($res as $u) {
-            $this->_challenges[$u['id']] = $u;
+            $this->challenges[$u['id']] = $u;
         }
     }
 }
