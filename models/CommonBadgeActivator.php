@@ -95,17 +95,17 @@ class CommonBadgeActivator extends BadgeActivator
     {
         $activate = false;
         switch ($id) {
-        case 'energy_drink':
-            $activate = true;
+            case 'energy_drink':
+                $activate = true;
             break;
-        case 'win_contest':
-            $activate = true;
+            case 'win_contest':
+                $activate = true;
             break;
-        case 'club_join':
-            $activate = true;
+            case 'club_join':
+                $activate = true;
             break;
-        case 'club_create':
-            $activate = true;
+            case 'club_create':
+                $activate = true;
             break;
         }
 
