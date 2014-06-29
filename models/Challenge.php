@@ -44,7 +44,8 @@ class Challenge extends CModel
         return [];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -153,7 +154,9 @@ class Challenge extends CModel
             ->from('challenge')
             ->where('id=:id', [':id'=>$this->id])
             ->queryRow();
-        if (!$res) throw new CHttpException(404, 'A lekért verseny nem található.');
+        if (!$res) {
+            throw new CHttpException(404, 'A lekért verseny nem található.');
+        }
 
         foreach ($res as $k => $v) {
             $this->$k = $v;
@@ -170,7 +173,9 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if (!$res) return false;
+        if (!$res) {
+            return false;
+        }
 
         foreach ($res as $k => $v) {
             $this->$k = $v;
@@ -187,7 +192,9 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if ($res['id'] and !$res['winner']) return true;
+        if ($res['id'] and !$res['winner']) {
+            return true;
+        }
         return false;
     }
 
@@ -226,11 +233,25 @@ class Challenge extends CModel
         $player = Yii::app()->player->model;
 
         //requirements
-        if (!$player->in_club) throw new CFlashException('Csak egy klub tagjaként vagy alapítójaként hívhatsz ki versenyre másik klubot.');
-        if ($this->active) throw new CFlashException('Ez a klub már részt vesz egy másik versenyben.');
-        if (!$opponent->would_compete) throw new CFlashException('Ez a klub nem szeretne versenyezni.');
-        if ($this->hasActiveChallenge($player->in_club)) throw new CFlashException('A klubod már részt vesz egy versenyben.');
-        if ($this->underCallTimeLimit($player->in_club, $this->opponent)) throw new CFlashException('Az elmúlt '. self::TIME_LIMIT_HOURS .' órában már kihívtátok ezt a klubot. Unalmas volna ilyen gyakran játszani ellenük. :)');
+        if (!$player->in_club) {
+            throw new CFlashException('Csak egy klub tagjaként vagy alapítójaként hívhatsz ki versenyre másik klubot.');
+        }
+
+        if ($this->active) {
+            throw new CFlashException('Ez a klub már részt vesz egy másik versenyben.');
+        }
+
+        if (!$opponent->would_compete) {
+            throw new CFlashException('Ez a klub nem szeretne versenyezni.');
+        }
+
+        if ($this->hasActiveChallenge($player->in_club)) {
+            throw new CFlashException('A klubod már részt vesz egy versenyben.');
+        }
+
+        if ($this->underCallTimeLimit($player->in_club, $this->opponent)) {
+            throw new CFlashException('Az elmúlt '. self::TIME_LIMIT_HOURS .' órában már kihívtátok ezt a klubot. Unalmas volna ilyen gyakran játszani ellenük. :)');
+        }
 
         //caller club
         $callerClub = Yii::app()->db->createCommand()
@@ -238,7 +259,9 @@ class Challenge extends CModel
             ->from('club')
             ->where('id=:clubID', [':clubID'=>$player->in_club])
             ->queryRow();
-        if (!$callerClub['would_compete']) throw new CFlashException('Mielőtt versenyre hívsz egy klubot, kapcsold be a saját klubodban a \'versenyezne\' beállítást.');
+        if (!$callerClub['would_compete']) {
+            throw new CFlashException('Mielőtt versenyre hívsz egy klubot, kapcsold be a saját klubodban a \'versenyezne\' beállítást.');
+        }
 
         Yii::app()->db->createCommand()
             ->insert('challenge', [

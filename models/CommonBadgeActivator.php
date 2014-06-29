@@ -148,7 +148,7 @@ class CommonBadgeActivator extends BadgeActivator
     {
         $key = $sold ? 'set_sell_': 'set_';
 
-        foreach ([1=>'b', 2=>'s', 3=>'g'] as $search => $type) {
+        foreach ([1 => 'b', 2 => 's', 3 => 'g'] as $search => $type) {
             if ($id == $search) {
                 $this->activate($key . $type);
             }

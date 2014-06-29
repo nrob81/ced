@@ -36,20 +36,68 @@ class Club extends CModel
         return [];
     }
     
-    public function getId() { return $this->_id; }
-    public function getOwner() { return $this->owner; }
-    public function getOwnerName() { return $this->ownerName; }
-    public function getName() { return $this->name; }
-    public function getWould_compete() { return (int)$this->would_compete; }
-    public function getCreated() { return $this->created; }
-    public function getPagination() { return $this->_pagination; }
-    public function getCount() { return $this->_count; }
-    public function getItems() { return $this->_items; }
-    public function getMembers() { return $this->_members; }
-    public function getEntrants() { return $this->_entrants; }
-    public function getChallenges() { return $this->_challenges; }
+    public function getId()
+    {
+        return $this->_id;
+    }
+
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    public function getOwnerName()
+    {
+        return $this->ownerName;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getWould_compete()
+    {
+        return (int)$this->would_compete;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getPagination()
+    {
+        return $this->_pagination;
+    }
+
+    public function getCount()
+    {
+        return $this->_count;
+    }
+
+    public function getItems()
+    {
+        return $this->_items;
+    }
+
+    public function getMembers()
+    {
+        return $this->_members;
+    }
+
+    public function getEntrants()
+    {
+        return $this->_entrants;
+    }
+
+    public function getChallenges()
+    {
+        return $this->_challenges;
+    }
     
-    public function getRank() {
+    public function getRank()
+    {
         $redis = Yii::app()->redis->getClient();
 
         $key = 'board_c:6month';
@@ -59,7 +107,8 @@ class Club extends CModel
         return $rank;
     }
     
-    public function getRankActual() {
+    public function getRankActual()
+    {
         $redis = Yii::app()->redis->getClient();
 
         $key = 'board_c:' . date('Ym');
@@ -69,15 +118,18 @@ class Club extends CModel
         return $rank;
     }
 
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->_id = (int)$id;
     }
-    public function setPage($page) {
-        $this->_page = $page;
-    }    
-    
 
-    public function fetch() {
+    public function setPage($page)
+    {
+        $this->_page = $page;
+    }
+
+    public function fetch()
+    {
         if (!$this->id) return false;
 
         //read all from db
@@ -97,7 +149,9 @@ class Club extends CModel
             $this->$k = $v;
         }
     }
-    public function fetchName() {
+
+    public function fetchName()
+    {
         $name = Yii::app()->db->cache(86400)->createCommand()
             ->select('name')
             ->from('club')
@@ -106,7 +160,9 @@ class Club extends CModel
         //if (!$name) $name = '???';
         $this->name = $name;
     }
-    public function fetchItems($would_compete = false) {
+
+    public function fetchItems($would_compete = false)
+    {
         $where = $would_compete ? 'would_compete=1' : '';
         $limit = Yii::app()->params['listPerPage'];
         
@@ -130,7 +186,8 @@ class Club extends CModel
         $this->_items = $res;
     }
 
-    public function getJoinRequestSent() {
+    public function getJoinRequestSent()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('club_id')
             ->from('club_members')
@@ -139,7 +196,8 @@ class Club extends CModel
         return (int)$res;
     }
 
-    public function joinRequest($id) {
+    public function joinRequest($id)
+    {
         $player = Yii::app()->player->model;
         if ($player->level < 15) throw new CFlashException('Ahhoz, hogy csatlakozhass, min. 15-ös szintre kell fejlődnöd.');
         if ($player->in_club) throw new CFlashException('Már tagja vagy egy másik klubnak.');
@@ -160,7 +218,9 @@ class Club extends CModel
 
         return true;
     }
-    public function deleteOwnJoinRequest($id) {
+
+    public function deleteOwnJoinRequest($id)
+    {
         $player = Yii::app()->player->model;
 
         Yii::app()->db->createCommand()
@@ -174,7 +234,8 @@ class Club extends CModel
     }
 
     /* members */
-    public function fetchMembers() {
+    public function fetchMembers()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('cm.uid, cm.approved, m.user')
             ->from('club_members cm')
@@ -190,7 +251,9 @@ class Club extends CModel
             }
         }
     }
-    public function fireMember($uid) {
+
+    public function fireMember($uid)
+    {
         $player = Yii::app()->player->model;
 
         if ($player->in_club != $this->_id) return false;
@@ -211,7 +274,8 @@ class Club extends CModel
         return (bool)$del;
     }
     
-    public function approveMember($uid) {
+    public function approveMember($uid)
+    {
         $player = Yii::app()->player->model;
 
         if ($player->in_club != $this->_id) return false;
@@ -243,7 +307,8 @@ class Club extends CModel
         return (bool)$update;
     }
     
-    public function deleteJoinRequest($uid) {
+    public function deleteJoinRequest($uid)
+    {
         $player = Yii::app()->player->model;
 
         $selfMod = $uid == $player->uid;
@@ -259,7 +324,8 @@ class Club extends CModel
         return (bool)$del;
     }
 
-    public function close($pass) {
+    public function close($pass)
+    {
         $player = Yii::app()->player->model;
         
         $challenge = new Challenge;
@@ -294,14 +360,17 @@ class Club extends CModel
 
         return true;
     }
-    public function switchCompete() {
+
+    public function switchCompete()
+    {
         $compete = (int)$this->would_compete ? 0 : 1;
         Yii::app()->db->createCommand()
             ->update('club', ['would_compete'=>$compete], 'id=:id', [':id'=>$this->_id]);
         $this->would_compete = $compete;
     }
 
-    public function fetchChallenges($limit = 15) {
+    public function fetchChallenges($limit = 15)
+    {
         $res = Yii::app()->db->createCommand()
             ->select('id, caller, opponent, name_caller, name_opponent, winner, created')
             ->from('challenge')
