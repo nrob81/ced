@@ -11,7 +11,7 @@ class JqmLinkPager extends CLinkPager
 
     protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
-        if($hidden) {
+        if ($hidden) {
             return false;
         }
 
