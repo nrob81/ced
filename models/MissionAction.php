@@ -149,7 +149,6 @@ class MissionAction extends CModel
         $random = rand(1,100);
         //echo "rnd: $random\n";
         $success = ($random <= $this->_mission->chance); //win
-        //$this->_errors['inexperienced'] = !$success;
 
         //log mission counter
         $cell = 'mission_' . ($this->_mission->gate ? 'gate_' : '') . ($success ? 'success' : 'fail');
