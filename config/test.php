@@ -19,30 +19,30 @@ return array(
     'modules'=>[],
 
     'controllerMap'=>[
-		'min'=>[
-			'class'=>'ext.minScript.controllers.ExtMinScriptController',
-		],
-	],
-    
+    'min'=>[
+    'class'=>'ext.minScript.controllers.ExtMinScriptController',
+    ],
+    ],
+
     // application components
     'components'=>array(
         'fixture'=>array(
             'class'=>'system.test.CDbFixtureManager',
         ),
         'clientScript'=>[
-			'class'=>'ext.minScript.components.ExtMinScript',
-		],
+        'class'=>'ext.minScript.components.ExtMinScript',
+        ],
         'user'=>[
-            'allowAutoLogin'=>false,
+        'allowAutoLogin'=>false,
         ],
         'player' => [
-            'class'=> 'application.components.PlayerComponent',
+        'class'=> 'application.components.PlayerComponent',
         ],
         'gameLogger' => [
-            'class'=> 'application.components.LoggerComponent',
+        'class'=> 'application.components.LoggerComponent',
         ],
         'badge' => [
-            'class'=> 'application.components.BadgeComponent',
+        'class'=> 'application.components.BadgeComponent',
         ],
         'session' => array (
             'class' => 'system.web.CHttpSession',
@@ -52,14 +52,14 @@ return array(
                 'path' => '/',
                 'domain' => '.wline.hu',
                 'httpOnly' => true,
-            ),            
+            ),
         ),
 
         // uncomment the following to enable URLs in path-format
         'urlManager'=>array(
             'urlFormat'=>'path',
             'showScriptName'=>false,
-            'caseSensitive'=>false,            
+            'caseSensitive'=>false,
             'rules'=>array(
                 '<controller:\w+>/<id:\d+>'=>'<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
@@ -105,10 +105,10 @@ return array(
             ),
         ),
         'cache'=>[
-            'class'=>'system.caching.CMemCache',
-            'servers'=>[
-                ['host'=>'localhost', 'port'=>11211],
-            ],        
+        'class'=>'system.caching.CMemCache',
+        'servers'=>[
+            ['host'=>'localhost', 'port'=>11211],
+        ],
         ],
     ),
 
