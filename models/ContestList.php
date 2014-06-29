@@ -22,140 +22,179 @@ class ContestList extends CModel
     const LIFETIME = 172800; //2 days
     const BOARD_RANGE = 7;
 
-    private $_id;
-    private $_uid;
-    private $_isValid;
-    private $_collect;
-    private $_prize;
-    private $_maxScore;
-    private $_list;
-    private $_leaders;
-    private $_winners;
-    private $_history;
-    private $_collectTypes = [
+    private $id;
+    private $uid;
+    private $isValid;
+    private $collect;
+    private $prize;
+    private $maxScore;
+    private $list;
+    private $leaders;
+    private $winners;
+    private $history;
+    private $collectTypes = [
         'xp','xp_duel','xp_mission',
         'dollar','dollar_duel','dollar_mission'
         ];
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getId() {
-        return (int)$this->_id;
+    public function getId()
+    {
+        return (int)$this->id;
     }
-    public function getCollect() {
-        return $this->_collect;
+
+    public function getCollect()
+    {
+        return $this->collect;
     }
-    public function getPrize() {
-        return (int)$this->_prize;
+
+    public function getPrize()
+    {
+        return (int)$this->prize;
     }
-    public function getDescriptionId() {
-        if (!in_array($this->collect, $this->_collectTypes)) {
+
+    public function getDescriptionId()
+    {
+        if (!in_array($this->collect, $this->collectTypes)) {
             return 'xp';
         }
         return $this->collect;
     }
-
     
-    public function getIsValid() {
-        if (is_null($this->_isValid)) {
-            $this->_isValid = Yii::app()->redis->getClient()->exists('contest:list:'.$this->_id.':created');
+    public function getIsValid()
+    {
+        if (is_null($this->isValid)) {
+            $this->isValid = Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':created');
         }
 
-        return (bool)$this->_isValid;
+        return (bool)$this->isValid;
     }
-    public function getIsActive() {
-        if (!$this->_id) return false;
+
+    public function getIsActive()
+    {
+        if (!$this->id) {
+            return false;
+        }
 
         $active = (int)Yii::app()->redis->getClient()->get('contest:active');
-        return $active == $this->_id;
+        return $active == $this->id;
     }
     
-    public function getSecUntilEnd() {
-        $sue = ($this->_id + self::LIFETIME - time());
+    public function getSecUntilEnd()
+    {
+        $sue = ($this->id + self::LIFETIME - time());
         return $sue;
     }
 
-    public function getLeaders() {
-        return $this->_leaders;
+    public function getLeaders()
+    {
+        return $this->leaders;
     }
-    public function hasWinner() { 
+
+    public function hasWinner()
+    { 
         //if ($this->secUntilEnd > 0) return false; //contest is active
-        return Yii::app()->redis->getClient()->exists('contest:list:'.$this->_id.':winners'); 
+        return Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':winners');
     }
-    public function getWinners() {
-        return $this->_winners;
+
+    public function getWinners()
+    {
+        return $this->winners;
     }
-    public function getList() {
-        return $this->_list;
+
+    public function getList()
+    {
+        return $this->list;
     }
-    public function getHistory() {
-        if (!$this->_history) {
-            $this->_history = Yii::app()->redis->getClient()->lRange('contest:log', 0, 5);
+
+    public function getHistory()
+    {
+        if (!$this->history) {
+            $this->history = Yii::app()->redis->getClient()->lRange('contest:log', 0, 5);
         }
-        return $this->_history;
+        return $this->history;
     }
     
-    public function getRankDescription() {
-        if (!$this->isActive) return '';
+    public function getRankDescription()
+    {
+        if (!$this->isActive) {
+            return '';
+        }
 
         $redis = Yii::app()->redis->getClient();
 
-        $key = 'contest:list:'.$this->_id.':points';
+        $key = 'contest:list:'.$this->id.':points';
         $total = $redis->zCard($key);
-        $rank  = $redis->zRevRank($key, $this->_uid) + 1;
+        $rank  = $redis->zRevRank($key, $this->uid) + 1;
 
         if ($rank == 1) {
             return 'Te vagy a király!';
         } else {
             $percent = round((1 - ($rank / $total)) * 100, 1);
-            if (!$percent) return 'Húzz bele, ha nyerni szeretnél!';
+            if (!$percent) {
+                return 'Húzz bele, ha nyerni szeretnél!';
+            }
 
             return 'Jobb vagy, mint a versenytársaid ' . $percent . '%-a!';
         }
     }
     
-    public function getMaxScore() {
-        if (!$this->_maxScore) {
+    public function getMaxScore()
+    {
+        if (!$this->maxScore) {
             $redis = Yii::app()->redis->getClient();
-            $key = 'contest:list:'.$this->_id.':points';
+            $key = 'contest:list:'.$this->id.':points';
             $max = $redis->zRevRange($key, 0, 0, true);
             
             if (count($max)) {
-                $this->_maxScore = array_values($max)[0];
+                $this->maxScore = array_values($max)[0];
             }
         }
 
-        return (int)$this->_maxScore;
+        return (int)$this->maxScore;
     }
-    public function getLastId() {
+
+    public function getLastId()
+    {
         $id = Yii::app()->redis->getClient()->lINDEX('contest:log', 0);
         return (int)$id;
     }
-    public function getPrizePerWinner() {
-        if (!count($this->_winners)) return Contest::PRIZE;
 
-        return ceil(Contest::PRIZE / count($this->_winners));
+    public function getPrizePerWinner()
+    {
+        if (!count($this->winners)) {
+            return Contest::PRIZE;
+        }
+
+        return ceil(Contest::PRIZE / count($this->winners));
     }
 
-    public function setId($id) {
-        $this->_id = (int)$id;
-    }
-    public function setUid($uid) {
-        $this->_uid = (int)$uid;
+    public function setId($id)
+    {
+        $this->id = (int)$id;
     }
 
-    public function fetchDetails() {
+    public function setUid($uid)
+    {
+        $this->uid = (int)$uid;
+    }
+
+    public function fetchDetails()
+    {
         $redis = Yii::app()->redis->getClient();
-        $this->_collect = $redis->get('contest:list:'.$this->_id.':collect'); 
-        $this->_prize = $redis->get('contest:list:'.$this->_id.':prize'); 
+        $this->collect = $redis->get('contest:list:'.$this->id.':collect');
+        $this->prize = $redis->get('contest:list:'.$this->id.':prize');
     }
 
-    public function fetchList() {
+    public function fetchList()
+    {
         $redis = Yii::app()->redis->getClient();
 
-        $myRank = $redis->zRevRank('contest:list:'.$this->_id.':points', $this->_uid);
+        $myRank = $redis->zRevRank('contest:list:'.$this->id.':points', $this->uid);
 
         $range = self::BOARD_RANGE;
         $min = $myRank - $range > 0 ? $myRank - $range : 0;
@@ -163,11 +202,11 @@ class ContestList extends CModel
 
         $item = new Player;
         $i = $min+1;
-        foreach($redis->zRevRange('contest:list:'.$this->_id.':points', $min, $max, true) as $id => $score) {
+        foreach ($redis->zRevRange('contest:list:'.$this->id.':points', $min, $max, true) as $id => $score) {
             $item->uid = (int)$id;
             $item->fetchUser();
 
-            $this->_list[$i] = [
+            $this->list[$i] = [
                 'id'=>$id,
                 'name'=>$item->user,
                 'score'=>$score,
@@ -176,71 +215,91 @@ class ContestList extends CModel
         }
     }
     
-    public function fetchLeaders() {
-        if (!$this->maxScore) return false;
+    public function fetchLeaders()
+    {
+        if (!$this->maxScore) {
+            return false;
+        }
         
         $redis = Yii::app()->redis->getClient();
-        $res = $redis->zRevRangeByScore('contest:list:'.$this->_id.':points', $this->_maxScore, $this->_maxScore);
+        $res = $redis->zRevRangeByScore('contest:list:'.$this->id.':points', $this->maxScore, $this->maxScore);
 
         $leaders = [];
         $item = new Player;
-        foreach($res as $id) {
+        foreach ($res as $id) {
             $item->uid = $id;
             $item->fetchUser();
 
             $leaders[$id] = [
                 'name'=>$item->user,
-                'score'=>$this->_maxScore,
+                'score'=>$this->maxScore,
                 ];
         }
-        $this->_leaders = $leaders;
+        $this->leaders = $leaders;
     }
     
-    public function fetchWinners() {
-        if (!$this->maxScore) return false;
-        $res = Yii::app()->redis->getClient()->smembers('contest:list:'.$this->_id.':winners');
+    public function fetchWinners()
+    {
+        if (!$this->maxScore) {
+            return false;
+        }
+        $res = Yii::app()->redis->getClient()->smembers('contest:list:'.$this->id.':winners');
 
         $winners = [];
         $item = new Player;
-        foreach($res as $id) {
+        foreach ($res as $id) {
             $item->uid = $id;
             $item->fetchUser();
 
             $winners[$id] = [
                 'name'=>$item->user,
-                'score'=>$this->_maxScore,
+                'score'=>$this->maxScore,
                 ];
         }
-        $this->_winners = $winners;
+        $this->winners = $winners;
     }
     
     
-    public function canClaimPrize() {
+    public function canClaimPrize()
+    {
         //is active?
-        if (!$this->hasWinner()) return false;
+        if (!$this->hasWinner()) {
+            return false;
+        }
 
         //she is winner?
-        if (!array_key_exists($this->_uid, $this->winners)) return false;
+        if (!array_key_exists($this->uid, $this->winners)) {
+            return false;
+        }
 
         //have we the prize/winner?
-        if ($this->prizePerWinner < 1) return false;
+        if ($this->prizePerWinner < 1) {
+            return false;
+        }
 
         //she has claimed the prize already?
-        if (Yii::app()->redis->getClient()->exists('contest:list:'.$this->_id.':claimed-'.$this->_uid)) return false;
+        if (Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':claimed-'.$this->uid)) {
+            return false;
+        }
 
         return true;
     }
-    public function claimPrize() {
-        if (!$this->canClaimPrize()) return false;
+
+    public function claimPrize()
+    {
+        if (!$this->canClaimPrize()) {
+            return false;
+        }
 
         Yii::app()->player->model->updateAttributes(['dollar'=>$this->prizePerWinner], []);
-        Yii::app()->redis->getClient()->set('contest:list:'.$this->_id.':claimed-'.$this->_uid, date('Y.m.d. H:i:s'));
+        Yii::app()->redis->getClient()->set('contest:list:'.$this->id.':claimed-'.$this->uid, date('Y.m.d. H:i:s'));
         return true;
     }
 
-    public function seeContest() {
+    public function seeContest()
+    {
         if (Yii::app()->player->newContest) {
-            Yii::app()->redis->getClient()->set('contest:lastcheck:'.$this->_uid, time());            
+            Yii::app()->redis->getClient()->set('contest:lastcheck:'.$this->uid, time());
             echo 'checked';
         }
     }
