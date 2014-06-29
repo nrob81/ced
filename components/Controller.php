@@ -14,7 +14,7 @@ class Controller extends CController
         $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/fish.js', CClientScript::POS_HEAD);
         $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.mobile-1.3.2.min.js', CClientScript::POS_HEAD);
         $cs->registerScript(
-            'vars', 
+            'vars',
             'var justAdvanced = ' . (Yii::app()->player->model->justAdvanced?'true':'false') . ';
             var refillTime = ' . Yii::app()->player->model->remainingTimeToRefill . ';
             var rpi = ' .  Yii::app()->player->model->refillPerInterval . '; ',
