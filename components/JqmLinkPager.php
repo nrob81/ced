@@ -9,14 +9,16 @@ class JqmLinkPager extends CLinkPager
     public $firstPageLabel = '<<';
     public $lastPageLabel = '>>';
 
-    protected function createPageButton($label,$page,$class,$hidden,$selected)
+    protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
-        if($hidden) return false;
+        if($hidden) {
+            return false;
+        }
+
         if ($selected) {
             $class = 'ui-disabled';
         }
+
         return CHtml::link($label,$this->createPageUrl($page), ['data-role'=>'button', 'data-ajax'=>'false', 'class'=>$class]);
     }
-
 }
-

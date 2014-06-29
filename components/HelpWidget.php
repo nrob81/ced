@@ -4,7 +4,8 @@ class HelpWidget extends CWidget
     public $title='';
     public $topic = '';
 
-    public function run() {
+    public function run()
+    {
         $help = new Help;
         $help->topic = $this->topic;
         $item = $help->getRandomItemByType();

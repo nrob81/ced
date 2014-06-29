@@ -1,2 +1,4 @@
 <?php
-Class CFlashException extends CException {}
+class CFlashException extends CException
+{
+}

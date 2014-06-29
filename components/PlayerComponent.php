@@ -7,47 +7,54 @@
  */
 class PlayerComponent extends CApplicationComponent
 {
-    private $_model;
-    private $_clubChallenge = false;
-    private $_newContest = false;
+    private $model;
+    private $clubChallenge = false;
+    private $newContest = false;
 
-    public function getModel() {
-        return $this->_model;
+    public function getModel()
+    {
+        return $this->model;
     }
 
-    public function getUid() {
-        return $this->_model->uid;
+    public function getUid()
+    {
+        return $this->model->uid;
     }
 
-    public function getClubChallenge() {
-        return $this->_clubChallenge;
+    public function getClubChallenge()
+    {
+        return $this->clubChallenge;
     }
 
-    public function getNewContest() { 
-        $lastSeen = (int)Yii::app()->redis->getClient()->get('contest:lastcheck:'.$this->_model->uid);
-        return $this->_newContest > $lastSeen; 
+    public function getNewContest()
+    { 
+        $lastSeen = (int)Yii::app()->redis->getClient()->get('contest:lastcheck:'.$this->model->uid);
+        return $this->newContest > $lastSeen; 
     }
     
-    public function init() {
-        $this->_model = new Player();
-        $this->_model->setAllAttributes();
+    public function init()
+    {
+        $this->model = new Player();
+        $this->model->setAllAttributes();
         $this->checkClubChallenge();
         $this->checkNewContest();
     }
 
-    public function rest() {
-        $this->_model->rest();
+    public function rest()
+    {
+        $this->model->rest();
     }
 
-    protected function checkClubChallenge() {
-        if (!$this->_model->in_club) return false;
+    protected function checkClubChallenge()
+    {
+        if (!$this->model->in_club) return false;
 
-        $lastChallenge = Yii::app()->redis->getClient()->get('reminder:challenge:'.$this->_model->in_club);
-        if ($lastChallenge >= time()) $this->_clubChallenge = true;
+        $lastChallenge = Yii::app()->redis->getClient()->get('reminder:challenge:'.$this->model->in_club);
+        if ($lastChallenge >= time()) $this->clubChallenge = true;
     }
     
-    protected function checkNewContest() {
-        $this->_newContest = (int)Yii::app()->redis->getClient()->get('contest:active');
+    protected function checkNewContest()
+    {
+        $this->newContest = (int)Yii::app()->redis->getClient()->get('contest:active');
     }
 }
-

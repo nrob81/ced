@@ -1,7 +1,8 @@
 <?php
 class LoggerComponent extends CApplicationComponent
 {
-    public function log($data) {
+    public function log($data)
+    {
         $params = $this->getPlayerParams();
         foreach ($data as $k => $v) {
             $params[$k] = $v;
@@ -9,7 +10,9 @@ class LoggerComponent extends CApplicationComponent
         
         Yii::app()->db->createCommand()->insert('log', $params);
     }
-    public function logCounter($cell, $uid = 0, $level = 0) {
+
+    public function logCounter($cell, $uid = 0, $level = 0)
+    {
         if (!$uid) {
             $player = Yii::app()->player->model;
             $uid = $player->uid;
@@ -29,10 +32,10 @@ class LoggerComponent extends CApplicationComponent
                 $cell=>1,
                 ]);           
         }
-
     }
 
-    private function getPlayerParams() {
+    private function getPlayerParams()
+    {
         $params = ['uid','xp_all','xp_delta','level','energy_max','energy','skill','skill_extended','strength','dollar','gold','owned_items','owned_baits'];
 
         $ret = [];

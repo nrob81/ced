@@ -3,12 +3,15 @@ class GameController extends Controller
 {
     public $pageID;
     public $contentClass;
-	public $layout='//layouts/column1';
+    public $layout='//layouts/column1';
     private $lastRefresh = 0;
 
-    protected function beforeAction($action) {
+    protected function beforeAction($action)
+    {
         $this->checkCookie();
-        if (!Yii::app()->player->uid) throw new CHttpException(403, 'Regisztráció nélkül a játék nem használható.'); //own nick
+        if (!Yii::app()->player->uid) {
+            throw new CHttpException(403, 'Regisztráció nélkül a játék nem használható.'); //own nick
+        }
 
         $this->updateInternals();
         $this->autoLogout();
@@ -21,7 +24,8 @@ class GameController extends Controller
         return true;
     }
 
-    private function checkCookie() {
+    private function checkCookie()
+    {
         $missingGameVar = true;
         $enabledCookie = isset(Yii::app()->request->cookies['PHPSESSID']->value);
         if ($enabledCookie) {
@@ -35,9 +39,9 @@ class GameController extends Controller
         }
     }
 
-    private function updateInternals() {
+    private function updateInternals()
+    {
         $session = Yii::app()->session;
-        
 
         $lastRefresh = Yii::app()->dbWline->createCommand()
             ->select( Yii::app()->params['wlineRefreshAttribute'] )
@@ -51,7 +55,9 @@ class GameController extends Controller
 
         $this->lastRefresh = $lastRefresh;
     }
-    private function autoLogout() {
+
+    private function autoLogout()
+    {
         $session = Yii::app()->session;
 
         if (time() - $session['r_time'] > Yii::app()->params['maxtime']) {
@@ -60,14 +66,20 @@ class GameController extends Controller
         }
     }
 
-    private function setTimers() {
-        if (Yii::app()->request->getParam('auto', 0) == 1) return false;
+    private function setTimers()
+    {
+        if (Yii::app()->request->getParam('auto', 0) == 1) {
+            return false;
+        }
 
         //set r_time
         Yii::app()->session['r_time'] = time();
 
 
-        if (time() - $this->lastRefresh < 30) return false;
+        if (time() - $this->lastRefresh < 30) {
+            return false;
+        }
+
         Yii::app()->dbWline->createCommand()->update(Yii::app()->params['wlineUsersTable'], [
             Yii::app()->params['wlineRefreshAttribute'] => time(),
             ], 'uid=' . Yii::app()->player->uid);

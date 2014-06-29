@@ -1,5 +1,6 @@
 <?php
-class Time {
+class Time
+{
 		
 	/**
 	* Returns true if given date is today.
@@ -7,7 +8,8 @@ class Time {
 	* @param string $date Unix timestamp
 	* @return boolean True if date is today
 	*/
-	public static function isToday($date) {
+    public static function isToday($date)
+    {
 		return date('Y-m-d', $date) == date('Y-m-d', time());
 	}
 	
@@ -17,7 +19,8 @@ class Time {
 	* @param string $date Unix timestamp
 	* @return boolean True if date was yesterday
 	*/
-	public static function wasYesterday($date) {
+    public static function wasYesterday($date)
+    {
 		return date('Y-m-d', $date) == date('Y-m-d', strtotime('yesterday'));
 	}
 	
@@ -27,7 +30,8 @@ class Time {
 	* @param string $date Unix timestamp
 	* @return boolean True if date is in this year
 	*/
-	public static function isThisYear($date) {
+    public static function isThisYear($date)
+    {
 		return date('Y', $date) == date('Y', time());
 	}
 	
@@ -37,7 +41,8 @@ class Time {
 	* @param string $date Unix timestamp
 	* @return boolean True if date is in this week
 	*/
-	public static function isThisWeek($date) {
+    public static function isThisWeek($date)
+    {
 		return date('W Y', $date) == date('W Y', time());
 	}
 	
@@ -47,7 +52,8 @@ class Time {
 	* @param string $date Unix timestamp
 	* @return boolean True if date is in this month
 	*/
-	public static function isThisMonth($date) {
+    public static function isThisMonth($date)
+    {
 		return date('m Y',$date) == date('m Y', time());
 	}
 	
@@ -65,5 +71,4 @@ class Time {
         $ret .= sprintf('%02d', $m) . ':' . sprintf('%02d', $s);
         return $ret;
     }
-
 }
