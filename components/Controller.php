@@ -17,12 +17,12 @@ class Controller extends CController
             'vars', 
             'var justAdvanced = ' . (Yii::app()->player->model->justAdvanced?'true':'false') . '; 
             var refillTime = ' . Yii::app()->player->model->remainingTimeToRefill . '; 
-            var rpi = ' .  Yii::app()->player->model->refillPerInterval . '; ', 
+            var rpi = ' .  Yii::app()->player->model->refillPerInterval . '; ',
             CClientScript::POS_HEAD
         );
 
         $cs->registerScript(
-            'vars', 
+            'vars',
             'var _paq = _paq || [];
             _paq.push(["trackPageView"]);
             _paq.push(["enableLinkTracking"]);
@@ -33,7 +33,7 @@ class Controller extends CController
                 _paq.push(["setSiteId", "1"]);
                 var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
                 g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
-            })();', 
+            })();',
             CClientScript::POS_END
         );
 

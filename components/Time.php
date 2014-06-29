@@ -54,16 +54,20 @@ class Time
      */
     public static function isThisMonth($date)
     {
-        return date('m Y',$date) == date('m Y', time());
+        return date('m Y', $date) == date('m Y', time());
     }
 
-    function secondsToDifference($seconds)
+    public static function secondsToDifference($seconds)
     {
         $diff = $seconds;
-        if( $h=intval((floor($diff/3600))) )
+        if( $h=intval((floor($diff/3600))) ) {
             $diff = $diff % 3600;
-        if( $m=intval((floor($diff/60))) )
+        }
+        
+        if( $m=intval((floor($diff/60))) ) {
             $diff = $diff % 60;
+        }
+        
         $s    =    intval( $diff );
 
 
