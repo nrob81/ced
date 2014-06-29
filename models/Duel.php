@@ -280,12 +280,14 @@ class Duel extends CModel
         //insert the duel data
         Yii::app()->db->createCommand()
             ->insert(
-            'duel', [
-            'winner'=>$this->competitors[0]->winner ? 'caller' : 'opponent',
-            'caller'=>$this->caller->uid,
-            'opponent'=>$this->opponent->uid,
-            'challenge_id'=>$this->challengeID
-            ]);
+                'duel',
+                [
+                'winner'=>$this->competitors[0]->winner ? 'caller' : 'opponent',
+                'caller'=>$this->caller->uid,
+                'opponent'=>$this->opponent->uid,
+                'challenge_id'=>$this->challengeID
+                ]
+            );
 
         $duelId = Yii::app()->db->getLastInsertID();
         $this->competitors[0]->duelId = $duelId;

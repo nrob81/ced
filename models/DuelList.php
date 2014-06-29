@@ -16,27 +16,27 @@ class DuelList extends CModel
     private $count;
     private $page = 0;
 
-    public function attributeNames() 
+    public function attributeNames()
     {
         return [];
     }
 
-    public function getOpponents() 
+    public function getOpponents()
     { 
         return $this->opponents; 
     }
     
-    public function getPagination() 
+    public function getPagination()
     { 
         return $this->pagination; 
     }
 
-    public function getCount() 
+    public function getCount()
     { 
         return $this->count; 
     }
 
-    public function getClubName($club, $id) 
+    public function getClubName($club, $id)
     {
         if ($id) {
             $club->id = $id;
@@ -46,12 +46,12 @@ class DuelList extends CModel
         return '';
     }
 
-    public function setPage($page) 
+    public function setPage($page)
     {
         $this->page = $page;
     }
 
-    public function fetchOpponents() 
+    public function fetchOpponents()
     {
         $player = Yii::app()->player->model;
         $limit = Yii::app()->params['listPerPage'];
@@ -64,13 +64,13 @@ class DuelList extends CModel
         $this->count = Yii::app()->db->createCommand()
             ->select('COUNT(*) AS count')
             ->from('main')
-            ->where('uid <> :uid AND level >= :minLevel', [':uid'=>$player->uid,':minLevel'=>$minLevel])
+            ->where('uid <> :uid AND level >= :minLevel', [':uid'=>$player->uid, ':minLevel'=>$minLevel])
             ->queryScalar();
 
         $res = Yii::app()->db->createCommand()
             ->select('uid, user, level, energy_max, energy, dollar, in_club')
             ->from('main')
-            ->where('uid <> :uid AND level >= :minLevel', [':uid'=>$player->uid,':minLevel'=>$minLevel])
+            ->where('uid <> :uid AND level >= :minLevel', [':uid'=>$player->uid, ':minLevel'=>$minLevel])
             ->order('level ASC')
             ->limit($limit, ($this->page * $limit) - $limit) // the trick is here!
             ->queryAll();
@@ -81,7 +81,9 @@ class DuelList extends CModel
         $club = new Club();
         foreach ($res as $item) {
             $item['disabled'] = 0;
-            if ($item['energy'] <= $item['energy_max'] / 10) $item['disabled'] = 1; //low energy
+            if ($item['energy'] <= $item['energy_max'] / 10) {
+                $item['disabled'] = 1; //low energy
+            }
             $item['prize'] = round($item['dollar'] / 10);
             $item['clubName'] = $this->getClubName($club, $item['in_club']);
             
@@ -89,7 +91,7 @@ class DuelList extends CModel
         }
     }
     
-    public function fetchCommonRivals() 
+    public function fetchCommonRivals()
     {
         $player = Yii::app()->player->model;
         $limit = Yii::app()->params['listPerPage'];
@@ -109,15 +111,22 @@ class DuelList extends CModel
                 ->from('main')
                 ->where('uid=:uid', [':uid'=>(int)$item['uid']])
                 ->queryRow();
-            if (!is_array($p)) continue;
+            if (!is_array($p)) {
+                continue;
+            }
 
             foreach ($p as $k => $v) {
                 $item[$k] = $v;
             }
 
             $item['disabled'] = 0;
-            if ($item['energy'] <= $item['energy_max'] / 10) $item['disabled'] = 1; //low energy
-            if ($player->level - $item['level'] > self::LIMIT_WEAKER_OPPONENT_LEVEL_DIFF) $item['disabled'] = 2; //too weak
+            if ($item['energy'] <= $item['energy_max'] / 10) {
+                $item['disabled'] = 1; //low energy
+            }
+
+            if ($player->level - $item['level'] > self::LIMIT_WEAKER_OPPONENT_LEVEL_DIFF) {
+                $item['disabled'] = 2; //too weak
+            }
 
             $item['prize'] = round($item['dollar'] / 10);
             $item['clubName'] = $this->getClubName($club, $item['in_club']);
@@ -125,7 +134,7 @@ class DuelList extends CModel
         }
     }
     
-    public function fetchLastRivals() 
+    public function fetchLastRivals()
     {
         $player = Yii::app()->player->model;
         $limit = Yii::app()->params['listPerPage'];
@@ -148,7 +157,10 @@ class DuelList extends CModel
                     ->from('main')
                     ->where('uid=:uid', [':uid'=>(int)$item['uid']])
                     ->queryRow();
-                if (!is_array($p)) continue;
+                if (!is_array($p)) {
+                    continue;
+                }
+
                 $cache[$item['uid']] = $p;
             } else {
                 $p = $cache[$item['uid']];
@@ -159,7 +171,9 @@ class DuelList extends CModel
             }
 
             $item['disabled'] = 0;
-            if ($item['energy'] <= $item['energy_max'] / 10) $item['disabled'] = 1; //low energy
+            if ($item['energy'] <= $item['energy_max'] / 10) {
+                $item['disabled'] = 1; //low energy
+            }
 
             $item['prize'] = round($item['dollar'] / 10);
             $item['clubName'] = $this->getClubName($club, $item['in_club']);
