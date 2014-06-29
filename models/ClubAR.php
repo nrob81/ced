@@ -16,7 +16,7 @@ class ClubAR extends CActiveRecord
      * @param string $className active record class name.
      * @return Club the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -115,10 +115,10 @@ class ClubAR extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('id',$this->id,true);
-        $criteria->compare('owner',$this->owner);
-        $criteria->compare('name',$this->name,true);
-        $criteria->compare('created',$this->created,true);
+        $criteria->compare('id', $this->id,true);
+        $criteria->compare('owner', $this->owner);
+        $criteria->compare('name', $this->name,true);
+        $criteria->compare('created', $this->created,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
