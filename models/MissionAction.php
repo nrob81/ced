@@ -1,7 +1,6 @@
 <?php
 /**
  * @property array $reqPassed
- * @property array $errors
  * @property boolean $success
  * @property integer $gained_xp
  * @property integer $gained_dollar
@@ -13,7 +12,6 @@ class MissionAction extends CModel
 {
     private $_mission;
     private $_reqPassed = [];
-    private $_errors = ['requirements'=>false, 'inexperienced'=>false, 'routineFull'=>false, 'routinesFull'=>false];
     private $_success;
     private $gained_xp;
     private $gained_dollar;
@@ -22,7 +20,6 @@ class MissionAction extends CModel
     private $found_setpart;
 
     public function getReqPassed() { return $this->_reqPassed; }
-    public function getErrors() { return $this->_errors; }
     public function getSuccess() { return $this->_success; }
     public function getGained_xp() { return (int)$this->gained_xp; }
     public function getGained_dollar() { return (int)$this->gained_dollar; }
@@ -52,7 +49,10 @@ class MissionAction extends CModel
         
         //echo "requirements are OK\n";
 
-        $this->doMission();
+        if (!$this->doMission()) {
+            throw new CFlashException('A követelményeknek megfelelsz, mégsem sikerül teljesíteni a megbízást mivel csak '. $this->_mission->chance .'% esélyed volt rá.<br/>
+                Nagyobb szakértelemmel (több felszereléssel és csalival) ez növelhető.');
+        }
         $this->incrementRoutine();
     }
     
@@ -74,15 +74,13 @@ class MissionAction extends CModel
 
         foreach ($this->_reqPassed as $passed) {
             if (!$passed) {
-                $this->_errors['requirements'] = true;
-                return false;
+                throw new CFlashException('Nem tudod elvégezni a megbízást, mert nem teljesíted a követelményeket.');
             }
         }
         
         //routine full
         if ($this->_mission->routine >= 100) {
-            $this->_errors['routineFull'] = true;
-            return false;
+            throw new CFlashException('Ezt a megbízást már 100% rutinnal végzed, ezért unalmas lenne ismételgetni.');
         }
 
         return true;
@@ -151,7 +149,7 @@ class MissionAction extends CModel
         $random = rand(1,100);
         //echo "rnd: $random\n";
         $success = ($random <= $this->_mission->chance); //win
-        $this->_errors['inexperienced'] = !$success;
+        //$this->_errors['inexperienced'] = !$success;
 
         //log mission counter
         $cell = 'mission_' . ($this->_mission->gate ? 'gate_' : '') . ($success ? 'success' : 'fail');

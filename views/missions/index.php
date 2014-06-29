@@ -14,7 +14,7 @@ if ($tutorialToShow) $this->renderPartial('_tutorial', ['id'=>$tutorialToShow]);
 <ul class="missions missions-active" data-role="listview" data-inset="true">
     <?php
     $tpl = $missions[$completedId]->action->success ? '_actual' : '_mission';
-    Yii::app()->controller->renderPartial($tpl, ['data'=>$missions[$completedId], 'widget' => $this, 'notify'=>true]);
+    Yii::app()->controller->renderPartial($tpl, ['data'=>$missions[$completedId], 'widget' => $this, 'notify'=>true, 'error'=>$error]);
     ?>
 </ul>
 <?php endif; ?>
