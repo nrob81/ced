@@ -41,7 +41,8 @@ class Forum extends CModel
         return $this->items;
     }
       
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = (int)$id;
     }
 
