@@ -14,7 +14,7 @@ class DuelBadgeActivator extends BadgeActivator
             $this->activate('duel_success_100');
         }
     }
-    
+
     public function triggerDuelFail($cnt)
     {
         if ($cnt >= 100) {
@@ -34,7 +34,7 @@ class DuelBadgeActivator extends BadgeActivator
                 $this->activate('duel_rate_' . $params['percent']);
             }
         }
-        
+
         $mapMin = [
             ['limit'=>100, 'percent'=>60],
             ['limit'=>300, 'percent'=>75],
@@ -58,7 +58,9 @@ class DuelBadgeActivator extends BadgeActivator
 
     public function triggerDuelWinChance($isWinner, $chance)
     {
-        if (!$isWinner) return false;
+        if (!$isWinner) {
+            return false;
+        }
 
         foreach ([35, 20, 5] as $limit) {
             if ($chance <= $limit) {
@@ -66,10 +68,12 @@ class DuelBadgeActivator extends BadgeActivator
             }
         }
     }
-    
+
     public function triggerDuelLoseChance($isWinner, $chance)
     {
-        if ($isWinner) return false;
+        if ($isWinner) {
+            return false;
+        }
 
         foreach ([65, 80, 95] as $limit) {
             if ($chance >= $limit) {
@@ -84,11 +88,12 @@ class DuelBadgeActivator extends BadgeActivator
             $this->activate('duel_2h');
         }
     }
-    
-    private function getSuccessRate($limit, $cntSuccess, $cntFail) {
+
+    private function getSuccessRate($limit, $cntSuccess, $cntFail)
+    {
         $rate = 50;
         if ($cntSuccess + $cntFail >= $limit) {
-            $rate = round( $cntSuccess / (($cntSuccess + $cntFail)/100) ,1);
+            $rate = round($cntSuccess / (($cntSuccess + $cntFail)/100), 1);
         }
         return $rate;
     }

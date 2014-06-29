@@ -8,20 +8,24 @@ class Advancement extends CModel
 {
     private $uid;
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
     // getters
-    public function getUid() { 
-        return (int)$this->uid; 
+    public function getUid()
+    { 
+        return (int)$this->uid;
     }
     
-    public function getDollarImprovement() {
+    public function getDollarImprovement()
+    {
         return 30 + (5 * Yii::app()->player->model->level);
     }
 
-    public function getSkillImprovement() {
+    public function getSkillImprovement()
+    {
         $di = $this->dollarImprovement;
 
         //strongest bait
@@ -36,19 +40,25 @@ class Advancement extends CModel
         return (int)$skill;
     }
 
-    public function setUid($uid) {
+    public function setUid($uid)
+    {
         $this->uid = (int)$uid;
     }
         
-    public function incrementForStatuspoint($id) {
+    public function incrementForStatuspoint($id)
+    {
         $player = Yii::app()->player->model;
-        if (!$player->itsMe()) return false;
-        if ($player->status_points < 1) return false;
+        if (!$player->itsMe()) {
+            return false;
+        }
+        if ($player->status_points < 1) {
+            return false;
+        }
 
         $mapIdAttribute = [
-            1=>['energy_max'=>1, 'energy'=>1], 
-            ['skill'=>2, 'skill_extended'=>2], 
-            ['strength'=>2], 
+            1=>['energy_max'=>1, 'energy'=>1],
+            ['skill'=>2, 'skill_extended'=>2],
+            ['strength'=>2],
             ['dollar'=>$this->dollarImprovement]
             ];
         $mapIdAttribute[2]['skill'] = $mapIdAttribute[2]['skill_extended'] = $this->skillImprovement;
@@ -71,5 +81,4 @@ class Advancement extends CModel
         }
         return true;
     }
-
 }

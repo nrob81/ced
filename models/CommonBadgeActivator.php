@@ -6,29 +6,29 @@ class CommonBadgeActivator extends BadgeActivator
         if ($max >= 35) {
             $this->activate('max_nrg_35');
         }
-        
+
         if ($max >= 100) {
             $this->activate('max_nrg_100');
         }
     }
-    
+
     public function triggerSkill($max)
     {
         if ($max >= 35) {
             $this->activate('skill_35');
         }
-        
+
         if ($max >= 100) {
             $this->activate('skill_100');
         }
     }
-    
+
     public function triggerStrength($max)
     {
         if ($max >= 35) {
             $this->activate('strength_35');
         }
-        
+
         if ($max >= 100) {
             $this->activate('strength_100');
         }
@@ -40,18 +40,18 @@ class CommonBadgeActivator extends BadgeActivator
         if ($dollar >= 50) {
             $this->activate('dollar_50');
         }
-        if ($dollar >= 5000){
+        if ($dollar >= 5000) {
             $this->activate('dollar_5000');
         }
     }
-    
+
     public function triggerLevel($uid, $level)
     {
         $this->setUid($uid);
         if ($level >= 10) {
             $this->activate('level_10');
         }
-        if ($level >= 100){
+        if ($level >= 100) {
             $this->activate('level_100');
         }
     }
@@ -68,9 +68,9 @@ class CommonBadgeActivator extends BadgeActivator
 
         if ($id == 33) {
             $this->activate('travel_county9');
-        }   
+        }
     }
-    
+
     public function triggerLocationRoutine($id, $routine)
     {
         $map = [
@@ -95,17 +95,25 @@ class CommonBadgeActivator extends BadgeActivator
     {
         $activate = false;
         switch ($id) {
-            case 'energy_drink': $activate = true; break;
-            case 'win_contest': $activate = true; break;
-            case 'club_join': $activate = true; break;
-            case 'club_create': $activate = true; break;
+        case 'energy_drink':
+            $activate = true;
+            break;
+        case 'win_contest':
+            $activate = true;
+            break;
+        case 'club_join':
+            $activate = true;
+            break;
+        case 'club_create':
+            $activate = true;
+            break;
         }
-        
+
         if ($activate) {
-           $this->activate($id);
+            $this->activate($id);
         }
     }
-    
+
     public function triggerRoutine($routine)
     {
         if ($routine >= 100) {
@@ -128,7 +136,7 @@ class CommonBadgeActivator extends BadgeActivator
             $this->activate('shop_item10');
         }
     }
-    
+
     public function triggerBaits($cnt)
     {
         if ($cnt >= 20) {
@@ -153,7 +161,7 @@ class CommonBadgeActivator extends BadgeActivator
             $this->activate('club_members_8');
         }
     }
-    
+
     public function triggerLoginDays()
     {
         $cnt = $this->getLoginDays();
@@ -163,10 +171,11 @@ class CommonBadgeActivator extends BadgeActivator
             }
         }
     }
-    
-    private function getLoginDays() {
+
+    private function getLoginDays()
+    {
         $redis = Yii::app()->redis->getClient();
-        $key = "counter:login:days:".$this->_uid;
+        $key = "counter:login:days:".$this->uid;
         return (int)$redis->hGet($key, 'cnt');
     }
 }
