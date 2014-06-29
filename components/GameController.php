@@ -31,7 +31,9 @@ class GameController extends Controller
         if ($enabledCookie) {
             $session = Yii::app()->session;
             $session->open();
-            if ($session->get('fish_game') == 1) $missingGameVar = false;             
+            if ($session->get('fish_game') == 1) {
+                $missingGameVar = false;
+            }
         }
 
         if ($missingGameVar) {
@@ -44,8 +46,8 @@ class GameController extends Controller
         $session = Yii::app()->session;
 
         $lastRefresh = Yii::app()->dbWline->createCommand()
-            ->select( Yii::app()->params['wlineRefreshAttribute'] )
-            ->from( Yii::app()->params['wlineUsersTable'] )
+            ->select(Yii::app()->params['wlineRefreshAttribute'])
+            ->from(Yii::app()->params['wlineUsersTable'])
             ->where('uid=' . Yii::app()->player->uid)
             ->queryScalar();
 
@@ -82,7 +84,7 @@ class GameController extends Controller
 
         Yii::app()->dbWline->createCommand()->update(Yii::app()->params['wlineUsersTable'], [
             Yii::app()->params['wlineRefreshAttribute'] => time(),
-            ], 'uid=' . Yii::app()->player->uid);
+                ], 'uid=' . Yii::app()->player->uid);
 
     }
 }

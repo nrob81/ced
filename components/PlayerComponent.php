@@ -29,7 +29,7 @@ class PlayerComponent extends CApplicationComponent
     public function getNewContest()
     { 
         $lastSeen = (int)Yii::app()->redis->getClient()->get('contest:lastcheck:'.$this->model->uid);
-        return $this->newContest > $lastSeen; 
+        return $this->newContest > $lastSeen;
     }
     
     public function init()
@@ -47,7 +47,9 @@ class PlayerComponent extends CApplicationComponent
 
     protected function checkClubChallenge()
     {
-        if (!$this->model->in_club) return false;
+        if (!$this->model->in_club) {
+            return false;
+        }
 
         $lastChallenge = Yii::app()->redis->getClient()->get('reminder:challenge:'.$this->model->in_club);
         if ($lastChallenge >= time()) $this->clubChallenge = true;

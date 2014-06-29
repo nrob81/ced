@@ -19,6 +19,6 @@ class JqmLinkPager extends CLinkPager
             $class = 'ui-disabled';
         }
 
-        return CHtml::link($label,$this->createPageUrl($page), ['data-role'=>'button', 'data-ajax'=>'false', 'class'=>$class]);
+        return CHtml::link($label, $this->createPageUrl($page), ['data-role'=>'button', 'data-ajax'=>'false', 'class'=>$class]);
     }
 }

@@ -1,62 +1,62 @@
 <?php
 class Time
 {
-		
-	/**
-	* Returns true if given date is today.
-	*
-	* @param string $date Unix timestamp
-	* @return boolean True if date is today
-	*/
+
+    /**
+     * Returns true if given date is today.
+     *
+     * @param string $date Unix timestamp
+     * @return boolean True if date is today
+     */
     public static function isToday($date)
     {
-		return date('Y-m-d', $date) == date('Y-m-d', time());
-	}
-	
-	/**
-	* Returns true if given date was yesterday
-	*
-	* @param string $date Unix timestamp
-	* @return boolean True if date was yesterday
-	*/
+        return date('Y-m-d', $date) == date('Y-m-d', time());
+    }
+
+    /**
+     * Returns true if given date was yesterday
+     *
+     * @param string $date Unix timestamp
+     * @return boolean True if date was yesterday
+     */
     public static function wasYesterday($date)
     {
-		return date('Y-m-d', $date) == date('Y-m-d', strtotime('yesterday'));
-	}
-	
-	/**
-	* Returns true if given date is in this year
-	*
-	* @param string $date Unix timestamp
-	* @return boolean True if date is in this year
-	*/
+        return date('Y-m-d', $date) == date('Y-m-d', strtotime('yesterday'));
+    }
+
+    /**
+     * Returns true if given date is in this year
+     *
+     * @param string $date Unix timestamp
+     * @return boolean True if date is in this year
+     */
     public static function isThisYear($date)
     {
-		return date('Y', $date) == date('Y', time());
-	}
-	
-	/**
-	* Returns true if given date is in this week
-	*
-	* @param string $date Unix timestamp
-	* @return boolean True if date is in this week
-	*/
+        return date('Y', $date) == date('Y', time());
+    }
+
+    /**
+     * Returns true if given date is in this week
+     *
+     * @param string $date Unix timestamp
+     * @return boolean True if date is in this week
+     */
     public static function isThisWeek($date)
     {
-		return date('W Y', $date) == date('W Y', time());
-	}
-	
-	/**
-	* Returns true if given date is in this month
-	*
-	* @param string $date Unix timestamp
-	* @return boolean True if date is in this month
-	*/
+        return date('W Y', $date) == date('W Y', time());
+    }
+
+    /**
+     * Returns true if given date is in this month
+     *
+     * @param string $date Unix timestamp
+     * @return boolean True if date is in this month
+     */
     public static function isThisMonth($date)
     {
-		return date('m Y',$date) == date('m Y', time());
-	}
-	
+        return date('m Y',$date) == date('m Y', time());
+    }
+
     function secondsToDifference($seconds)
     {
         $diff = $seconds;

@@ -30,7 +30,7 @@ class LoggerComponent extends CApplicationComponent
                 'uid'=>$uid,
                 'level'=>$level,
                 $cell=>1,
-                ]);           
+                ]);
         }
     }
 
