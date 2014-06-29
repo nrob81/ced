@@ -96,7 +96,7 @@ class ContestList extends CModel
     }
 
     public function hasWinner()
-    { 
+    {
         //if ($this->secUntilEnd > 0) return false; //contest is active
         return Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':winners');
     }
