@@ -42,40 +42,40 @@ class Challenge extends CModel
     public function attributeNames() {
         return [];
     }
-    
-    public function getId() { return $this->id; }
-    public function getActive() { return $this->_active; }
-    public function getOpponentLink($clubID) { 
-        $oppID = $clubID == $this->caller ? $this->opponent : $this->caller;
-        $oppName = $clubID == $this->caller ? $this->name_opponent : $this->name_caller;
 
-        return CHtml::link($oppName, ['club/details', 'id'=>$oppID], ['data-ajax'=>'false']); 
-    }
+    public function getId() { return $this->id; }
+        public function getActive() { return $this->_active; }
+        public function getOpponentLink($clubID) { 
+            $oppID = $clubID == $this->caller ? $this->opponent : $this->caller;
+            $oppName = $clubID == $this->caller ? $this->name_opponent : $this->name_caller;
+
+            return CHtml::link($oppName, ['club/details', 'id'=>$oppID], ['data-ajax'=>'false']); 
+        }
     public function getCaller() { return $this->caller; }
-    public function getOpponent() { return $this->opponent; }
-    public function getName_caller() { return $this->name_caller; }
-    public function getName_opponent() { return $this->name_opponent; }
-    public function getCnt_won_caller() { return $this->cnt_won_caller; }
-    public function getCnt_won_opponent() { return $this->cnt_won_opponent; }
-    public function getPoint_caller() { return $this->point_caller; }
-    public function getPoint_opponent() { return $this->point_opponent; }
-    public function getLoot_caller() { return $this->loot_caller; }
-    public function getLoot_opponent() { return $this->loot_opponent; }
-    public function getStartTime() { return strtotime($this->created) + 1800; }
-    public function getEndTime() { return $this->startTime + 1800; }
-    public function getListDuels() { return $this->_listDuels; }
-    public function getWinner() { return $this->winner; }
-    
-    public function setId($id) {
-        $this->id = (int)$id;
-    }
+        public function getOpponent() { return $this->opponent; }
+        public function getName_caller() { return $this->name_caller; }
+        public function getName_opponent() { return $this->name_opponent; }
+        public function getCnt_won_caller() { return $this->cnt_won_caller; }
+        public function getCnt_won_opponent() { return $this->cnt_won_opponent; }
+        public function getPoint_caller() { return $this->point_caller; }
+        public function getPoint_opponent() { return $this->point_opponent; }
+        public function getLoot_caller() { return $this->loot_caller; }
+        public function getLoot_opponent() { return $this->loot_opponent; }
+        public function getStartTime() { return strtotime($this->created) + 1800; }
+        public function getEndTime() { return $this->startTime + 1800; }
+        public function getListDuels() { return $this->_listDuels; }
+        public function getWinner() { return $this->winner; }
+
+        public function setId($id) {
+            $this->id = (int)$id;
+        }
     public function setCaller($clubID) {
         $this->caller = (int)$clubID;
     }
     public function setOpponent($clubID) {
         $this->opponent = (int)$clubID;
     }
-    
+
     public function fetch() {
         $res = Yii::app()->db->createCommand()
             ->select('*')
@@ -164,11 +164,11 @@ class Challenge extends CModel
 
         Yii::app()->db->createCommand()
             ->insert('challenge', [
-                'caller'=>$this->caller,
-                'opponent'=>$this->opponent,
-                'name_caller'=>$callerClub['name'],
-                'name_opponent'=>$opponent->name,
-                ]);
+            'caller'=>$this->caller,
+            'opponent'=>$this->opponent,
+            'name_caller'=>$callerClub['name'],
+            'name_opponent'=>$opponent->name,
+            ]);
         //set properties
         $this->fetchActiveChallenge();
 
@@ -194,7 +194,7 @@ class Challenge extends CModel
             $player->uid = $d['caller'];
             $player->fetchUser();
             $d['name_caller'] = $player->user;
-            
+
             $player->uid = $d['opponent'];
             $player->fetchUser();
             $d['name_opponent'] = $player->user;

@@ -15,7 +15,7 @@ class Advancement extends CModel
 
     // getters
     public function getUid()
-    { 
+    {
         return (int)$this->uid;
     }
     

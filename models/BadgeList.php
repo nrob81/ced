@@ -16,7 +16,7 @@ class BadgeList extends Badge
         ];
 
     public function getOwnedKeys()
-    { 
+    {
         return $this->ownedKeys;
     }
 
