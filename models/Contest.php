@@ -19,82 +19,95 @@ class Contest extends CModel
     const ACT_DUEL = 2;
     const ACT_CLUB = 3;
 
-    private $_activeId;
-    private $_recommendedCollect;
-    private $_recommendedPrize;
-    private $_collect;
-    private $_collectParam;
-    private $_collectTypes = [
+    private $activeId;
+    private $recommendedCollect;
+    private $recommendedPrize;
+    private $collect;
+    private $collectParam;
+    private $collectTypes = [
         'xp','xp_duel','xp_mission',
         'dollar','dollar_duel','dollar_mission'
         ];
 
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getCollect() {
-        if (!$this->_collect) {
-            $this->_collect = Yii::app()->redis->getClient()->get(self::ID_LIST . $this->_activeId . ':collect');
+    public function getCollect()
+    {
+        if (!$this->collect) {
+            $this->collect = Yii::app()->redis->getClient()->get(self::ID_LIST . $this->activeId . ':collect');
         }
-        return $this->_collect; 
+        return $this->collect;
     }
 
-    public function getActiveId() {
-        if (!$this->_activeId) {
-            $this->_activeId = Yii::app()->redis->getClient()->get(self::ID_ACTIVE);
+    public function getActiveId()
+    {
+        if (!$this->activeId) {
+            $this->activeId = Yii::app()->redis->getClient()->get(self::ID_ACTIVE);
         }
-        return $this->_activeId;
+        return $this->activeId;
     }
-    public function getRecommendedCollect() {
-        if (!$this->_recommendedCollect) {
+
+    public function getRecommendedCollect()
+    {
+        if (!$this->recommendedCollect) {
             //echo 'rec.from.cache, ';
-            $this->_recommendedCollect = Yii::app()->redis->getClient()->get(self::ID_RECOMMENDED_COLLECT);
+            $this->recommendedCollect = Yii::app()->redis->getClient()->get(self::ID_RECOMMENDED_COLLECT);
             Yii::app()->redis->getClient()->del(self::ID_RECOMMENDED_COLLECT);
         }
 
-        if (!in_array($this->_recommendedCollect, $this->_collectTypes)) {
+        if (!in_array($this->recommendedCollect, $this->collectTypes)) {
             //echo 'rec.not.found, ';
-            $randomId = array_rand($this->_collectTypes);
-            $this->_recommendedCollect = $this->_collectTypes[$randomId];
+            $randomId = array_rand($this->collectTypes);
+            $this->recommendedCollect = $this->collectTypes[$randomId];
         }
 
-        //echo 'rec:'.$this->_recommendedCollect;
-        return $this->_recommendedCollect; 
+        //echo 'rec:'.$this->recommendedCollect;
+        return $this->recommendedCollect;
     }
-    public function getRecommendedPrize() {
-        if (!$this->_recommendedPrize) {
-            $this->_recommendedPrize = Yii::app()->redis->getClient()->get(self::ID_RECOMMENDED_PRIZE);
+
+    public function getRecommendedPrize()
+    {
+        if (!$this->recommendedPrize) {
+            $this->recommendedPrize = Yii::app()->redis->getClient()->get(self::ID_RECOMMENDED_PRIZE);
             Yii::app()->redis->getClient()->del(self::ID_RECOMMENDED_PRIZE);
         }
 
-        if (!$this->_recommendedPrize) {
-            $this->_recommendedPrize = self::PRIZE;
+        if (!$this->recommendedPrize) {
+            $this->recommendedPrize = self::PRIZE;
         }
 
-        return (int)$this->_recommendedPrize; 
+        return (int)$this->recommendedPrize;
     }
 
-    public function create() {
-        if ($this->activeId) return false;
+    public function create()
+    {
+        if ($this->activeId) {
+            return false;
+        }
 
         $redis = Yii::app()->redis->getClient();
 
-        $this->_activeId = time();
+        $this->activeId = time();
 
-        $redis->set('contest:active', $this->_activeId);
-        $redis->lPush('contest:log', $this->_activeId); //log of contests
+        $redis->set('contest:active', $this->activeId);
+        $redis->lPush('contest:log', $this->activeId); //log of contests
 
-        $redis->set(self::ID_LIST . $this->_activeId.':collect', $this->recommendedCollect);
-        $redis->set(self::ID_LIST . $this->_activeId.':prize', $this->recommendedPrize);
-        $redis->set(self::ID_LIST . $this->_activeId.':created', date('Y.m.d. H:i:s', $this->_activeId));
-        return true;        
+        $redis->set(self::ID_LIST . $this->activeId.':collect', $this->recommendedCollect);
+        $redis->set(self::ID_LIST . $this->activeId.':prize', $this->recommendedPrize);
+        $redis->set(self::ID_LIST . $this->activeId.':created', date('Y.m.d. H:i:s', $this->activeId));
+        return true;
     }
 
-    public function addPoints($uid, $activity, $energy, $xp, $dollar) {
+    public function addPoints($uid, $activity, $energy, $xp, $dollar)
+    {
         //todo: log common collecting
 
-        if (!$this->activeId) return false; //no active contest
+        if (!$this->activeId) {
+            return false; //no active contest
+        }
 
         if (!$this->validate($activity, $xp, $dollar)) {
             return false;
@@ -102,28 +115,37 @@ class Contest extends CModel
 
         //collect
         $points = 0;
-        if ($this->_collectParam == 'xp') $points = $xp;
-        if ($this->_collectParam == 'dollar') $points = $dollar;
+        if ($this->collectParam == 'xp') {
+            $points = $xp;
+        }
 
+        if ($this->collectParam == 'dollar') {
+            $points = $dollar;
+        }
+        
         Yii::app()->redis->getClient()->zIncrBy(self::ID_LIST . $this->activeId . ':points', $points, $uid);
         return true;
     }
     
-    public function complete() {
+    public function complete()
+    {
         $redis = Yii::app()->redis->getClient();
 
         $completed = $redis->del(self::ID_ACTIVE);
         if ($completed) {
             $this->logWinners();
-            $this->_activeId = 0;
+            $this->activeId = 0;
         }
 
         return $completed;
     }
 
-    private function logWinners() {
+    private function logWinners()
+    {
         $winners = $this->fetchWinners();
-        if (!$winners) return false;
+        if (!$winners) {
+            return false;
+        }
 
         $redis = Yii::app()->redis->getClient();
         $b = Yii::app()->badge->model;
@@ -137,7 +159,8 @@ class Contest extends CModel
         }
     }
 
-    private function fetchWinners() {
+    private function fetchWinners()
+    {
         $redis = Yii::app()->redis->getClient();
         //get max point
         $key = self::ID_LIST . $this->activeId . ':points';
@@ -147,11 +170,12 @@ class Contest extends CModel
             $maxScore = array_values($max)[0];
             $winners = $redis->zRevRangeByScore($key, $maxScore, $maxScore);
             return $winners;
-        }       
+        }
         return false;
     }
 
-    public function validate($activity, $xp, $dollar) {
+    public function validate($activity, $xp, $dollar)
+    {
         $toCollect = $this->collect;
 
         //check the lifetime
@@ -163,30 +187,42 @@ class Contest extends CModel
         $valid = true;
         //check activity+toCollect
         switch ($toCollect) {
-        case 'xp': 
-            if (!$xp) $valid = false; 
-            $this->_collectParam = 'xp';
-            break;
-        case 'xp_duel': 
-            if (!$xp || $activity != self::ACT_DUEL) $valid = false;
-            $this->_collectParam = 'xp';
-            break;
-        case 'xp_mission': 
-            if (!$xp || $activity != self::ACT_MISSION) $valid = false;
-            $this->_collectParam = 'xp';
-            break;
-        case 'dollar': 
-            if (!$dollar) $valid = false;
-            $this->_collectParam = 'dollar';
-            break;
-        case 'dollar_duel': 
-            if (!$dollar || $activity != self::ACT_DUEL) $valid = false;
-            $this->_collectParam = 'dollar';
-            break;
-        case 'dollar_mission': 
-            if (!$dollar || $activity != self::ACT_MISSION) $valid = false;
-            $this->_collectParam = 'dollar';
-            break;
+            case 'xp':
+                if (!$xp) {
+                    $valid = false;
+                }
+                $this->collectParam = 'xp';
+                break;
+            case 'xp_duel':
+                if (!$xp || $activity != self::ACT_DUEL) {
+                    $valid = false;
+                }
+                $this->collectParam = 'xp';
+                break;
+            case 'xp_mission':
+                if (!$xp || $activity != self::ACT_MISSION) {
+                    $valid = false;
+                }
+                $this->collectParam = 'xp';
+                break;
+            case 'dollar':
+                if (!$dollar) {
+                    $valid = false;
+                }
+                $this->collectParam = 'dollar';
+                break;
+            case 'dollar_duel':
+                if (!$dollar || $activity != self::ACT_DUEL) {
+                    $valid = false;
+                }
+                $this->collectParam = 'dollar';
+                break;
+            case 'dollar_mission':
+                if (!$dollar || $activity != self::ACT_MISSION) {
+                    $valid = false;
+                }
+                $this->collectParam = 'dollar';
+                break;
         }
 
         if (!$valid) {

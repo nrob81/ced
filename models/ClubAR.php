@@ -115,10 +115,10 @@ class ClubAR extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('id', $this->id,true);
+        $criteria->compare('id', $this->id, true);
         $criteria->compare('owner', $this->owner);
-        $criteria->compare('name', $this->name,true);
-        $criteria->compare('created', $this->created,true);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('created', $this->created, true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

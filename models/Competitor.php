@@ -176,7 +176,7 @@ class Competitor extends CModel
             ->join('main m', 'dp.uid=m.uid')
             ->where('dp.duel_id = :id AND dp.role=:role', [':id'=>$duelId, ':role'=>$role])
             ->queryRow();
-        
+
         $this->skill = $res['skill'];
         $this->chance = $res['chance'];
         $this->energy = $res['energy'];
@@ -220,7 +220,7 @@ class Competitor extends CModel
     protected function updateAttributes($player)
     {
         $player->updateAttributes(
-            $this->membersToArray($this->mapAwards), 
+            $this->membersToArray($this->mapAwards),
             $this->membersToArray($this->mapReqs)
         );
     }
@@ -244,7 +244,7 @@ class Competitor extends CModel
         $this->awardXp = 0;
         $this->awardDollar = 0;
         $this->awardPoints = 0;
-    } 
+    }
 
     protected function winPrize()
     {
@@ -258,13 +258,19 @@ class Competitor extends CModel
     {
         $this->reqEnergy = $this->energy;
         $this->reqDollar = round($this->dollar * $this->chance / 100);
-        $this->awardXp = round($this->avgEnergy * ($this->chance / 100) / 5); //20% of winners prize            
+        $this->awardXp = round($this->avgEnergy * ($this->chance / 100) / 5); //20% of winners prize
     }
 
     public function compensator($value)
     {
-        if ($value < 33) $value = 33;
-        if ($value > 66) $value = 66;
+        if ($value < 33) {
+            $value = 33;
+        }
+
+        if ($value > 66) {
+            $value = 66;
+        }
+
         return $value;
     }
 

@@ -227,8 +227,8 @@ class Club extends CModel
                 [
                     'club_id'=>(int)$id,
                     'uid'=>$player->uid
-                    ]
-                );
+                ]
+            );
         //refresh list
         $this->entrants[$player->uid] = [
             'uid'=>$player->uid,
