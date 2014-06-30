@@ -6,30 +6,36 @@
  */
 class Store extends CModel
 {
-    private $_uid;
-    private $_blackBait = ['id'=>0];
+    private $uid;
+    private $blackBait = ['id'=>0];
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getUid() { 
-        return $this->_uid; 
+    public function getUid()
+    { 
+        return $this->uid;
     }
 
-    public function getBlackBait() {
-        return $this->_blackBait;
+    public function getBlackBait()
+    {
+        return $this->blackBait;
     }
 
-    public function getPackagesSms() {
+    public function getPackagesSms()
+    {
         return Yii::app()->params['packagesSms'];
-    }    
-
-    public function setUid($uid) {
-        $this->_uid = (int)$uid;
     }
 
-    public function fetch() {
+    public function setUid($uid)
+    {
+        $this->uid = (int)$uid;
+    }
+
+    public function fetch()
+    {
         $level = Yii::app()->player->model->level;
         $bait = Yii::app()->db->createCommand()
             ->select('*')
@@ -38,20 +44,27 @@ class Store extends CModel
             ->order('skill DESC, level DESC')
             ->limit(1)
             ->queryRow();
-        $this->_blackBait = $bait;
+        $this->blackBait = $bait;
     }
 
-    public function refillEnergy() {
+    public function refillEnergy()
+    {
         $player = Yii::app()->player->model;
 
         $logger = new Logger;
-        $logger->key = 'refillEnergy:'.date('Y-m-d').':'.$this->_uid;
+        $logger->key = 'refillEnergy:'.date('Y-m-d').':'.$this->uid;
         $logger->addToSet('----start: '.date('H:i:s').'----');
         $logger->addToSet('gold:'.$player->gold.', energy: ' . $player->energy.'/'.$player->energy_max);
 
-        if ($player->gold < 20) throw new CFlashException('Nincs elég aranyad az energiaital kifizetésére.');
+        if ($player->gold < 20) {
+            throw new CFlashException('Nincs elég aranyad az energiaital kifizetésére.');
+        }
+
         $logger->addToSet('gold > 20');
-        if ($player->energy_missing < 3) throw new CFlashException('Kevesebb, mint 3 energiára van szükséged. Emiatt nem érdemes energiaitalt innod.');
+        if ($player->energy_missing < 3) {
+            throw new CFlashException('Kevesebb, mint 3 energiára van szükséged. Emiatt nem érdemes energiaitalt innod.');
+        }
+
         $logger->addToSet('energy_missing > 3');
 
         $player->updateAttributes(['energy'=>$player->energy_missing], ['gold'=>20]);
@@ -63,16 +76,23 @@ class Store extends CModel
         return true;
     }
 
-    public function activateBlackMarket() {
+    public function activateBlackMarket()
+    {
         $player = Yii::app()->player->model;
         $logger = new Logger;
-        $logger->key = 'blackMarket:'.date('Y-m-d').':'.$this->_uid;
+        $logger->key = 'blackMarket:'.date('Y-m-d').':'.$this->uid;
         $logger->addToSet('----start: '.date('H:i:s').'----');
         $logger->addToSet('gold:'.$player->gold.', level: ' . $player->level);
         
-        if ($player->gold < 10) throw new CFlashException('Nincs elég aranyad.');
+        if ($player->gold < 10) {
+            throw new CFlashException('Nincs elég aranyad.');
+        }
+
         $logger->addToSet('gold > 10');
-        if ($player->black_market) throw new CFlashException('Még működik az előzőleg aktivált feketepiac.');
+        if ($player->black_market) {
+            throw new CFlashException('Még működik az előzőleg aktivált feketepiac.');
+        }
+
         $logger->addToSet('black_market inactive');
 
         $timeBlackMarket = date('Y-m-d H:i:s', time()+600);

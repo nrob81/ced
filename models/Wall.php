@@ -16,39 +16,47 @@ class Wall extends CModel
     const TYPE_BADGE = 'badge';
     const TYPE_NEW_AWARD = 'new_award';
 
-    private $_uid;
-    private $_content_type = '?';
-    private $_posts = [];
+    private $uid;
+    private $content_type = '?';
+    private $posts = [];
     
     public function attributeNames() {
         return [];
     }
 
-    public function getPosts() { return $this->_posts; }
-    
-    public function setUid($uid) {
-        $this->_uid = (int)$uid;
+    public function getPosts()
+    {
+        return $this->posts;
     }
-    public function setContent_type($type) {
-        $this->_content_type = $type;
+    
+    public function setUid($uid)
+    {
+        $this->uid = (int)$uid;
     }
 
-    public function add($data) {
-        $data['type'] = $this->_content_type;
+    public function setContent_type($type)
+    {
+        $this->content_type = $type;
+    }
+
+    public function add($data)
+    {
+        $data['type'] = $this->content_type;
         $body = CJSON::encode($data);
         
         Yii::app()->db->createCommand()
             ->insert('wall', [
-                'uid'=>$this->_uid,
+                'uid'=>$this->uid,
                 'body'=>$body
             ]);
     }
 
-    public function fetchPosts() {
+    public function fetchPosts()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('*')
             ->from('wall')
-            ->where('uid=:uid', [':uid'=>$this->_uid])
+            ->where('uid=:uid', [':uid'=>$this->uid])
             ->order('created DESC')
             ->limit(10)
             ->queryAll();
@@ -59,7 +67,7 @@ class Wall extends CModel
             $day = date('Y. m. d.', strtotime($post['created']));
             if ($day != $lastDay) {
                 $lastDay = $day;
-                $this->_posts[$post['created']] = [
+                $this->posts[$post['created']] = [
                     'content_type' => 'date_separator',
                     'body'=>[],
                     'created'=>$day
@@ -71,7 +79,7 @@ class Wall extends CModel
 
             $post['created'] = date('H:i', strtotime($post['created']));
 
-            $this->_posts[$post['id']] = $post;
+            $this->posts[$post['id']] = $post;
         }
     }
 }
