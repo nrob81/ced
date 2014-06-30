@@ -19,23 +19,45 @@ class Leaderboard extends CModel
     const RANGE_PREVIOUS = 'prev';
     const RANGE_LAST_SIX = 'last';
 
-    private $_uid;
-    private $_inClub;
-    private $_items = [];
-    private $_key = '';
-    private $_boardType;
-    private $_range;
+    private $uid;
+    private $inClub;
+    private $items = [];
+    private $key = '';
+    private $boardType;
+    private $range;
 
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getUid() { return $this->_uid; }
-    public function getInClub() { return $this->_inClub; }
-    public function getItems() { return $this->_items; }
-    public function getBoardType() { return $this->_boardType; }
-    public function getRange() { return $this->_range; }
-    public function getTitle() {
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    public function getInClub()
+    {
+        return $this->inClub;
+    }
+
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function getBoardType()
+    {
+        return $this->boardType;
+    }
+
+    public function getRange()
+    {
+        return $this->range;
+    }
+
+    public function getTitle()
+    {
         $titles = [
             self::TYPE_PLAYER => [
             self::RANGE_ACTUAL => 'Aktuális hónap legjobb játékosai',
@@ -51,97 +73,110 @@ class Leaderboard extends CModel
         return $titles[$this->boardType][$this->range];
     }
 
-    public function getPlayerRankDescription() {
+    public function getPlayerRankDescription()
+    {
         $redis = Yii::app()->redis->getClient();
 
-        $total = $redis->zCard($this->_key);
-        $rank  = $redis->zRevRank($this->_key, $this->_uid) + 1;
+        $total = $redis->zCard($this->key);
+        $rank  = $redis->zRevRank($this->key, $this->uid) + 1;
 
         if ($rank == 1) {
             return 'Te vagy a király!';
         } else {
             $percent = round((1 - ($rank / $total)) * 100, 1);
-            if (!$percent) return 'Több párbajgyőzelemre van szükséged.';
+            if (!$percent) {
+                return 'Több párbajgyőzelemre van szükséged.';
+            }
 
             return 'Jobb vagy, mint a játékosok ' . $percent . '%-a!';
         }
     }
 
-    public function getClubRankDescription() {
+    public function getClubRankDescription()
+    {
         $redis = Yii::app()->redis->getClient();
 
-        $total = $redis->zCard($this->_key);
-        $rank  = $redis->zRevRank($this->_key, $this->_inClub) + 1;
+        $total = $redis->zCard($this->key);
+        $rank  = $redis->zRevRank($this->key, $this->inClub) + 1;
 
         if ($rank == 1) {
             return 'A te klubod a király!';
         } else {
             $percent = round((1 - ($rank / $total)) * 100, 1);
-            if (!$percent) return 'Több versenygyőzelemre van szükségetek.';
+            if (!$percent) {
+                return 'Több versenygyőzelemre van szükségetek.';
+            }
 
             return 'Jobb a klubod, mint a többi klub ' . $percent . '%-a!';
         }
     }
 
-    public function setBoardType ($type) {
-        $this->_boardType = $type;
+    public function setBoardType ($type)
+    {
+        $this->boardType = $type;
     }
-    public function setRange ($range) {
+
+    public function setRange ($range)
+    {
         $d = new DateTime();
 
         //create key from date/intersect
         switch ($range) {
-        case self::RANGE_LAST_SIX:
-            $this->_key = $this->_boardType . ':6month';
-            //create intersect
+            case self::RANGE_LAST_SIX:
+                $this->key = $this->boardType . ':6month';
+                //create intersect
 
-            $history = [];
-            $history[] = $this->_boardType . ':' . $d->format('Ym');            
+                $history = [];
+                $history[] = $this->boardType . ':' . $d->format('Ym');
 
-            for ($i=0; $i<6; $i++) {
-                $d->modify( 'first day of previous month' );
-                $history[] = $this->_boardType . ':' . $d->format('Ym');            
-            }
+                for ($i=0; $i<6; $i++) {
+                    $d->modify('first day of previous month');
+                    $history[] = $this->boardType . ':' . $d->format('Ym');            
+                }
 
-            $redis = Yii::app()->redis->getClient();
-            $redis->zUnionStore($this->_key, $history);
+                $redis = Yii::app()->redis->getClient();
+                $redis->zUnionStore($this->key, $history);
 
-            break;
-        case self::RANGE_PREVIOUS:
-            $d->modify( 'first day of previous month' );
-            $this->_key = $this->_boardType . ':' . $d->format('Ym');
-            break;
-        default:
-            $range = self::RANGE_ACTUAL;
-            $this->_key = $this->_boardType . ':' . $d->format('Ym');
+                break;
+            case self::RANGE_PREVIOUS:
+                $d->modify('first day of previous month');
+                $this->key = $this->boardType . ':' . $d->format('Ym');
+                break;
+            default:
+                $range = self::RANGE_ACTUAL;
+                $this->key = $this->boardType . ':' . $d->format('Ym');
         }
-        $this->_range = $range;
+        $this->range = $range;
     }
 
-    public function setUid($uid) {
-        $this->_uid = (int)$uid;
-    }
-    public function setInClub($id) {
-        $this->_inClub = (int)$id;
+    public function setUid($uid)
+    {
+        $this->uid = (int)$uid;
     }
 
-    public function fetch() {
+    public function setInClub($id)
+    {
+        $this->inClub = (int)$id;
+    }
+
+    public function fetch()
+    {
         $redis = Yii::app()->redis->getClient();
 
-        $myRank = $redis->zRevRank($this->_key, $this->_uid);
+        $myRank = $redis->zRevRank($this->key, $this->uid);
 
         $range = self::BOARD_RANGE;
         $min = $myRank - $range > 0 ? $myRank - $range : 0;
         $max = $myRank + $range + ($range-$myRank+$min);
-        //echo "search:$this->_inClub, mr:$myRank, min:$min, max:$max, \n";
+        //echo "search:$this->inClub, mr:$myRank, min:$min, max:$max, \n";
 
         $item = new Player;
         $i = $min+1;
-        foreach($redis->zRevRange($this->_key, $min, $max, true) as $id => $score) {
+        foreach ($redis->zRevRange($this->key, $min, $max, true) as $id => $score) {
             $item->uid = $id;
             $item->fetchUser();
 
-            $this->_items[$i] = [
+            $this->items[$i] = [
                 'id'=>$id,
                 'name'=>$item->user,
                 'score'=>$score,
@@ -150,23 +185,24 @@ class Leaderboard extends CModel
         }
     }
 
-    public function fetchClubs() {
+    public function fetchClubs()
+    {
         $redis = Yii::app()->redis->getClient();
 
-        $myRank = $redis->zRevRank($this->_key, $this->_inClub);
+        $myRank = $redis->zRevRank($this->key, $this->inClub);
 
         $range = self::BOARD_RANGE;
         $min = $myRank - $range > 0 ? $myRank - $range : 0;
         $max = $myRank + $range + ($range-$myRank+$min);
-        //echo "search:$this->_inClub, mr:$myRank, min:$min, max:$max, \n";
+        //echo "search:$this->inClub, mr:$myRank, min:$min, max:$max, \n";
 
         $item = new Club;
         $i = $min+1;
-        foreach($redis->zRevRange($this->_key, $min, $max, true) as $id => $score) {
+        foreach ($redis->zRevRange($this->key, $min, $max, true) as $id => $score) {
             $item->id = $id;
             $item->fetchName();
 
-            $this->_items[$i] = [
+            $this->items[$i] = [
                 'id'=>$id,
                 'name'=>$item->name,
                 'score'=>$score,
@@ -175,10 +211,9 @@ class Leaderboard extends CModel
         }
     }
 
-
-
-    public function getRankDescription() {
-        if ($this->_boardType == self::TYPE_CLUB) {
+    public function getRankDescription()
+    {
+        if ($this->boardType == self::TYPE_CLUB) {
             $ret = $this->getClubRankDescription();
         } else {
             $ret = $this->getPlayerRankDescription();

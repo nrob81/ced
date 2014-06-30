@@ -31,51 +31,114 @@ class Item extends CModel
     private $buy_amount = [];
     private $sell_amount = [];
 
-    private $_errors = ['dollar'=>false, 'amount'=>false, 'owned'=>false, 'isLast'=>false, 'freeSlots'=>false];
-    private $_success;
+    private $errors = ['dollar'=>false, 'amount'=>false, 'owned'=>false, 'isLast'=>false, 'freeSlots'=>false];
+    private $success;
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getId() { return $this->id; }
-    public function getItem_type() { return $this->item_type; }
-    public function getSkill() { return $this->skill; }
-    public function getLevel() { return $this->level; }
-    public function getTitle() { return $this->title; }
-    public function getPrice() { return $this->price; }
-    public function getPrice_sell() { return floor($this->price / 2); }
-    public function getOwned() { return $this->owned; }
-    public function getBuy_amount() { return $this->buy_amount; }
-    public function getSell_amount() { return $this->sell_amount; }
-    public function getErrors() { return $this->_errors; }
-    public function getSuccess() { return $this->_success; }
+    public function getId()
+    {
+        return $this->id;
+    }
 
-    public function setId($id) {
+    public function getItem_type()
+    {
+        return $this->item_type;
+    }
+
+    public function getSkill()
+    {
+        return $this->skill;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function getPrice_sell()
+    {
+        return floor($this->price / 2);
+    }
+
+    public function getOwned()
+    {
+        return $this->owned;
+    }
+
+    public function getBuy_amount()
+    {
+        return $this->buy_amount;
+    }
+
+    public function getSell_amount()
+    {
+        return $this->sell_amount;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function getSuccess()
+    {
+        return $this->success;
+    }
+
+    public function setId($id)
+    {
         $this->id = (int)$id;
     }
-    public function setItem_type($type) {
+
+    public function setItem_type($type)
+    {
         $this->item_type = $type;
     }
-    public function setOwned($owned) {
+
+    public function setOwned($owned)
+    {
         $this->owned = (int)$owned;
     }
     
-    public function fetch() {
-        if (!$this->id) return false;
+    public function fetch()
+    {
+        if (!$this->id) {
+            return false;
+        }
+
         $uid = Yii::app()->player->uid;
 
         //read all from db
-        $dependency = new CExpressionDependency("Yii::app()->params['{$this->item_type}s_version']");        
+        $dependency = new CExpressionDependency("Yii::app()->params['{$this->item_type}s_version']");
         $res = Yii::app()->db->cache(Yii::app()->params['cacheDuration'], $dependency)->createCommand()
             ->select('*')
             ->from($this->item_type.'s')
             ->where('id=:id', [':id'=>$this->id])
             ->queryRow();
 
-        if (!$res) return false;
+        if (!$res) {
+            return false;
+        }
+
         foreach ($res as $k => $v) {
-            if ($k == 'id') continue;
+            if ($k == 'id') {
+                continue;
+            }
+
             $this->$k = $v;
         }
         
@@ -90,8 +153,12 @@ class Item extends CModel
         $this->setSellAmount();
     }
     
-    public function fetchSet() {
-        if (!$this->id) return false;
+    public function fetchSet()
+    {
+        if (!$this->id) {
+            return false;
+        }
+
         $uid = Yii::app()->player->uid;
 
         $combinedId = (string)$this->id;
@@ -100,14 +167,17 @@ class Item extends CModel
 
 
         //read all from db
-        $dependency = new CExpressionDependency("Yii::app()->params['{$this->item_type}s_version']");        
+        $dependency = new CExpressionDependency("Yii::app()->params['{$this->item_type}s_version']");
         $res = Yii::app()->db->cache(Yii::app()->params['cacheDuration'], $dependency)->createCommand()
             ->select('*')
             ->from('itemsets')
             ->where('id=:id', [':id'=>$setId])
             ->queryRow();
 
-        if (!$res) return false;
+        if (!$res) {
+            return false;
+        }
+
         foreach ($res as $k => $v) {
             if ($k == 'id') continue;
             $this->$k = $v;
@@ -130,25 +200,26 @@ class Item extends CModel
         $this->setSellAmount();
     }
 
-    public function buy($amount) {
+    public function buy($amount)
+    {
         //echo __FUNCTION__ . "\n";
         $decr = [];
         $amount = (int)$amount;
         if ($amount < 1) {
-            $this->_errors['amount'] = true;
+            $this->errors['amount'] = true;
             return false;
         }
         //echo "amount - ok\n";
 
         if ($this->price * $amount > Yii::app()->player->model->dollar) {
-            $this->_errors['dollar'] = true;
+            $this->errors['dollar'] = true;
             return false;
         }
         //echo "dollar - ok\n";
 
         if ($this->item_type !== self::TYPE_PART) {
             if ($amount > Yii::app()->player->model->freeSlots) {
-                $this->_errors['freeSlots'] = true;
+                $this->errors['freeSlots'] = true;
                 return false;
             }
         }
@@ -179,23 +250,24 @@ class Item extends CModel
             Yii::app()->player->model->updateAttributes([], $decr);
         }
 
-        $this->_success = true;
+        $this->success = true;
         $this->owned += $amount;
         $this->setBuyAmount();
     }
     
-    public function sell($amount) {
+    public function sell($amount)
+    {
         //echo __FUNCTION__ . "\n";
         $incr = [];
         $amount = (int)$amount;
         if ($amount < 1) {
-            $this->_errors['amount'] = true;
+            $this->errors['amount'] = true;
             return false;
         }
         //echo "amount - ok\n";
 
         if ($this->owned < $amount) {
-            $this->_errors['owned'] = true;
+            $this->errors['owned'] = true;
             return false;
         }
         //echo "owned - ok\n";
@@ -205,7 +277,7 @@ class Item extends CModel
 
         $owned = $this->item_type == self::TYPE_BAIT ? $player->owned_baits : $player->owned_items;
         if ($owned == 1) {
-            $this->_errors['isLast'] = true;
+            $this->errors['isLast'] = true;
             return false;
         }
 
@@ -220,24 +292,28 @@ class Item extends CModel
         $incr['dollar'] = $amount * $this->price_sell;
         Yii::app()->player->model->updateAttributes($incr, []);
         
-        $this->_success = true;
+        $this->success = true;
         $this->owned -= $amount;
         $this->setSellAmount();
         
     }
 
-    private function setBuyAmount() {
+    private function setBuyAmount()
+    {
         foreach ([1,5,10] as $amount) {
             $this->buy_amount[$amount] = (bool)($this->price * $amount <= Yii::app()->player->model->dollar);
         }
     }
-    private function setSellAmount() {
+
+    private function setSellAmount()
+    {
         foreach ([1,5,10] as $amount) {
             $this->sell_amount[$amount] = (bool)($this->owned >= $amount);
         }
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $attributes = ['id','item_type','skill','level','price','title','owned'];
         $ret = '';
         foreach ($attributes as $attribute) {
