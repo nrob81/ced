@@ -4,11 +4,13 @@ class Skill extends CModel
     private $usedItems = [];
     private $usedBaits = [];
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function updateExtended() {
+    public function updateExtended()
+    {
         //echo __FUNCTION__ . "\n";
 
         //calculate
@@ -24,7 +26,9 @@ class Skill extends CModel
         //get baits limited
         $sumSkill += $this->sumSkill($limitItems, true);
         //echo "sum+baitSkill: {$sumSkill}\n";
-        if ($sumSkill < 1) $sumSkill = 1; //lowest value for player skill.
+        if ($sumSkill < 1) {
+            $sumSkill = 1; //lowest value for player skill.
+        }
         //echo "sumSkill: {$sumSkill}\n";
 
         //print_r($this->usedItems);
@@ -32,7 +36,8 @@ class Skill extends CModel
         Yii::app()->player->model->rewriteAttributes(['skill_extended'=>$sumSkill]);
     }
     
-    private function minOwnedCount() {
+    private function minOwnedCount()
+    {
         $smaller = Yii::app()->player->model->owned_items < Yii::app()->player->model->owned_baits ? Yii::app()->player->model->owned_items : Yii::app()->player->model->owned_baits;
         return $smaller;
     }
@@ -40,7 +45,8 @@ class Skill extends CModel
     /**
      * Reads the max number of items from the database that can be used and sums their skill points.
      */
-    private function sumSkill($limitItems, $isBait = false) {
+    private function sumSkill($limitItems, $isBait = false)
+    {
         $table = $isBait ? 'users_baits' : 'users_items';
         $skill = 0;
         $countItem = 0;
@@ -64,7 +70,10 @@ class Skill extends CModel
                 //echo "skill: {$item['skill']} | ";
 
                 $toAdd = $limitItems - $countItem;
-                if ($toAdd > $item['item_count']) $toAdd = $item['item_count'];
+                if ($toAdd > $item['item_count']) {
+                    $toAdd = $item['item_count'];
+                }
+
                 //echo "toAdd: {$toAdd}, ";
                 $countItem += $toAdd;
                 //echo "countItem: {$countItem}, ";
@@ -83,10 +92,12 @@ class Skill extends CModel
 
                 $doLoop = $countItem < $limitItems;
                 //echo 'doLoop:' . $doLoop . "\n";
-                if (!$doLoop) break;
+                if (!$doLoop) {
+                    break;
+                }
             }
             $loop++;
-        } while ($doLoop); 
+        } while ($doLoop);
 
         return $skill;
     }

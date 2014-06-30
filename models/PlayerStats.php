@@ -18,18 +18,28 @@ class PlayerStats extends CModel
         'counties'=>[],
         ];
 
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function getUid() { return $this->uid; }
-    public function getStats() { return $this->stats; }
+    public function getUid()
+    {
+        return $this->uid;
+    }
 
-    public function setUid($uid) {
+    public function getStats()
+    {
+        return $this->stats;
+    }
+
+    public function setUid($uid)
+    {
         $this->uid = (int)$uid;
     }
 
-    public function fetchStats() {
+    public function fetchStats()
+    {
         $this->fetchCompletedMissions();
         $this->fetchVisitedMissions();
         $this->fetchDuel();
@@ -64,14 +74,16 @@ class PlayerStats extends CModel
         foreach ($res as $dat) {
             $this->stats['routine'][$dat['water_id']] = $dat['routine'];
             $this->stats['visited_waters']++;
-            if (!array_key_exists($dat['county_id'], $this->stats['counties'])) $this->stats['visited_counties']++;
+            if (!array_key_exists($dat['county_id'], $this->stats['counties'])) {
+                $this->stats['visited_counties']++;
+            }
             $this->stats['counties'][$dat['county_id']] = 1;
         }
     }
 
     protected function fetchDuel()
     {
-        $logger = new Logger; 
+        $logger = new Logger;
         $logger->uid = $this->uid;
         $stat = $logger->getCounters();
 
@@ -80,7 +92,7 @@ class PlayerStats extends CModel
         $this->stats['duel_fail'] = @(int)$stat['duel_fail'];
         $this->stats['duel_rate'] = '?';
         if ($this->stats['duel_success'] or $this->stats['duel_fail']) {
-            $this->stats['duel_rate'] = round( $this->stats['duel_success'] / (($this->stats['duel_success'] + $this->stats['duel_fail'])/100) ,1);
+            $this->stats['duel_rate'] = round($this->stats['duel_success'] / (($this->stats['duel_success'] + $this->stats['duel_fail'])/100), 1);
         }
     }
 
