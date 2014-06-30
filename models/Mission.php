@@ -60,11 +60,13 @@ class Mission extends CModel
     }
 
     /* getters */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getAction() {
+    public function getAction()
+    {
         if (!$this->action) {
             $this->action = new MissionAction();
         }

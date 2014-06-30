@@ -22,18 +22,18 @@ class DuelList extends CModel
     }
 
     public function getOpponents()
-    { 
-        return $this->opponents; 
+    {
+        return $this->opponents;
     }
     
     public function getPagination()
-    { 
-        return $this->pagination; 
+    {
+        return $this->pagination;
     }
 
     public function getCount()
-    { 
-        return $this->count; 
+    {
+        return $this->count;
     }
 
     public function getClubName($club, $id)
