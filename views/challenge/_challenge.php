@@ -1,13 +1,12 @@
-<p>A verseny  
 <?php 
-$now = time(); 
-if ($now < $challenge->startTime): 
+$now = time();
+if ($now < $challenge->startTime):
 ?>
-még nem indult el. Az indulásig hátralévő idő <strong><?= Time::secondsToDifference($challenge->startTime - $now); ?></strong>.
+    <p>A verseny még nem indult el. Az indulásig hátralévő idő <strong><?= Time::secondsToDifference($challenge->startTime - $now); ?></strong>.
 <?php elseif ($now >= $challenge->startTime and $now <= $challenge->endTime): ?>
-folyamatban van. Hátralévő idő <strong><?= Time::secondsToDifference($challenge->endTime - $now); ?></strong>.
+    <p>A verseny folyamatban van. Hátralévő idő <strong><?= Time::secondsToDifference($challenge->endTime - $now); ?></strong>.
 <?php else: ?>
-lezárult.
+    <p>A verseny lezárult.
 
     <?php if ($challenge->winner): ?>
         <?php if ($challenge->winner < 3): ?>
@@ -47,24 +46,24 @@ lezárult.
 </div>
 
 <?php
-if ($now >= $challenge->startTime and $now <= $challenge->endTime) {
-    $ajax = CHtml::ajax(array(
-        'url' => Yii::app()->createUrl('ajax/test', ['id'=>$challenge->id]),
-        'dataType' => 'html', 
-        'type' => 'get', 
-        'success' => 'function(result) {
-            var details = result.split("|");
-            $("#details-caller").html(details[0]); 
-            $("#details-opponent").html(details[1]);
-        }'
-        ) // ajax 
-    ); // script
+    if ($now >= $challenge->startTime and $now <= $challenge->endTime) {
+        $ajax = CHtml::ajax(array(
+            'url' => Yii::app()->createUrl('ajax/test', ['id'=>$challenge->id]),
+            'dataType' => 'html', 
+            'type' => 'get', 
+            'success' => 'function(result) {
+                var details = result.split("|");
+                $("#details-caller").html(details[0]); 
+                $("#details-opponent").html(details[1]);
+    }'
+    ) // ajax 
+); // script
 
-    Yii::app()->clientScript->registerScript('updateChallengeDetails', "
+Yii::app()->clientScript->registerScript('updateChallengeDetails', "
     timeout = 5 * 1000;
-    function refresh() {        
-        $ajax
+function refresh() {        
+    $ajax
     }
-    window.setInterval('refresh()', timeout);", CClientScript::POS_END);
-}
+window.setInterval('refresh()', timeout);", CClientScript::POS_END);
+    }
 ?>

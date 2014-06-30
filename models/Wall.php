@@ -20,7 +20,8 @@ class Wall extends CModel
     private $content_type = '?';
     private $posts = [];
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 

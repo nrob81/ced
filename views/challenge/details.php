@@ -10,6 +10,6 @@ $this->pageTitle = 'Versenyrészletek';
     <?php
     foreach ($challenge->listDuels as $duel) {
         $this->renderPartial('_duellog', ['duel'=>$duel]);
-    } 
+    }
     ?>
 </ul>
