@@ -54,81 +54,193 @@ class Mission extends CModel
     private $skill_extended_at_visit;
     private $locationRoutinesFull;
     
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
     /* getters */
-    public function getId() { return $this->id; }
-    public function getAction() { 
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getAction() {
         if (!$this->action) {
             $this->action = new MissionAction();
         }
-        return $this->action; 
+        return $this->action;
     }
-    public function getWater_id() { return $this->water_id; }
-    public function getGate() { return $this->gate; }
-    public function getReq_energy() { return $this->req_energy; }
-    public function getReq_bait_1() { return $this->req_bait_1; }
-    public function getReq_bait_1_count() { return $this->req_bait_1_count; }
-    public function getReq_bait_2() { return $this->req_bait_2; }
-    public function getReq_bait_2_count() { return $this->req_bait_2_count; }
-    public function getReq_baits() { return $this->req_baits; }
-    public function getAward_xp() { return $this->award_xp; }
-    public function getAward_dollar_min() { return $this->award_dollar_min; }
-    public function getAward_dollar_max() { return $this->award_dollar_max; }
-    public function getAward_setpart() { return $this->award_setpart; }
-    public function getRoutine_gain() { return $this->routine_gain - $this->routine_reduction; }
-    public function getRoutine_reduction() { return $this->routine_reduction; }
-    public function getSkill() { return $this->skill; }
-    public function getTitle() { return $this->title; }
-    public function getTxt() { return $this->txt; }
-    public function getGate_name() { return $this->gate_name; }
-    public function getGate_visited() { return $this->gate_visited; }
-    public function getAward_dollar() {
+
+    public function getWater_id()
+    {
+        return $this->water_id;
+    }
+
+    public function getGate()
+    {
+        return $this->gate;
+    }
+
+    public function getReq_energy()
+    {
+        return $this->req_energy;
+    }
+
+    public function getReq_bait_1()
+    {
+        return $this->req_bait_1;
+    }
+
+    public function getReq_bait_1_count()
+    {
+        return $this->req_bait_1_count;
+    }
+
+    public function getReq_bait_2()
+    {
+        return $this->req_bait_2;
+    }
+
+    public function getReq_bait_2_count()
+    {
+        return $this->req_bait_2_count;
+    }
+
+    public function getReq_baits()
+    {
+        return $this->req_baits;
+    }
+
+    public function getAward_xp()
+    {
+        return $this->award_xp;
+    }
+
+    public function getAward_dollar_min()
+    {
+        return $this->award_dollar_min;
+    }
+
+    public function getAward_dollar_max()
+    {
+        return $this->award_dollar_max;
+    }
+
+    public function getAward_setpart()
+    {
+        return $this->award_setpart;
+    }
+
+    public function getRoutine_gain()
+    {
+        return $this->routine_gain - $this->routine_reduction;
+    }
+
+    public function getRoutine_reduction()
+    {
+        return $this->routine_reduction;
+    }
+
+    public function getSkill()
+    {
+        return $this->skill;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function getTxt()
+    {
+        return $this->txt;
+    }
+
+    public function getGate_name()
+    {
+        return $this->gate_name;
+    }
+
+    public function getGate_visited()
+    {
+        return $this->gate_visited;
+    }
+
+    public function getAward_dollar()
+    {
         if ($this->award_dollar_min == $this->award_dollar_max) {
             return $this->award_dollar_min . '$';
         }
 
         return $this->award_dollar_min . '$ - ' . $this->award_dollar_max . '$';
     }
-    public function getRoutine() { return $this->routine; }
-    public function getChance() { return $this->chance; }
-    public function getLocationRoutinesFull() { return $this->locationRoutinesFull; }
+    public function getRoutine()
+    {
+        return $this->routine;
+    }
+
+    public function getChance()
+    {
+        return $this->chance;
+    }
+
+    public function getLocationRoutinesFull()
+    {
+        return $this->locationRoutinesFull;
+    }
 
     /* setters */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = (int)$id;
     }
-    public function setGate_name($name) {
+
+    public function setGate_name($name)
+    {
         $this->gate_name = $name;
     }
-    public function setRoutine($routine) {
+
+    public function setRoutine($routine)
+    {
         $this->routine = (int)$routine;
     }
-    public function setGate_visited($visited) {
+
+    public function setGate_visited($visited)
+    {
         $this->gate_visited = (bool)$visited;
     }
     
-    public function setRoutine_reduction($reduction) {
+    public function setRoutine_reduction($reduction)
+    {
         $this->routine_reduction = (int)$reduction;
     }
-    public function setReq_energy_expansion($exp) {
+
+    public function setReq_energy_expansion($exp)
+    {
         $this->req_energy_expansion = (int)$exp;
     }
-    public function setSkill_extended_at_visit($value) {
+
+    public function setSkill_extended_at_visit($value)
+    {
         $this->skill_extended_at_visit = (int)$value;
-        if ($this->skill_extended_at_visit < 2) $this->skill_extended_at_visit = 2; //min SEAV
+        if ($this->skill_extended_at_visit < 2) {
+            $this->skill_extended_at_visit = 2; //min SEAV
+        }
     }
-    public function setLocationRoutinesFull($value) {
+
+    public function setLocationRoutinesFull($value)
+    {
         $this->locationRoutinesFull = (bool)$value;
     }
     
-    public function fetch() {
-        if (!$this->id) return false;
+    public function fetch()
+    {
+        if (!$this->id) {
+            return false;
+        }
 
         //read all from db
-        $dependency = new CExpressionDependency('Yii::app()->params["missions_version"]');        
+        $dependency = new CExpressionDependency('Yii::app()->params["missions_version"]');
         $res = Yii::app()->db->cache(Yii::app()->params['cacheDuration'], $dependency)->createCommand()
             ->select('*')
             ->from('missions')
@@ -146,7 +258,8 @@ class Mission extends CModel
         $this->req_baits = $this->fetchBaits();
     }
 
-    private function missionSkill($percent) {
+    private function missionSkill($percent)
+    {
         /* skillA = percentP * 100 / skillP */
         $skillM = 0;
         if ($this->skill_extended_at_visit and $percent) {
@@ -157,13 +270,15 @@ class Mission extends CModel
         return $skillM;
     }
 
-    public function complete() {
+    public function complete()
+    {
         $this->action = new MissionAction();
         $this->action->mission = $this;
         $this->action->complete();
     }
 
-    private function fetchRoutine() {
+    private function fetchRoutine()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('routine')
             ->from('users_missions')
@@ -172,7 +287,8 @@ class Mission extends CModel
         return (int)$res;
     }
 
-    private function fetchBaits() {
+    private function fetchBaits()
+    {
         $baits = [];
 
         for ($b=1; $b<=2; $b++) {
@@ -203,7 +319,8 @@ class Mission extends CModel
         return $baits;
     }
     
-    private function chanceOfPlayer() {
+    private function chanceOfPlayer()
+    {
         $skillMission = $this->skill;
         $skillPlayer = Yii::app()->player->model->skill_extended;
         //echo "$skillPlayer vs. $skillMission\n";
@@ -211,12 +328,12 @@ class Mission extends CModel
         $all = $skillMission + $skillPlayer;
 
         $percentPlayer = round($skillPlayer / ($all / 100), 1);
-        //echo $percentPlayer . '% vs. ' . round($skillMission / ($all / 100), 1) . "% \n"; 
+        //echo $percentPlayer . '% vs. ' . round($skillMission / ($all / 100), 1) . "% \n";
 
         if ($percentPlayer >= 90) {
             $percentPlayer = 100;
-            //echo "new $percentPlayer% \n"; 
+            //echo "new $percentPlayer% \n";
         }
-        return $percentPlayer;      
+        return $percentPlayer;
     }
 }

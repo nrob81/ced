@@ -14,13 +14,13 @@ class Help extends CModel
 
     private $items = [];
     private $topics = [
-        'profile' => 'Profil', 
-        'mission' => 'Megbízások', 
-        'shop' => 'Áron bá', 
-        'duel' => 'Párbaj', 
+        'profile' => 'Profil',
+        'mission' => 'Megbízások',
+        'shop' => 'Áron bá',
+        'duel' => 'Párbaj',
         'club' => 'Klubok'
         ];
-    private $_topic = 'profile';
+    private $topic = 'profile';
 
     public function attributeNames()
     {
@@ -49,7 +49,7 @@ class Help extends CModel
 
     public function setTopic($topic)
     {
-        $this->_topic = $topic;
+        $this->topic = $topic;
     }
 
     public function fetchItems($limit = 0)
@@ -59,8 +59,8 @@ class Help extends CModel
         $this->items = []; //reset
         $added = 0;
         for ($i=$max; $i>=0; $i--) {
-            //echo $i.':'.$this->_topic."\n";
-            $res = Yii::app()->redis->getClient()->get('help:' . $this->_topic . ':'.$i);
+            //echo $i.':'.$this->topic."\n";
+            $res = Yii::app()->redis->getClient()->get('help:' . $this->topic . ':'.$i);
             if ($res) {
                 $this->items[$i] = $res;
                 $added++;
@@ -75,6 +75,6 @@ class Help extends CModel
     private function fetchMax()
     {
         return (int)Yii::app()->redis->getClient()
-            ->get('help:' . $this->_topic . ':max');
+            ->get('help:' . $this->topic . ':max');
     }
 }
