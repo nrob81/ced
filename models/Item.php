@@ -179,7 +179,10 @@ class Item extends CModel
         }
 
         foreach ($res as $k => $v) {
-            if ($k == 'id') continue;
+            if ($k == 'id') {
+                continue;
+            }
+
             $this->$k = $v;
         }
         

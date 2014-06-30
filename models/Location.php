@@ -13,65 +13,83 @@
  */
 class Location extends CModel
 {
-    private $_id;
-    private $_routine;
-    private $_skill_extended_at_visit;
+    private $id;
+    private $routine;
+    private $skill_extended_at_visit;
 
-    private $_county = ['', 'Baranya', 'Bács-Kiskun', 'Jász-Nagykun-Szolnok', 'Csongrád', 'Békés', 'Hajdú-Bihar', 'Szabolcs-Szatmár-Bereg', 'Borsod-Abaúj-Zemplén', 'Heves', 'Nógrád', 'Pest', 'Komárom-Esztergom', 'Győr-Moson-Sopron', 'Fejér', 'Veszprém', 'Vas', 'Zala', 'Somogy', 'Tolna'];
-    private $_missions = [];
-    private $_missionTypes = ['simple'=>[], 'gate'=>[]];
-    private $_completedId = 0;
-    private $_visitedGates = [];
+    private $county = ['', 'Baranya', 'Bács-Kiskun', 'Jász-Nagykun-Szolnok', 'Csongrád', 'Békés', 'Hajdú-Bihar', 'Szabolcs-Szatmár-Bereg', 'Borsod-Abaúj-Zemplén', 'Heves', 'Nógrád', 'Pest', 'Komárom-Esztergom', 'Győr-Moson-Sopron', 'Fejér', 'Veszprém', 'Vas', 'Zala', 'Somogy', 'Tolna'];
+    private $missions = [];
+    private $missionTypes = ['simple'=>[], 'gate'=>[]];
+    private $completedId = 0;
+    private $visitedGates = [];
 
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    public function setId($id) {
-        $this->_id = (int)$id;
+    public function setId($id)
+    {
+        $this->id = (int)$id;
     }
 
-    public function getId() {
-        return $this->_id;
+    public function getId()
+    {
+        return $this->id;
     }
 
-    public function getMissions() {
-        return $this->_missions;
+    public function getMissions()
+    {
+        return $this->missions;
     }
 
-    public function getMissionTypes() {
-        return $this->_missionTypes;
+    public function getMissionTypes()
+    {
+        return $this->missionTypes;
     }
 
-    public function getCompletedId() {
-        return $this->_completedId;
+    public function getCompletedId()
+    {
+        return $this->completedId;
     }
 
-    public function getName($id = 0) {
-        //echo __FUNCTION__ . "\n";
-        if (!$id) $id = $this->_id;
+    public function getName($id = 0)
+    {
+        if (!$id) {
+            $id = $this->id;
+        }
+
         $res = $this->fetchWater($id);
         return $res['title'];
     }
 
-    public function getCounty($id = 0) {
-        //echo __FUNCTION__ . "\n";
-        if (!$id) $id = $this->_id;
+    public function getCounty($id = 0)
+    {
+        if (!$id) {
+            $id = $this->id;
+        }
+
         $res = $this->fetchWater($id);
         $countyId = $res['county_id'];
 
-        $county = @$this->_county[$countyId];
-        if (!$county) $county = '?';
+        $county = @$this->county[$countyId];
+        if (!$county) {
+            $county = '?';
+        }
 
         return $county;
     }
 
-    public function getRoutine() {
-        //echo __FUNCTION__ . "\n";
-        return $this->_routine;
+    public function getRoutine()
+    {
+        return $this->routine;
     }
-    public function getRoutineStars($r = 0) {
-        if (!$r) $r = $this->_routine;
+
+    public function getRoutineStars($r = 0)
+    {
+        if (!$r) {
+            $r = $this->routine;
+        }
 
         $d = floor($r / 81);
 
@@ -90,7 +108,9 @@ class Location extends CModel
         $ret = ['routine'=>$r, 'diamant'=>$d, 'emerald'=>$e, 'gold'=>$g, 'silver'=>$s, 'bronze'=>$b];
         return $ret;
     }
-    public function getRoutineImages($routine) {
+
+    public function getRoutineImages($routine)
+    {
         $txt = '';
         foreach (['diamant', 'emerald', 'gold', 'silver', 'bronze'] as $star) {
             for ($i=0; $i<$routine[$star]; $i++) {
@@ -100,10 +120,11 @@ class Location extends CModel
         return $txt;
     }
     
-    public function getNavigationLinks() {
+    public function getNavigationLinks()
+    {
         $nav = [];
         //previous locations
-        $res = $this->fetchWater($this->_id);
+        $res = $this->fetchWater($this->id);
 
         if ($res['from']) {
             $navId = (int)$res['from'];
@@ -130,13 +151,13 @@ class Location extends CModel
         foreach ($this->missionTypes['gate'] as $missionId) {
             $nextId = (int)$this->missions[$missionId]->gate;
             $visited = $this->isVisited($nextId);
-            $this->_visitedGates[$nextId] = $visited;
+            $this->visitedGates[$nextId] = $visited;
 
             $link = [
                 'id' => $nextId,
                 'type' => 'next',
                 'title' => $this->getName($nextId),
-                'active' => $this->_visitedGates[$nextId],
+                'active' => $this->visitedGates[$nextId],
                 ];
             $nav[] = $link;
         }
@@ -144,9 +165,12 @@ class Location extends CModel
         return $nav;
     }
 
-    public function isVisited($id = 0) {
-        //echo __FUNCTION__ . "\n";
-        if (!$id) $id = $this->_id;
+    public function isVisited($id = 0)
+    {
+        if (!$id) {
+            $id = $this->id;
+        }
+
         $uid = Yii::app()->player->model->uid;
 
         $visited = Yii::app()->db->createCommand()
@@ -169,9 +193,12 @@ class Location extends CModel
         return $visited ? true : false;
     }
 
-    public function setActive() {
+    public function setActive()
+    {
         $player = Yii::app()->player->model;
-        if ($player->last_location == $this->id) return false;
+        if ($player->last_location == $this->id) {
+            return false;
+        }
 
         $attr = ['last_location'=>$this->id];
         
@@ -184,12 +211,12 @@ class Location extends CModel
         return true;
     }
 
-    public function fetchMissions() {
-        //echo __FUNCTION__ . "\n";
+    public function fetchMissions()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('id')
             ->from('missions')
-            ->where('water_id=:id', [':id'=>$this->_id])
+            ->where('water_id=:id', [':id'=>$this->id])
             ->order('id ASC')
             ->queryAll();
 
@@ -198,24 +225,24 @@ class Location extends CModel
         foreach ($res as $mission) {
             $m = new Mission();
             $m->id = $mission['id'];
-            $m->skill_extended_at_visit = $this->_skill_extended_at_visit;
+            $m->skill_extended_at_visit = $this->skill_extended_at_visit;
             $m->req_energy_expansion = $this->getEnergyExpansion();
             $m->fetch();
             if ($m->gate) {
                 $m->gate_name = $this->getName($m->gate);
                 $m->gate_visited = $this->isVisited($m->gate);
-                $this->_visitedGates[$m->gate] = $m->gate_visited;
+                $this->visitedGates[$m->gate] = $m->gate_visited;
             }
 
-            $this->_missions[$mission['id']] = $m;
+            $this->missions[$mission['id']] = $m;
             $key = $m->gate ? 'gate' : 'simple';
-            $this->_missionTypes[$key][] = $mission['id'];
+            $this->missionTypes[$key][] = $mission['id'];
         }
-    }    
-    public function completeMission($id) {
-        //echo __FUNCTION__ . "\n";
+    }
+
+    public function completeMission($id)
+    {
         if (!isset($this->missions[$id])) {
-            //todo log missing mission
             return false;
         }
 
@@ -225,7 +252,7 @@ class Location extends CModel
             return false; //max routine reached
         }
 
-        $this->_completedId = $id;
+        $this->completedId = $id;
         $m = $this->missions[$id];
         if ($m->gate) {
             $m->locationRoutinesFull = $this->allMissionRoutinesAreFull();
@@ -239,47 +266,52 @@ class Location extends CModel
         }
     }
 
-    private function allMissionRoutinesAreFull() {
-        //echo __FUNCTION__ . "\n";
+    private function allMissionRoutinesAreFull()
+    {
         foreach ($this->missions as $mission) {
-            if (!$mission->gate and $mission->routine < 100) return false;
+            if (!$mission->gate and $mission->routine < 100) {
+                return false;
+            }
         }
         return true;
     }
-    private function incrementRoutine() {
-        //echo __FUNCTION__ . "\n";
+
+    private function incrementRoutine()
+    {
         $uid = Yii::app()->player->model->uid;
 
         //increment location routine
         Yii::app()->db
             ->createCommand("UPDATE visited SET routine=routine+1 WHERE uid=:uid AND water_id=:water_id")
-            ->bindValues([':uid'=>$uid, ':water_id'=>$this->_id])
+            ->bindValues([':uid'=>$uid, ':water_id'=>$this->id])
             ->execute();
 
         //reset all missions routine on this location
         Yii::app()->db
             ->createCommand("UPDATE users_missions SET routine=0 WHERE uid=:uid AND water_id=:water_id")
-            ->bindValues([':uid'=>$uid, ':water_id'=>$this->_id])
+            ->bindValues([':uid'=>$uid, ':water_id'=>$this->id])
             ->execute();
 
         //refresh objects
         foreach ($this->missions as $mission) {
             $mission->routine = 0;
         }
-        $this->_routine++;
-        Yii::app()->badge->model->triggerLocationRoutine($this->_id, $this->_routine);
+        $this->routine++;
+        Yii::app()->badge->model->triggerLocationRoutine($this->id, $this->routine);
 
         //add routine awards
         $this->addAwardForRoutine();
     }
-    private function addAwardForRoutine() {
+
+    private function addAwardForRoutine()
+    {
         $player = Yii::app()->player->model;
 
-        if ($this->_routine == 9) { //gold
+        if ($this->routine == 9) { //gold
             $logger = new Logger;
             $logger->key = 'routineAward:'.$player->uid;
             $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
-            $logger->addToSet('id: ' . $this->_id . ', routine: ' . $this->_routine);
+            $logger->addToSet('id: ' . $this->id . ', routine: ' . $this->routine);
             $logger->addToSet('before: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
 
             $player->updateAttributes(['status_points'=>1, 'gold'=>30], []);
@@ -288,11 +320,11 @@ class Location extends CModel
             $logger->addToSet('after: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
         }
 
-        if ($this->_routine == 81) { //diamant
+        if ($this->routine == 81) { //diamant
             $logger = new Logger;
             $logger->key = 'routineAward:'.$player->uid;
             $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
-            $logger->addToSet('id: ' . $this->_id . ', routine: ' . $this->_routine);
+            $logger->addToSet('id: ' . $this->id . ', routine: ' . $this->routine);
             $logger->addToSet('before: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
 
             Yii::app()->player->model->updateAttributes(['status_points'=>1, 'gold'=>100], []);
@@ -302,10 +334,12 @@ class Location extends CModel
         }
     }
 
-    private function visitNewLocation($mission) {
-        if ($mission->gate_visited) return false; //do not open the same location twice
+    private function visitNewLocation($mission)
+    {
+        if ($mission->gate_visited) {
+            return false; //do not open the same location twice
+        }
 
-        //echo __FUNCTION__ . "\n";
         $player = Yii::app()->player->model;
         $gate = (int)$mission->gate;
 
@@ -329,45 +363,71 @@ class Location extends CModel
         Yii::app()->badge->model->triggerTravel($gate);
     }
     
-    private function getReduction() {
+    private function getReduction()
+    {
         $reduction = 0;
-        if ($this->_routine >= 3) $reduction = 1; // silver
-        if ($this->_routine >= 9) $reduction = 2; // gold
-        if ($this->_routine >= 27) $reduction = 3; // emerald
-        if ($this->_routine >= 81) $reduction = 4; // diamant 
-        if ($this->_routine >= 243) $reduction = 5; // 3 diamants
+
+        if ($this->routine >= 3) {
+            $reduction = 1; // silver
+        }
+
+        if ($this->routine >= 9) {
+            $reduction = 2; // gold
+        }
+
+        if ($this->routine >= 27) {
+            $reduction = 3; // emerald
+        }
+
+        if ($this->routine >= 81) {
+            $reduction = 4; // diamant
+        }
+
+        if ($this->routine >= 243) {
+            $reduction = 5; // 3 diamants
+        }
+
         return $reduction;
     }
-    private function getEnergyExpansion() {
+
+    private function getEnergyExpansion()
+    {
         $exp = 0;
-        if ($this->_routine >= 27) $exp = 1; // gold
-        if ($this->_routine >= 243) $exp = 2; // diamant
+
+        if ($this->routine >= 27) {
+            $exp = 1; // gold
+        }
+
+        if ($this->routine >= 243) {
+            $exp = 2; // diamant
+        }
+
         return $exp;
     }
 
-    public function fetchRoutine() {
-        //echo __FUNCTION__ . "\n";
+    public function fetchRoutine()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('routine')
             ->from('visited')
-            ->where('uid=:uid AND water_id=:water_id', [':uid'=>Yii::app()->player->model->uid, ':water_id'=>$this->_id])
+            ->where('uid=:uid AND water_id=:water_id', [':uid'=>Yii::app()->player->model->uid, ':water_id'=>$this->id])
             ->queryScalar();
-        $this->_routine = (int)$res;
+        $this->routine = (int)$res;
     }
-    public function fetchSkill_extended_at_visit() {
-        //echo __FUNCTION__ . "\n";
-        $dependency = new CExpressionDependency('Yii::app()->params["visited_version"]');        
+
+    public function fetchSkill_extended_at_visit()
+    {
+        $dependency = new CExpressionDependency('Yii::app()->params["visited_version"]');
         $res = Yii::app()->db->cache(Yii::app()->params['cacheDuration'], $dependency)->createCommand()
             ->select('skill_extended_at_visit')
             ->from('visited')
-            ->where('uid=:uid AND water_id=:water_id', [':uid'=>Yii::app()->player->model->uid, ':water_id'=>$this->_id])
+            ->where('uid=:uid AND water_id=:water_id', [':uid'=>Yii::app()->player->model->uid, ':water_id'=>$this->id])
             ->queryScalar();
-        $this->_skill_extended_at_visit = (int)$res;
+        $this->skill_extended_at_visit = (int)$res;
     }
 
-    
-
-    public function listVisited() {
+    public function listVisited()
+    {
         $res = Yii::app()->db->createCommand()
             ->select('water_id, routine')
             ->from('visited')
@@ -376,16 +436,19 @@ class Location extends CModel
         $visited = [];
         foreach ($res as $l) {
             $water = $this->fetchWater($l['water_id']);
-            if ($l['water_id'] == Yii::app()->player->model->last_location) $water['last']=1;
+            if ($l['water_id'] == Yii::app()->player->model->last_location) {
+                $water['last']=1;
+            }
+
             $water['routine'] = $l['routine'];
             $visited[$l['water_id']] = $water;
         }
         return $visited;
     }
 
-    private function fetchWater($id) {
-        //echo __FUNCTION__ . "\n";
-        $dependency = new CExpressionDependency('Yii::app()->params["waters_version"]');        
+    private function fetchWater($id)
+    {
+        $dependency = new CExpressionDependency('Yii::app()->params["waters_version"]');
         $res = Yii::app()->db->cache(Yii::app()->params['cacheDuration'], $dependency)->createCommand()
             ->select('*')
             ->from('waters')

@@ -131,7 +131,7 @@ class Leaderboard extends CModel
 
                 for ($i=0; $i<6; $i++) {
                     $d->modify('first day of previous month');
-                    $history[] = $this->boardType . ':' . $d->format('Ym');            
+                    $history[] = $this->boardType . ':' . $d->format('Ym');
                 }
 
                 $redis = Yii::app()->redis->getClient();
