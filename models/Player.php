@@ -65,81 +65,197 @@ class Player extends CModel
 
     private $justAdvanced;
 
-    public function attributeNames() {
+    public function attributeNames()
+    {
         return [];
     }
 
-    // getters
-    public function getUid() { return (int)$this->uid; }
-    public function getUser() { return $this->user; }
-    public function getRegistered() { return $this->registered; }
-    public function getLevel() { return (int)$this->level; }
-    public function getStatus_points() { return $this->itsMe() ? (int)$this->status_points : 0; }
-    public function getEnergy() { return (int)$this->energy; }
-    public function getEnergy_max() { return (int)$this->energy_max; }
-    public function getEnergy_missing() { return $this->energy_max - $this->energy; }
-    public function getEnergyRequiredForDuel() { return round($this->energy_max / 10); }
-    public function getSkill() { return (int)$this->skill; }
-    public function getStrength() { return (int)$this->strength; }
-    public function getDollar() { return (int)$this->dollar; }
-    public function getGold() { return (int)$this->gold; }
-    public function getXp_all() { return (int)$this->xp_all; }
-    public function getXp_delta() { return (int)$this->xp_delta; }
-    public function getXp_remaining() { return (int)$this->xp_recommended - (int)$this->xp_delta; }
-    public function getLast_location() { return (int)$this->last_location; }
-    public function getOwned_items() { return (int)$this->owned_items; }
-    public function getOwned_baits() { return (int)$this->owned_baits; }
-    public function getFound_setitem_time() { return $this->found_setitem_time > $this->registered ? $this->found_setitem_time : $this->registered; }
-    public function getFound_setitem_xp() { return (int)$this->found_setitem_xp; }
-    public function getTutorial_mission() { return (int)$this->tutorial_mission; }
-    public function getIn_club() { return (int)$this->in_club; }
-
-    public function getLevel_percent() { 
-        if (!$this->xp_recommended) return 0;
-        $percent = (int)$this->xp_delta / ((int)$this->xp_recommended / 100);
-        if ($percent < 0) $percent = 0;
-        if ($percent > 100) $percent = 100;
-        return $percent;
+    public function getUid()
+    {
+        return (int)$this->uid;
     }
 
-    public function getRefillPerInterval() {
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function getRegistered()
+    {
+        return $this->registered;
+    }
+
+    public function getLevel()
+    {
+        return (int)$this->level;
+    }
+
+    public function getStatus_points()
+    {
+        return $this->itsMe() ? (int)$this->status_points : 0;
+    }
+
+    public function getEnergy()
+    {
+        return (int)$this->energy;
+    }
+
+    public function getEnergy_max()
+    {
+        return (int)$this->energy_max;
+    }
+
+    public function getEnergy_missing()
+    {
+        return $this->energy_max - $this->energy;
+    }
+
+    public function getEnergyRequiredForDuel()
+    {
         return round($this->energy_max / 10);
     }
 
-    public function getEnergyRefillInterval() {
+    public function getSkill()
+    {
+        return (int)$this->skill;
+    }
+
+    public function getStrength()
+    {
+        return (int)$this->strength;
+    }
+
+    public function getDollar()
+    {
+        return (int)$this->dollar;
+    }
+
+    public function getGold()
+    {
+        return (int)$this->gold;
+    }
+
+    public function getXp_all()
+    {
+        return (int)$this->xp_all;
+    }
+
+    public function getXp_delta()
+    {
+        return (int)$this->xp_delta;
+    }
+
+    public function getXp_remaining()
+    {
+        return (int)$this->xp_recommended - (int)$this->xp_delta;
+    }
+
+    public function getLast_location()
+    {
+        return (int)$this->last_location;
+    }
+
+    public function getOwned_items()
+    {
+        return (int)$this->owned_items;
+    }
+
+    public function getOwned_baits()
+    {
+        return (int)$this->owned_baits;
+    }
+
+    public function getFound_setitem_time()
+    {
+        return $this->found_setitem_time > $this->registered ? $this->found_setitem_time : $this->registered;
+    }
+
+    public function getFound_setitem_xp()
+    {
+        return (int)$this->found_setitem_xp;
+    }
+
+    public function getTutorial_mission()
+    {
+        return (int)$this->tutorial_mission;
+    }
+
+    public function getIn_club()
+    {
+        return (int)$this->in_club;
+    }
+    
+    public function getLevel_percent()
+    { 
+        if (!$this->xp_recommended) {
+            return 0;
+        }
+        $percent = (int)$this->xp_delta / ((int)$this->xp_recommended / 100);
+        
+        if ($percent < 0) {
+            $percent = 0;
+        }
+        if ($percent > 100) {
+            $percent = 100;
+        }
+        return $percent;
+    }
+
+    public function getRefillPerInterval()
+    {
+        return round($this->energy_max / 10);
+    }
+
+    public function getEnergyRefillInterval()
+    {
         return self::ENERGY_REFILL_INTERVAL;
     }
 
-    public function getRemainingTimeToRefill() {
+    public function getRemainingTimeToRefill()
+    {
         $last = strtotime($this->energy_incr_at);
-        if ($last < 0) $last = 0;
+        if ($last < 0) {
+            $last = 0;
+        }
+
         $remaining = self::ENERGY_REFILL_INTERVAL - (time() - $last);
-        if ($remaining < 0) $remaining = 0;
+        if ($remaining < 0) {
+            $remaining = 0;
+        }
+
         return $remaining;
     }
     
-    public function getJustAdvanced() { 
-        return (int)$this->justAdvanced; 
+    public function getJustAdvanced()
+    {
+        return (int)$this->justAdvanced;
     }
 
-    public function getFreeSlots() { 
-        return $this->strength - ($this->owned_items + $this->owned_baits); 
+    public function getFreeSlots()
+    {
+        return $this->strength - ($this->owned_items + $this->owned_baits);
     }
 
-    public function getBlack_market() { 
+    public function getBlack_market()
+    {
         return (bool)(strtotime($this->black_market) >= time());
     }
 
-    public function itsMe() {
+    public function itsMe()
+    {
         return $this->uid == $_SESSION['uid'];
     }
 
-    public function getSkill_extended() { 
-        return $this->skill_extended>0 ? $this->skill_extended : 1; 
+    public function getSkill_extended()
+    {
+        return $this->skill_extended>0 ? $this->skill_extended : 1;
     }
     
-    public function getClubName() {
-        if (!$this->in_club) return false;
+    public function getClubName()
+    {
+        if (!$this->in_club) {
+            return false;
+        }
 
         $club = new Club;
         $club->id = $this->in_club;
@@ -147,30 +263,43 @@ class Player extends CModel
         return $club->name;
     }
 
-    public function setUid($uid) {
+    public function setUid($uid)
+    {
         $this->uid = (int)$uid;
     }
-    public function setOwned_baits($baits) {
+
+    public function setOwned_baits($baits)
+    {
         $this->owned_baits = (int)$baits;
     }
-    public function setOwned_items($items) {
+
+    public function setOwned_items($items)
+    {
         $this->owned_items = (int)$items;
     }
 
-    public function fetchUser() {
+    public function fetchUser()
+    {
         $user = Yii::app()->db->cache(86400)->createCommand()
             ->select('user')
             ->from('main')
             ->where('uid=:uid', [':uid'=>$this->uid])
             ->queryScalar();
-        if (!$user) $user = '???';
+        if (!$user) {
+            $user = '???';
+        }
         $this->user = $user;
     }
 
-    public function setAllAttributes($uid = 0) {
+    public function setAllAttributes($uid = 0)
+    {
         $this->setUid($uid);
-        if (!$this->uid) $this->uid = @$_SESSION['uid'];
-        if (!$this->uid) return false;
+        if (!$this->uid) {
+            $this->uid = @$_SESSION['uid'];
+        }
+        if (!$this->uid) {
+            return false;
+        }
 
         //read all from db
         $res = Yii::app()->db->createCommand()
@@ -189,29 +318,40 @@ class Player extends CModel
         }
     }
 
-    public function rest() {
+    public function rest()
+    {
         $refillable = $this->energy_max - $this->energy;
-        if (!$refillable) return false; //don't need to rest
+        if (!$refillable) {
+            return false; //don't need to rest
+        }
 
         $now = time();
         $last = strtotime($this->energy_incr_at);
-        if ($last<0) $last = 0;
+        if ($last<0) {
+            $last = 0;
+        }
         //echo 'REF_INT: ' . self::ENERGY_REFILL_INTERVAL . "\n";
         //echo 'last: '. date(" Y.m.d. H:i:s", $last) . "\n";
         //echo 'now: '. date("Y-m-d. H:i:s", $now) . "\n";
 
         $interval = $now - $last;
         //echo 'interval: ' . $interval . "\n";
-        if ($interval < self::ENERGY_REFILL_INTERVAL) return false;
+        if ($interval < self::ENERGY_REFILL_INTERVAL) {
+            return false;
+        }
 
         $refillMultiplier = floor($interval / self::ENERGY_REFILL_INTERVAL); //incement energy every 5 minutes
         //echo 'refillMultiplier: ' . $refillMultiplier . "\n";
 
         $refillSum = $refillMultiplier * $this->refillPerInterval;
-        if ($refillSum > $refillable) $refillSum = $refillable;
+        if ($refillSum > $refillable) {
+            $refillSum = $refillable;
+        }
         //echo 'refillSum: ' . $refillSum . "\n";
 
-        if ($refillSum < 1) return false; //don't need to rest
+        if ($refillSum < 1) {
+            return false; //don't need to rest
+        }
 
         $this->energy += $refillSum;
 
@@ -230,11 +370,10 @@ class Player extends CModel
 
         Yii::app()->db->createCommand()
             ->update('main', ['energy'=>$this->energy, 'energy_incr_at'=>$this->energy_incr_at], 'uid=:uid', [':uid'=>(int)$this->uid]);
-    }
+    }    
 
-    
-
-    public function updateAttributes($toIncrement, $toDecrement) {
+    public function updateAttributes($toIncrement, $toDecrement)
+    {
         //$this->logEnergyUsage($toDecrement);
         $attributes = [];
 
@@ -258,7 +397,9 @@ class Player extends CModel
         }
 
         foreach ($toDecrement as $k => $v) {
-            if ($v > $this->$k) $v = $this->$k;
+            if ($v > $this->$k) {
+                $v = $this->$k;
+            }
 
             $newValue = $this->$k - $v;
             $attributes[$k] = $newValue;
@@ -271,12 +412,14 @@ class Player extends CModel
             ->update('main', $attributes, 'uid=:uid', [':uid'=>(int)$this->uid]);
         }
     }
+
     /*protected function logEnergyUsage($attributes)
     {
         //todo: implement redis log
         return false;
     }*/
-    public function rewriteAttributes($attributes) {
+    public function rewriteAttributes($attributes)
+    {
         foreach ($attributes as $k => $v) {
             $this->$k = $v;
         }
@@ -284,11 +427,17 @@ class Player extends CModel
         Yii::app()->db->createCommand()
             ->update('main', $attributes, 'uid=:uid', [':uid'=>(int)$this->uid]);
     }
-    private function incrementLevel($incr) {
-        if (!isset($incr['xp_delta']) or $incr['xp_delta'] < 1) return $incr; //do not touch level
+
+    private function incrementLevel($incr)
+    {
+        if (!isset($incr['xp_delta']) or $incr['xp_delta'] < 1) {
+            return $incr; //do not touch level
+        }
 
         $remaining = $this->getXp_remaining();
-        if ($incr['xp_delta'] < $remaining) return $incr; //don't advance to next level
+        if ($incr['xp_delta'] < $remaining) {
+            return $incr; //don't advance to next level
+        }
 
         //advance
         $incr['level'] = 1;
@@ -306,7 +455,8 @@ class Player extends CModel
         return $incr;
     }
 
-    private function nextXpRecommended() {
+    private function nextXpRecommended()
+    {
         $recommendations = [
             //fromLevel => recommended xp gain to the NEXT level
             1 => 3,
@@ -336,19 +486,18 @@ class Player extends CModel
     }
 
 
-    public function areOwnedItemsMore() {
+    public function areOwnedItemsMore()
+    {
         return $this->owned_items > $this->owned_baits;
-    }
-    
+    }    
 
-    
-
-    public function countOwnedBaitsOf($id) {
+    public function countOwnedBaitsOf($id)
+    {
         $res = Yii::app()->db->createCommand()
             ->select('item_count')
             ->from('users_baits')
             ->where('uid=:uid AND item_id=:item_id', [':uid'=>$this->uid, ':item_id'=>(int)$id])
             ->queryScalar();
         return (int)$res;
-    } 
+    }
 }
