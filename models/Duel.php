@@ -254,8 +254,8 @@ class Duel extends CModel
         
         $this->challengeID = (int)$duel['challenge_id'];
         
-        $this->caller = $duel['caller'];
-        $this->opponent = $duel['opponent'];
+        $this->setCaller($duel['caller']);
+        $this->setOpponent($duel['opponent']);
 
         if ($this->isChallenge) {
             $c = new ClubCompetitor();

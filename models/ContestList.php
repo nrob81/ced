@@ -188,6 +188,7 @@ class ContestList extends CModel
         $redis = Yii::app()->redis->getClient();
         $this->collect = $redis->get('contest:list:'.$this->id.':collect');
         $this->prize = $redis->get('contest:list:'.$this->id.':prize');
+        $this->getMaxScore();
     }
 
     public function fetchList()
