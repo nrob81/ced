@@ -47,7 +47,6 @@ class BackgroundController extends CronController
     public function actionContestStop()
     {
         $contest = new Contest;
-        
         if (time() > $contest->activeId + CONTEST::LIFETIME) {
             echo 'stopped:'. $contest->activeId;
             $contest->complete();

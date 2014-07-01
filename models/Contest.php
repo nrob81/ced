@@ -95,9 +95,9 @@ class Contest extends CModel
         $redis->set('contest:active', $this->activeId);
         $redis->lPush('contest:log', $this->activeId); //log of contests
 
-        $redis->set(self::ID_LIST . $this->activeId.':collect', $this->recommendedCollect);
-        $redis->set(self::ID_LIST . $this->activeId.':prize', $this->recommendedPrize);
-        $redis->set(self::ID_LIST . $this->activeId.':created', date('Y.m.d. H:i:s', $this->activeId));
+        $redis->set(self::ID_LIST . $this->activeId.':collect', $this->getRecommendedCollect());
+        $redis->set(self::ID_LIST . $this->activeId.':prize', $this->getRecommendedPrize());
+        $redis->set(self::ID_LIST . $this->activeId.':created', date('Y.m.d. H:i:s', $this->getActiveId()));
         return true;
     }
 
@@ -105,10 +105,9 @@ class Contest extends CModel
     {
         //todo: log common collecting
 
-        if (!$this->activeId) {
+        if (!$this->getActiveId()) {
             return false; //no active contest
         }
-
         if (!$this->validate($activity, $xp, $dollar)) {
             return false;
         }
@@ -122,8 +121,8 @@ class Contest extends CModel
         if ($this->collectParam == 'dollar') {
             $points = $dollar;
         }
-        
-        Yii::app()->redis->getClient()->zIncrBy(self::ID_LIST . $this->activeId . ':points', $points, $uid);
+
+        Yii::app()->redis->getClient()->zIncrBy(self::ID_LIST . $this->getActiveId() . ':points', $points, $uid);
         return true;
     }
     
@@ -176,7 +175,7 @@ class Contest extends CModel
 
     public function validate($activity, $xp, $dollar)
     {
-        $toCollect = $this->collect;
+        $toCollect = $this->getCollect();
 
         //check the lifetime
         if (time() > $this->activeId + self::LIFETIME) {

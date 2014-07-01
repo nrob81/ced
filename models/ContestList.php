@@ -68,7 +68,7 @@ class ContestList extends CModel
     public function getIsValid()
     {
         if (is_null($this->isValid)) {
-            $this->isValid = Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':created');
+            $this->isValid = Yii::app()->redis->getClient()->exists('contest:list:'.$this->getId().':created');
         }
 
         return (bool)$this->isValid;
@@ -195,7 +195,7 @@ class ContestList extends CModel
     {
         $redis = Yii::app()->redis->getClient();
 
-        $myRank = $redis->zRevRank('contest:list:'.$this->id.':points', $this->uid);
+        $myRank = $redis->zRevRank('contest:list:'.$this->getId().':points', $this->uid);
 
         $range = self::BOARD_RANGE;
         $min = $myRank - $range > 0 ? $myRank - $range : 0;
