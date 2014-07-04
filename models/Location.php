@@ -248,7 +248,7 @@ class Location extends CModel
 
         //max routine
         if ($this->routine >= 243) {
-            Yii::app()->user->setFlash('info', 'Ezen a helyszínen már elérted a legnagyobb helyszínrutint, így nem teljesítheted a főmegbízást.');
+            Yii::app()->user->setFlash('info', 'Ezen a helyszínen már elérted a legnagyobb helyszínrutint, így nem teljesítheted a megbízást.');
             return false; //max routine reached
         }
 

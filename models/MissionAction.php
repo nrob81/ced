@@ -160,7 +160,7 @@ class MissionAction extends CModel
         }
 
         $uid = Yii::app()->player->model->uid;
-        $routine = (int)$this->mission->routine_gain - $this->mission->routine_reduction;
+        $routine = (int)$this->mission->routine_gain;// - $this->mission->routine_reduction;
         if ($routine<1) {
             $routine = 1;
         }
