@@ -5,18 +5,18 @@
             <div class="progressbar"><div style="width:<?= Yii::app()->player->model->level_percent ?>%"></div></div>
         </div>
         <span class="hint">
-        <?php 
-        if (Yii::app()->player->model->status_points) {
-            echo CHtml::link('Fejlődhetsz!', ['/player']);
-        } else {
-            echo 'szintlépésig: ' . Yii::app()->player->model->xp_remaining . ' tp';
-        }
-        ?>
+<?php 
+if (Yii::app()->player->model->status_points) {
+    echo CHtml::link('Fejlődhetsz!', ['/player']);
+} else {
+    echo 'szintlépésig: ' . Yii::app()->player->model->xp_remaining . ' tp';
+}
+?>
         </span>
     </div>
     <div class="block spr block-energy ui-block-b">
         <p id="energy"><?= Yii::app()->player->model->energy ?>/<?= Yii::app()->player->model->energy_max ?></p>
-        <?php 
+<?php 
         if (Yii::app()->player->model->energy_missing>0 and Yii::app()->player->model->remainingTimeToRefill > 0): ?>
             <span id="refillTime" class="hint-indent"><?= Time::secondsToDifference(Yii::app()->player->model->remainingTimeToRefill) ?> múlva +<?= Yii::app()->player->model->refillPerInterval ?></span>
         <?php endif; ?>
