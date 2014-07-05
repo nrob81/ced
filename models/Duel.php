@@ -96,15 +96,22 @@ class Duel extends CModel
             ->queryRow();
 
         if ($last['caller']==$c and $last['opponent']==$o or $last['caller']==$o and $last['opponent']==$c) {
-            $created = strtotime($last['created']);
+            $this->setClubAttributes($last);
+        }
+    }
 
-            if ($this->isBetweenDates($created + 1800, $created + 3600)) {
-                $this->challengeID = (int)$last['id'];
-                $this->callersClubRole = $last['caller'] == $c ? 'caller' : 'opponent';
-                $this->callersClub = $last['caller'] == $c ? $last['name_caller'] : $last['name_opponent'];
-                $this->opponentsClubRole = $last['opponent'] == $o ? 'opponent' : 'caller';
-                $this->opponentsClub = $last['opponent'] == $o ? $last['name_opponent'] : $last['name_caller'];
-            }
+    private function setClubAttributes($challenge)
+    {
+        $created = strtotime($challenge['created']);
+
+        if ($this->isBetweenDates($created + 1800, $created + 3600)) {
+            $this->challengeID = (int)$challenge['id'];
+
+            $this->callersClubRole = $challenge['caller'] == $this->caller->in_club ? 'caller' : 'opponent';
+            $this->callersClub = $challenge['caller'] == $this->caller->in_club ? $challenge['name_caller'] : $challenge['name_opponent'];
+            
+            $this->opponentsClubRole = $challenge['opponent'] == $this->opponent->in_club ? 'opponent' : 'caller';
+            $this->opponentsClub = $challenge['opponent'] == $this->opponent->in_club ? $challenge['name_opponent'] : $challenge['name_caller'];
         }
     }
 
