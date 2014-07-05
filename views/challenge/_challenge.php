@@ -3,9 +3,9 @@ $now = time();
 if ($now < $challenge->startTime):
 ?>
     <p>A verseny még nem indult el. Az indulásig hátralévő idő <strong><?= Time::secondsToDifference($challenge->startTime - $now); ?></strong>.
-<?php elseif ($now >= $challenge->startTime and $now <= $challenge->endTime): ?>
+    <?php elseif ($now >= $challenge->startTime and $now <= $challenge->endTime): ?>
     <p>A verseny folyamatban van. Hátralévő idő <strong><?= Time::secondsToDifference($challenge->endTime - $now); ?></strong>.
-<?php else: ?>
+    <?php else: ?>
     <p>A verseny lezárult.
 
     <?php if ($challenge->winner): ?>
@@ -17,7 +17,7 @@ if ($now < $challenge->startTime):
     <?php else: ?>
         A kiértékelés pillanatokon belül megtörténik.
     <?php endif;?>
-<?php endif; ?>
+    <?php endif; ?>
 </p>
 
 <div class="duel-grid ui-grid-a">
@@ -55,15 +55,17 @@ if ($now < $challenge->startTime):
                 var details = result.split("|");
                 $("#details-caller").html(details[0]); 
                 $("#details-opponent").html(details[1]);
-    }'
-    ) // ajax 
-); // script
+            }'
+            ) // ajax 
+        ); // script
 
-Yii::app()->clientScript->registerScript('updateChallengeDetails', "
-    timeout = 5 * 1000;
-function refresh() {        
-    $ajax
-    }
-window.setInterval('refresh()', timeout);", CClientScript::POS_END);
+        Yii::app()->clientScript->registerScript('updateChallengeDetails', "
+            timeout = 5 * 1000;
+            function refresh() {        
+                $ajax
+                }
+            window.setInterval('refresh()', timeout);",
+            CClientScript::POS_END
+        );
     }
 ?>
