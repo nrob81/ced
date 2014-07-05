@@ -1,5 +1,6 @@
 <?php
-interface ISubject {
-    function setSubjectId($id);
-    function getSubjectName();
+interface ISubject
+{
+    public function setSubjectId($id);
+    public function getSubjectName();
 }
