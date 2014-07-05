@@ -293,13 +293,11 @@ class Challenge extends CModel
             ->queryAll();
         $player = new Player;
         foreach ($res as $d) {
-            $player->uid = $d['caller'];
-            $player->fetchUser();
-            $d['name_caller'] = $player->user;
+            $player->subjectId = $d['caller'];
+            $d['name_caller'] = $player->getSubjectName();
 
-            $player->uid = $d['opponent'];
-            $player->fetchUser();
-            $d['name_opponent'] = $player->user;
+            $player->subjectId = $d['opponent'];
+            $d['name_opponent'] = $player->getSubjectName();
 
             $d['awards'] = $this->getAwards($d['id'], $d['winner']);
 

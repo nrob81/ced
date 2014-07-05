@@ -263,14 +263,9 @@ class Player extends CModel implements ISubject
         return $club->name;
     }
 
-    public function setUid($uid)
-    {
-        $this->uid = (int)$uid;
-    }
-
     public function setSubjectId($id)
     {
-        $this->setUid($id);
+        $this->uid = (int)$id;
     }
 
     public function setOwned_baits($baits)
@@ -311,10 +306,8 @@ class Player extends CModel implements ISubject
 
     public function setAllAttributes($uid = 0)
     {
-        $this->setUid($uid);
-        if (!$this->uid) {
-            $this->uid = @$_SESSION['uid'];
-        }
+        $this->subjectId = $uid ? $uid : @$_SESSION['uid'];
+
         if (!$this->uid) {
             return false;
         }

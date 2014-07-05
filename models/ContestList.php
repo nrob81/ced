@@ -204,12 +204,11 @@ class ContestList extends CModel
         $item = new Player;
         $i = $min+1;
         foreach ($redis->zRevRange('contest:list:'.$this->id.':points', $min, $max, true) as $id => $score) {
-            $item->uid = (int)$id;
-            $item->fetchUser();
+            $item->subjectId = $id;
 
             $this->list[$i] = [
                 'id'=>$id,
-                'name'=>$item->user,
+                'name'=>$item->getSubjectName(),
                 'score'=>$score,
                 ];
             $i++;
@@ -228,11 +227,10 @@ class ContestList extends CModel
         $leaders = [];
         $item = new Player;
         foreach ($res as $id) {
-            $item->uid = $id;
-            $item->fetchUser();
+            $item->subjectId = $id;
 
             $leaders[$id] = [
-                'name'=>$item->user,
+                'name'=>$item->getSubjectName(),
                 'score'=>$this->maxScore,
                 ];
         }
@@ -249,11 +247,10 @@ class ContestList extends CModel
         $winners = [];
         $item = new Player;
         foreach ($res as $id) {
-            $item->uid = $id;
-            $item->fetchUser();
+            $item->subjectId = $id;
 
             $winners[$id] = [
-                'name'=>$item->user,
+                'name'=>$item->getSubjectName(),
                 'score'=>$this->maxScore,
                 ];
         }
