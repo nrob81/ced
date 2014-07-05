@@ -16,7 +16,7 @@
  * @property integer $rank
  * @property integer $rankActual
  */
-class Club extends CModel
+class Club extends CModel implements ISubject
 {
     private $id;
     private $owner;
@@ -127,6 +127,11 @@ class Club extends CModel
     {
         $this->id = (int)$id;
     }
+    
+    public function setSubjectId($id)
+    {
+        $this->setId($id);
+    }
 
     public function setPage($page)
     {
@@ -165,6 +170,19 @@ class Club extends CModel
             ->where('id=:id', [':id'=>$this->id])
             ->queryScalar();
         $this->name = $name;
+    }
+
+    public function getSubjectName()
+    {
+        $name = Yii::app()->db->cache(86400)->createCommand()
+            ->select('name')
+            ->from('club')
+            ->where('id=:id', [':id'=>$this->id])
+            ->queryScalar();
+        if (!$name) {
+            $name = '???';
+        }
+        return $name;
     }
 
     public function fetchItems($would_compete = false)

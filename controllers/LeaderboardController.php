@@ -29,12 +29,7 @@ class LeaderboardController extends GameController
                 $board->setRange(Leaderboard::RANGE_ACTUAL);
                 break;
         }
-
-        if ($board->boardType == Leaderboard::TYPE_CLUB) {
-            $board->fetchClubs();
-        } else {
-            $board->fetch();
-        }
+        $board->fetchList();
 
         $this->render('index', [
             'board'=>$board,

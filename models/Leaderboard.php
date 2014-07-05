@@ -159,34 +159,14 @@ class Leaderboard extends CModel
         $this->inClub = (int)$id;
     }
 
-    public function fetch()
+    public function fetchList()
     {
-        $redis = Yii::app()->redis->getClient();
-
-        $myRank = $redis->zRevRank($this->key, $this->uid);
-
-        $range = self::BOARD_RANGE;
-        $min = $myRank - $range > 0 ? $myRank - $range : 0;
-        $max = $myRank + $range + ($range-$myRank+$min);
-        //echo "search:$this->inClub, mr:$myRank, min:$min, max:$max, \n";
-
-        $item = new Player;
-        $i = $min+1;
-        foreach ($redis->zRevRange($this->key, $min, $max, true) as $id => $score) {
-            $item->uid = $id;
-            $item->fetchUser();
-
-            $this->items[$i] = [
-                'id'=>$id,
-                'name'=>$item->user,
-                'score'=>$score,
-                ];
-            $i++;
+        if ($this->boardType == self::TYPE_PLAYER) {
+            $class = 'Player';
+        } else {
+            $class = 'Club';
         }
-    }
 
-    public function fetchClubs()
-    {
         $redis = Yii::app()->redis->getClient();
 
         $myRank = $redis->zRevRank($this->key, $this->inClub);
@@ -194,17 +174,15 @@ class Leaderboard extends CModel
         $range = self::BOARD_RANGE;
         $min = $myRank - $range > 0 ? $myRank - $range : 0;
         $max = $myRank + $range + ($range-$myRank+$min);
-        //echo "search:$this->inClub, mr:$myRank, min:$min, max:$max, \n";
 
-        $item = new Club;
+        $item = new $class;
         $i = $min+1;
         foreach ($redis->zRevRange($this->key, $min, $max, true) as $id => $score) {
-            $item->id = $id;
-            $item->fetchName();
+            $item->subjectId = $id;
 
             $this->items[$i] = [
                 'id'=>$id,
-                'name'=>$item->name,
+                'name'=>$item->getSubjectName(),
                 'score'=>$score,
                 ];
             $i++;

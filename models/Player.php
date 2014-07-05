@@ -33,7 +33,7 @@
  * @property integer $skill_extended
  * @property string $clubName
  */
-class Player extends CModel
+class Player extends CModel implements ISubject
 {
     const ENERGY_REFILL_INTERVAL = 300; //5min
 
@@ -268,6 +268,11 @@ class Player extends CModel
         $this->uid = (int)$uid;
     }
 
+    public function setSubjectId($id)
+    {
+        $this->setUid($id);
+    }
+
     public function setOwned_baits($baits)
     {
         $this->owned_baits = (int)$baits;
@@ -289,6 +294,19 @@ class Player extends CModel
             $user = '???';
         }
         $this->user = $user;
+    }
+    
+    public function getSubjectName()
+    {
+        $name = Yii::app()->db->cache(86400)->createCommand()
+            ->select('user')
+            ->from('main')
+            ->where('uid=:uid', [':uid'=>$this->uid])
+            ->queryScalar();
+        if (!$name) {
+            $name = '???';
+        }
+        return $name;
     }
 
     public function setAllAttributes($uid = 0)
