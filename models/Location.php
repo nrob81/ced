@@ -126,25 +126,17 @@ class Location extends CModel
         //previous locations
         $res = $this->fetchWater($this->id);
 
-        if ($res['from']) {
-            $navId = (int)$res['from'];
-            $link = [
-                'id' => $navId,
-                'type' => 'prev',
-                'title' => $this->getName($navId),
-                'active' => true,
-                ];
-            $nav[] = $link;
-        }
-        if ($res['from2']) {
-            $navId = (int)$res['from2'];
-            $link = [
-                'id' => $navId,
-                'type' => 'prev',
-                'title' => $this->getName($navId),
-                'active' => true,
-                ];
-            $nav[] = $link;
+        foreach (['from', 'from2'] as $id) {
+            if ($res[$id]) {
+                $navId = (int)$res[$id];
+                $link = [
+                    'id' => $navId,
+                    'type' => 'prev',
+                    'title' => $this->getName($navId),
+                    'active' => true,
+                    ];
+                $nav[] = $link;
+            }
         }
 
         //next locations
