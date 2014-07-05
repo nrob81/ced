@@ -221,20 +221,8 @@ class ContestList extends CModel
             return false;
         }
         
-        $redis = Yii::app()->redis->getClient();
-        $res = $redis->zRevRangeByScore('contest:list:'.$this->id.':points', $this->maxScore, $this->maxScore);
-
-        $leaders = [];
-        $item = new Player;
-        foreach ($res as $id) {
-            $item->subjectId = $id;
-
-            $leaders[$id] = [
-                'name'=>$item->getSubjectName(),
-                'score'=>$this->maxScore,
-                ];
-        }
-        $this->leaders = $leaders;
+        $res = Yii::app()->redis->getClient()->zRevRangeByScore('contest:list:'.$this->id.':points', $this->maxScore, $this->maxScore);
+        $this->leaders = $this->listBestPlayers($res);
     }
     
     public function fetchWinners()
@@ -242,21 +230,25 @@ class ContestList extends CModel
         if (!$this->maxScore) {
             return false;
         }
-        $res = Yii::app()->redis->getClient()->smembers('contest:list:'.$this->id.':winners');
 
-        $winners = [];
+        $res = Yii::app()->redis->getClient()->smembers('contest:list:'.$this->id.':winners');
+        $this->winners = $this->listBestPlayers($res);
+    }
+    
+    private function listBestPlayers($res)
+    {
+        $list = [];
         $item = new Player;
         foreach ($res as $id) {
             $item->subjectId = $id;
 
-            $winners[$id] = [
+            $list[$id] = [
                 'name'=>$item->getSubjectName(),
                 'score'=>$this->maxScore,
                 ];
         }
-        $this->winners = $winners;
+        return $list;
     }
-    
     
     public function canClaimPrize()
     {
