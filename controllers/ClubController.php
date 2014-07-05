@@ -15,28 +15,23 @@ class ClubController extends GameController
 
     public function actionList($page = 0)
     {
-        $model=new Club;
-
-        $model->page = $page;
-        $model->fetchItems();
-
-        $this->render('list', [
-            'list'=>$model->items,
-            'pagination' => $model->pagination,
-            'count' => $model->count,
-            'page_size' => Yii::app()->params['listPerPage'],
-            'page'=>$page,
-            ]);
+        $this->renderList($page, false);
     }
 
     public function actionListCompete($page = 0)
     {
+        $this->renderList($page, true);
+    }
+
+    protected function renderList($page, $compete)
+    {
         $model=new Club;
 
         $model->page = $page;
-        $model->fetchItems(true);
+        $model->fetchItems($compete);
 
-        $this->render('listcompete', [
+        $template = $compete ? 'listcompete' : 'list';
+        $this->render($template, [
             'list'=>$model->items,
             'pagination' => $model->pagination,
             'count' => $model->count,
