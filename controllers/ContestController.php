@@ -27,10 +27,8 @@ class ContestController extends GameController
 
         $cl->fetchDetails();
         $cl->fetchList();
-        if ($cl->isActive) {
-            $cl->fetchLeaders();
-        } else {
-            $cl->fetchWinners();
+        if ($cl->maxScore) {
+            $cl->listBestPlayers();
         }
         $cl->seeContest();
 

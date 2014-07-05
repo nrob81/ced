@@ -8,7 +8,6 @@
  * @property boolean $isValid
  * @property boolean $isActive
  * @property integer $secUntilEnd
- * @property array $leaders
  * @property array $winners
  * @property array $list
  * @property array $history
@@ -29,7 +28,6 @@ class ContestList extends CModel
     private $prize;
     private $maxScore;
     private $list;
-    private $leaders;
     private $winners;
     private $history;
     private $collectTypes = [
@@ -90,11 +88,6 @@ class ContestList extends CModel
         return $sue;
     }
 
-    public function getLeaders()
-    {
-        return $this->leaders;
-    }
-
     public function hasWinner()
     {
         //if ($this->secUntilEnd > 0) return false; //contest is active
@@ -121,7 +114,7 @@ class ContestList extends CModel
     
     public function getRankDescription()
     {
-        if (!$this->isActive) {
+        if (!$this->getIsActive()) {
             return '';
         }
 
@@ -215,28 +208,15 @@ class ContestList extends CModel
         }
     }
     
-    public function fetchLeaders()
+    public function listBestPlayers()
     {
-        if (!$this->maxScore) {
-            return false;
-        }
-        
-        $res = Yii::app()->redis->getClient()->zRevRangeByScore('contest:list:'.$this->id.':points', $this->maxScore, $this->maxScore);
-        $this->leaders = $this->listBestPlayers($res);
-    }
-    
-    public function fetchWinners()
-    {
-        if (!$this->maxScore) {
-            return false;
+        $redis = Yii::app()->redis->getClient();
+        if ($this->getIsActive()) {
+            $res = $redis->zRevRangeByScore('contest:list:'.$this->id.':points', $this->maxScore, $this->maxScore);
+        } else {
+            $res = $redis->smembers('contest:list:'.$this->id.':winners');
         }
 
-        $res = Yii::app()->redis->getClient()->smembers('contest:list:'.$this->id.':winners');
-        $this->winners = $this->listBestPlayers($res);
-    }
-    
-    private function listBestPlayers($res)
-    {
         $list = [];
         $item = new Player;
         foreach ($res as $id) {
@@ -247,7 +227,7 @@ class ContestList extends CModel
                 'score'=>$this->maxScore,
                 ];
         }
-        return $list;
+        $this->winners = $list;
     }
     
     public function canClaimPrize()
