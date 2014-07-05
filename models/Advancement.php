@@ -26,7 +26,7 @@ class Advancement extends CModel
 
     public function getSkillImprovement()
     {
-        $di = $this->dollarImprovement;
+        $di = $this->getDollarImprovement();
 
         //strongest bait
         $bait = Yii::app()->db->createCommand()
@@ -59,9 +59,9 @@ class Advancement extends CModel
             1=>['energy_max'=>1, 'energy'=>1],
             ['skill'=>2, 'skill_extended'=>2],
             ['strength'=>2],
-            ['dollar'=>$this->dollarImprovement]
+            ['dollar'=>$this->getDollarImprovement()]
             ];
-        $mapIdAttribute[2]['skill'] = $mapIdAttribute[2]['skill_extended'] = $this->skillImprovement;
+        $mapIdAttribute[2]['skill'] = $mapIdAttribute[2]['skill_extended'] = $this->getSkillImprovement();
 
         $increment = isset($mapIdAttribute[$id]) ? $mapIdAttribute[$id] : false;
 

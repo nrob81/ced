@@ -45,7 +45,6 @@ class BadgeList extends Badge
         }
 
         $redis = Yii::app()->redis->getClient();
-        //$this->ownedKeys = $redis->sInter("badges:owned:{$this->uid}", 'badges:all');
         $this->ownedKeys = $redis->zRevRange("badges:added:{$this->uid}", 0, -1);
 
         foreach ($this->ownedKeys as $item) {
