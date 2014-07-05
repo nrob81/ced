@@ -297,33 +297,29 @@ class Location extends CModel
 
     private function addAwardForRoutine()
     {
-        $player = Yii::app()->player->model;
-
         if ($this->routine == 9) { //gold
-            $logger = new Logger;
-            $logger->key = 'routineAward:'.$player->uid;
-            $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
-            $logger->addToSet('id: ' . $this->id . ', routine: ' . $this->routine);
-            $logger->addToSet('before: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
-
-            $player->updateAttributes(['status_points'=>1, 'gold'=>30], []);
-            Yii::app()->user->setFlash('info', 'Gratulálok, elérted az <strong> arany </strong> helyszínrutint!<br/>Jutalmad: 1 státuszpont és 30 arany.');
-
-            $logger->addToSet('after: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
+            $this->addAward(1, 30, 'az arany');
         }
 
         if ($this->routine == 81) { //diamant
-            $logger = new Logger;
-            $logger->key = 'routineAward:'.$player->uid;
-            $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
-            $logger->addToSet('id: ' . $this->id . ', routine: ' . $this->routine);
-            $logger->addToSet('before: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
-
-            Yii::app()->player->model->updateAttributes(['status_points'=>1, 'gold'=>100], []);
-            Yii::app()->user->setFlash('info', 'Gratulálok, elérted a <strong> gyémánt </strong> helyszínrutint!<br/>Jutalmad: 1 státuszpont és 100 arany.');
-
-            $logger->addToSet('after: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
+            $this->addAward(1, 100, 'a gyémánt');
         }
+    }
+
+    private function addAward($sp, $gold, $title)
+    {
+        $player = Yii::app()->player->model;
+
+        $logger = new Logger;
+        $logger->key = 'routineAward:'.$player->uid;
+        $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
+        $logger->addToSet('id: ' . $this->id . ', routine: ' . $this->routine);
+        $logger->addToSet('before: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
+
+        $player->updateAttributes(['status_points'=>$sp, 'gold'=>$gold], []);
+        Yii::app()->user->setFlash('info', "Gratulálok, elérted <strong> {$title} </strong> helyszínrutint!<br/>Jutalmad: {$sp} státuszpont és {$gold} arany.");
+
+        $logger->addToSet('after: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
     }
 
     private function visitNewLocation($mission)
