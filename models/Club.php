@@ -364,19 +364,8 @@ class Club extends CModel implements ISubject
 
     public function close($pass)
     {
-        $player = Yii::app()->player->model;
-        
-        $challenge = new Challenge;
-        if ($challenge->hasActiveChallenge($this->id)) {
-            throw new CFlashException('A klub nem szüntethető meg verseny közben.');
-        }
-
-        if ($player->uid <> $this->owner) {
-            throw new CFlashException('A klubot csak az alapító szüntetheti meg.');
-        }
-
-        if (md5($pass) !== $_SESSION['pass']) {
-            throw new CFlashException('A jelszó helytelen.');
+        if (!$this->requirementsForClose($pass)) {
+            return false;
         }
         
         //delete members
@@ -408,6 +397,23 @@ class Club extends CModel implements ISubject
                 'id=:club_id',
                 [':club_id'=>$this->id]
             );
+
+        return true;
+    }
+
+    private function requirementsForClose($pass)
+    {
+        if ((new Challenge)->hasActiveChallenge($this->id)) {
+            throw new CFlashException('A klub nem szüntethető meg verseny közben.');
+        }
+
+        if (Yii::app()->player->uid <> $this->owner) {
+            throw new CFlashException('A klubot csak az alapító szüntetheti meg.');
+        }
+
+        if (md5($pass) !== $_SESSION['pass']) {
+            throw new CFlashException('A jelszó helytelen.');
+        }
 
         return true;
     }
