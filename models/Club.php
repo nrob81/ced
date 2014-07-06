@@ -368,36 +368,9 @@ class Club extends CModel implements ISubject
             return false;
         }
         
-        //delete members
-        Yii::app()->db->createCommand()
-            ->delete(
-                'club_members',
-                'club_id=:club_id',
-                [':club_id'=>$this->id]
-            );
-
-        //update in_club
-        $this->members[$this->owner] = ['uid'=>$this->owner];
-        foreach ($this->members as $member) {
-            Yii::app()->db->createCommand()
-            ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$member['uid']]);
-        }
-        //delete forum
-        Yii::app()->db->createCommand()
-            ->delete(
-                'forum',
-                'club_id=:club_id',
-                [':club_id'=>$this->id]
-            );
-
-        //delete club
-        Yii::app()->db->createCommand()
-            ->delete(
-                'club',
-                'id=:club_id',
-                [':club_id'=>$this->id]
-            );
-
+        $this->fireMembers();
+        $this->deleteForum();
+        $this->deleteClub();
         return true;
     }
 
@@ -416,6 +389,42 @@ class Club extends CModel implements ISubject
         }
 
         return true;
+    }
+
+    private function fireMembers()
+    {
+        Yii::app()->db->createCommand()
+            ->delete(
+                'club_members',
+                'club_id=:club_id',
+                [':club_id'=>$this->id]
+            );
+
+        $this->members[$this->owner] = ['uid'=>$this->owner];
+        foreach ($this->members as $member) {
+            Yii::app()->db->createCommand()
+                ->update('main', ['in_club'=>0], 'uid=:uid', [':uid'=>(int)$member['uid']]);
+        }
+    }
+
+    private function deleteForum()
+    {
+        Yii::app()->db->createCommand()
+            ->delete(
+                'forum',
+                'club_id=:club_id',
+                [':club_id'=>$this->id]
+            );
+    }
+
+    private function deleteClub()
+    {
+        Yii::app()->db->createCommand()
+            ->delete(
+                'club',
+                'id=:club_id',
+                [':club_id'=>$this->id]
+            );
     }
 
     public function switchCompete()
