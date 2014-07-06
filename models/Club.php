@@ -97,32 +97,18 @@ class Club extends CModel implements ISubject
         return $this->challenges;
     }
     
-    public function getRank()
+    public function getRank($getActual = false)
     {
         $redis = Yii::app()->redis->getClient();
 
-        $key = 'board_c:6month';
+        $key = $getActual ? 'board_c:' . date('Ym') : 'board_c:6month';
         $rank  = $redis->zRevRank($key, $this->id);
         if ($rank !== false) {
             $rank++;
         }
-
         return $rank;
     }
     
-    public function getRankActual()
-    {
-        $redis = Yii::app()->redis->getClient();
-
-        $key = 'board_c:' . date('Ym');
-        $rank  = $redis->zRevRank($key, $this->id);
-        if ($rank !== false) {
-            $rank++;
-        }
-
-        return $rank;
-    }
-
     public function setId($id)
     {
         $this->id = (int)$id;

@@ -11,8 +11,8 @@
         <?php endif;?>
     </div>
     <div class="block ui-block-b">
-        aktuális ranglistás helyezés : <span><?= $club->rankActual ? '#'.$club->rankActual : '-' ?></span><br/>
-        összesített rangl. helyezés: <span><?= $club->rank ? '#'.$club->rank : '-' ?></span><br/>
+        aktuális ranglistás helyezés : <span><?= $club->getRank(true) ? '#'.$club->getRank(true) : '-' ?></span><br/>
+        összesített rangl. helyezés: <span><?= $club->getRank() ? '#'.$club->getRank() : '-' ?></span><br/>
         legutóbbi versenyek: <span><?= CHtml::link('lista', ['/club/history', 'id'=>$club->id]); ?></span><br/>
     </div>
 </div><!-- /info -->
