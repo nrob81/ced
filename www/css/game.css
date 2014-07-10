@@ -100,7 +100,7 @@ p { margin: 0; }
 /* icons */
 .ui-icon-fishing-reel { background-image: url("images/fishing-reel.png"); }
 
-#game-name { text-align: right; margin-top: 1em; }
+#game-name { text-align: right; margin-top: 1em; box-shadow: none !important; }
 #game-name li { display: inline; }
 
 .responsive-a .ui-block-a { padding-right: .4em; }
@@ -150,7 +150,7 @@ p { margin: 0; }
 
 .water {
     min-height: 200px;
-    background:transparent url(warm-s.png?1) center 4em no-repeat fixed !important;
+    background:transparent url(jul-s.png?1) center 4em no-repeat fixed !important;
     background-size:contain !important;
 }
 .water h2:first-child { margin-top: 2em; }
@@ -177,7 +177,7 @@ p { margin: 0; }
 
     .water { 
         min-height: 500px;
-        background:transparent url(warm-b.png?1) center 0% no-repeat fixed !important; 
+        background:transparent url(jul-b.png?1) center 0% no-repeat fixed !important; 
         background-size:contain !important;
     }
 }
