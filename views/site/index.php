@@ -8,7 +8,7 @@ $this->pageTitle=Yii::app()->name;
 </ul>
 
 <h2>Játéknapló</h2>
-<ul data-role="listview" data-inset="true" data-theme="d">
+<ul class="gamelog" data-role="listview" data-inset="true" data-theme="d">
     <?php 
     if (count($posts)) {
     foreach ($posts as $post) {

@@ -311,6 +311,11 @@ a#map {
     margin: 0 1em;
 }
 
+.gamelog .ui-btn-up-d {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    background-image: none;
+}
+
 /* missions */
 .mission {
     font-size: inherit;
