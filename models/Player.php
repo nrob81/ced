@@ -492,23 +492,6 @@ class Player extends CModel implements ISubject
                 return $recommendations[$i];
             }
         }
-
         return 0;
-    }
-
-
-    public function areOwnedItemsMore()
-    {
-        return $this->owned_items > $this->owned_baits;
-    }    
-
-    public function countOwnedBaitsOf($id)
-    {
-        $res = Yii::app()->db->createCommand()
-            ->select('item_count')
-            ->from('users_baits')
-            ->where('uid=:uid AND item_id=:item_id', [':uid'=>$this->uid, ':item_id'=>(int)$id])
-            ->queryScalar();
-        return (int)$res;
     }
 }
