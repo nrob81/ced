@@ -67,7 +67,7 @@ class LocationAction extends CModel
             $m->locationRoutinesFull = $this->allMissionRoutinesAreFull();
         }
 
-        $this->location->routine_reduction = $this->getReduction();
+        $m->routine_reduction = $this->getReduction();
         $m->complete();
         if ($m->gate && $m->action->success) {
             $this->incrementRoutine();

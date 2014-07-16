@@ -200,11 +200,6 @@ class Location extends CModel
         return true;
     }
 
-    public function setRoutine_reduction($rr)
-    {
-        $this->routine_reduction = (int)$rr;
-    }
-
     public function fetchMissions()
     {
         $res = Yii::app()->db->createCommand()
