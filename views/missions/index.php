@@ -10,11 +10,11 @@ Yii::app()->controller->renderPartial('_navigation', ['name'=>$name, 'nav'=>$nav
 if ($tutorialToShow) $this->renderPartial('_tutorial', ['id'=>$tutorialToShow]);
 ?>
 
-<?php if ($completedId): ?>
+<?php if ($mission_id): ?>
 <ul class="missions missions-active" data-role="listview" data-inset="true">
     <?php
-    $tpl = $missions[$completedId]->action->success ? '_actual' : '_mission';
-    Yii::app()->controller->renderPartial($tpl, ['data'=>$missions[$completedId], 'widget' => $this, 'notify'=>true, 'error'=>$error]);
+    $tpl = $missions[$mission_id]->action->success ? '_actual' : '_mission';
+    Yii::app()->controller->renderPartial($tpl, ['data'=>$missions[$mission_id], 'widget' => $this, 'notify'=>true, 'error'=>$error]);
     ?>
 </ul>
 <?php endif; ?>
@@ -30,7 +30,7 @@ if ($tutorialToShow) $this->renderPartial('_tutorial', ['id'=>$tutorialToShow]);
     <li data-role="list-divider"><p class="spr mission">Fő megbízás</p></li>
         <?php
         foreach($missionTypeList['gate'] as $id) {
-            if ($id == $completedId) continue;
+            if ($id == $mission_id) continue;
             Yii::app()->controller->renderPartial('_mission', ['data' => $missions[$id], 'widget' => $this, 'notify'=>false]);
         }
         ?>

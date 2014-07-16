@@ -3,7 +3,6 @@
  * @property integer $id
  * @property array $missions
  * @property array $missionTypes
- * @property integer $completedId
  * @property string $name
  * @property string $county
  * @property integer $routine
@@ -20,7 +19,6 @@ class Location extends CModel
     private $county = ['', 'Baranya', 'Bács-Kiskun', 'Jász-Nagykun-Szolnok', 'Csongrád', 'Békés', 'Hajdú-Bihar', 'Szabolcs-Szatmár-Bereg', 'Borsod-Abaúj-Zemplén', 'Heves', 'Nógrád', 'Pest', 'Komárom-Esztergom', 'Győr-Moson-Sopron', 'Fejér', 'Veszprém', 'Vas', 'Zala', 'Somogy', 'Tolna'];
     private $missions = [];
     private $missionTypes = ['simple'=>[], 'gate'=>[]];
-    private $completedId = 0;
     private $visitedGates = [];
 
     public function attributeNames()
@@ -46,11 +44,6 @@ class Location extends CModel
     public function getMissionTypes()
     {
         return $this->missionTypes;
-    }
-
-    public function getCompletedId()
-    {
-        return $this->completedId;
     }
 
     public function getName($id = 0)
@@ -83,6 +76,10 @@ class Location extends CModel
     public function getRoutine()
     {
         return $this->routine;
+    }
+    public function incrementRoutine()
+    {
+        return $this->routine++;
     }
 
     public function getRoutineStars($r = 0)
@@ -203,6 +200,11 @@ class Location extends CModel
         return true;
     }
 
+    public function setRoutine_reduction($rr)
+    {
+        $this->routine_reduction = (int)$rr;
+    }
+
     public function fetchMissions()
     {
         $res = Yii::app()->db->createCommand()
@@ -230,152 +232,6 @@ class Location extends CModel
             $key = $m->gate ? 'gate' : 'simple';
             $this->missionTypes[$key][] = $mission['id'];
         }
-    }
-
-    public function completeMission($id)
-    {
-        if (!isset($this->missions[$id])) {
-            return false;
-        }
-
-        //max routine
-        if ($this->routine >= 243) {
-            Yii::app()->user->setFlash('info', 'Ezen a helyszínen már elérted a legnagyobb helyszínrutint, így nem teljesítheted a megbízást.');
-            return false; //max routine reached
-        }
-
-        $this->completedId = $id;
-        $m = $this->missions[$id];
-        if ($m->gate) {
-            $m->locationRoutinesFull = $this->allMissionRoutinesAreFull();
-        }
-
-        $m->routine_reduction = $this->getReduction();
-        $m->complete();
-        if ($m->gate && $m->action->success) {
-            $this->incrementRoutine();
-            $this->visitNewLocation($m);
-        }
-    }
-
-    private function allMissionRoutinesAreFull()
-    {
-        foreach ($this->missions as $mission) {
-            if (!$mission->gate and $mission->routine < 100) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function incrementRoutine()
-    {
-        $uid = Yii::app()->player->model->uid;
-
-        //increment location routine
-        Yii::app()->db
-            ->createCommand("UPDATE visited SET routine=routine+1 WHERE uid=:uid AND water_id=:water_id")
-            ->bindValues([':uid'=>$uid, ':water_id'=>$this->id])
-            ->execute();
-
-        //reset all missions routine on this location
-        Yii::app()->db
-            ->createCommand("UPDATE users_missions SET routine=0 WHERE uid=:uid AND water_id=:water_id")
-            ->bindValues([':uid'=>$uid, ':water_id'=>$this->id])
-            ->execute();
-
-        //refresh objects
-        foreach ($this->missions as $mission) {
-            $mission->routine = 0;
-        }
-        $this->routine++;
-        Yii::app()->badge->model->triggerLocationRoutine($this->id, $this->routine);
-
-        //add routine awards
-        $this->addAwardForRoutine();
-    }
-
-    private function addAwardForRoutine()
-    {
-        if ($this->routine == 9) { //gold
-            $this->addAward(1, 30, 'az arany');
-        }
-
-        if ($this->routine == 81) { //diamant
-            $this->addAward(1, 100, 'a gyémánt');
-        }
-    }
-
-    private function addAward($sp, $gold, $title)
-    {
-        $player = Yii::app()->player->model;
-
-        $logger = new Logger;
-        $logger->key = 'routineAward:'.$player->uid;
-        $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
-        $logger->addToSet('id: ' . $this->id . ', routine: ' . $this->routine);
-        $logger->addToSet('before: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
-
-        $player->updateAttributes(['status_points'=>$sp, 'gold'=>$gold], []);
-        Yii::app()->user->setFlash('info', "Gratulálok, elérted <strong> {$title} </strong> helyszínrutint!<br/>Jutalmad: {$sp} státuszpont és {$gold} arany.");
-
-        $logger->addToSet('after: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
-    }
-
-    private function visitNewLocation($mission)
-    {
-        if ($mission->gate_visited) {
-            return false; //do not open the same location twice
-        }
-
-        $player = Yii::app()->player->model;
-        $gate = (int)$mission->gate;
-
-        $location = Yii::app()->db->createCommand()
-            ->select('uid, water_id')
-            ->from('visited')
-            ->where('uid=:uid AND water_id=:water_id', [':uid'=>$player->uid, ':water_id'=>$gate])
-            ->queryScalar();
-
-        if (!$location) {
-            Yii::app()->db->createCommand()
-                ->insert('visited', [
-                'uid'=>$player->uid,
-                'water_id'=>$gate,
-                'skill_extended_at_visit'=>(int)$player->skill_extended,
-                ]);
-        }
-        $mission->action->gained_visit = true;
-        Yii::app()->gameLogger->log(['type'=>'travel', 'traveled_to'=>$gate]);
-
-        Yii::app()->badge->model->triggerTravel($gate);
-    }
-    
-    private function getReduction()
-    {
-        $reduction = 0;
-
-        if ($this->routine >= 3) {
-            $reduction = 1; // silver
-        }
-
-        if ($this->routine >= 9) {
-            $reduction = 2; // gold
-        }
-
-        if ($this->routine >= 27) {
-            $reduction = 3; // emerald
-        }
-
-        if ($this->routine >= 81) {
-            $reduction = 4; // diamant
-        }
-
-        if ($this->routine >= 243) {
-            $reduction = 5; // 3 diamants
-        }
-
-        return $reduction;
     }
 
     private function getEnergyExpansion()
@@ -444,4 +300,5 @@ class Location extends CModel
             ->queryRow();
         return $res;
     }
+
 }

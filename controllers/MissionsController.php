@@ -24,11 +24,18 @@ class MissionsController extends GameController
 
         //complete selected mission
         $mission_id = Yii::app()->request->getPost('mission_id', 0);
+        $completedId = 0;
         $error = '';
-        try {
-            $location->completeMission($mission_id);
-        } catch (CFlashException $e) {
-            $error = $e->getMessage();
+        if ($mission_id) {
+            $error = '';
+            try {
+                $locAction = new LocationAction();
+                $locAction->location = $location;
+                $locAction->completeMission($mission_id);
+                $completedId = $locAction->completedId;
+            } catch (CFlashException $e) {
+                $error = $e->getMessage();
+            }
         }
 
         //name of location
@@ -55,7 +62,8 @@ class MissionsController extends GameController
             'missions'=>$location->missions,
             'missionTypeList'=>$location->missionTypes,
             'nav' => $nav,
-            'completedId'=>$location->completedId,
+            'mission_id'=>$mission_id,
+            'completedId'=>$completedId,
             'routine'=>$location->routineStars,
             'tutorialToShow'=>$tutorialToShow,
             'error'=>$error,
