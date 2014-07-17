@@ -2,6 +2,7 @@
 return array(
     'basePath'=>'/data/www/ced',
     'name'=>'Carp-e Diem',
+    'defaultController'=>'public',
 
     // preloading 'log' component
     'preload'=>['log'],
@@ -34,7 +35,7 @@ return array(
             'class'=>'vendor.limi7less.minscript.components.ExtMinScript',
             ],
             'user'=>[
-            'allowAutoLogin'=>false,
+            'allowAutoLogin'=>true, //for non-wline site
             ],
             'player' => [
             'class'=> 'application.components.PlayerComponent',

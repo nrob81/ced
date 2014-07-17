@@ -243,7 +243,7 @@ class Player extends CModel implements ISubject
 
     public function itsMe()
     {
-        return $this->uid == $_SESSION['uid'];
+        return $this->uid == @$_SESSION['uid'];
     }
 
     public function getSkill_extended()

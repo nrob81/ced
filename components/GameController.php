@@ -9,17 +9,26 @@ class GameController extends Controller
     protected function beforeAction($action)
     {
         $this->checkCookie();
+
         if (!Yii::app()->player->uid) {
-            throw new CHttpException(403, 'Regisztráció nélkül a játék nem használható.'); //own nick
+            if (Yii::app()->params['isPartOfWline'] == true) {
+                throw new CHttpException(403, 'Regisztráció nélkül a játék nem használható.'); //own nick
+            } else {
+                if (isset($_SESSION['uid'])) {
+                    unset($_SESSION['uid']);
+                }
+                $this->redirect(['/?ba']);
+            }
         }
 
-        $this->updateInternals();
-        $this->autoLogout();
-        $this->setTimers();
+        if (Yii::app()->params['isPartOfWline'] == true) {
+            $this->updateInternals();
+            $this->autoLogout();
+            $this->setTimers();
+        }
 
         //init Player component, increase energy
         Yii::app()->player->rest();
-
 
         return true;
     }
@@ -36,7 +45,7 @@ class GameController extends Controller
             }
         }
 
-        if ($missingGameVar) {
+        if (Yii::app()->params['isPartOfWline'] == true && $missingGameVar) {
             $this->redirect(['gate/cookie']);
         }
     }
