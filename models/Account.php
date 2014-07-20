@@ -9,9 +9,6 @@
  */
 class Account extends CActiveRecord
 {
-    public $confirmEmail;
-    public $confirmPassword;
-    public $rememberMe = true;
     public $oldPassword;
 
     private $_identity;
@@ -40,20 +37,16 @@ class Account extends CActiveRecord
     public function rules()
     {
         return array(
-            array('email', 'required', 'on'=>array('register','login','changeEmail','resetPassword')),
-            array('email', 'length', 'max'=>128, 'on'=>array('register','changeEmail')),
-            array('email', 'email', 'on'=>array('register','changeEmail')),
-            array('email', 'unique', 'on'=>array('register','changeEmail')),
+            array('email', 'required', 'on'=>array('signup','login','changeEmail','resetPassword'), 'message'=>'Az {attribute} kitöltése kötelező.'),
+            array('email', 'length', 'max'=>128, 'on'=>array('signup','changeEmail')),
+            array('email', 'email', 'on'=>array('signup','changeEmail')),
+            array('email', 'unique', 'on'=>array('signup','changeEmail')),
             array('email', 'exist', 'on'=>'resetPassword'),
-            array('password', 'required', 'on'=>array('register','login','changeEmail','changePassword','completeResetPassword','desactivate')),
-            array('password', 'length', 'min'=>6, 'max'=>128, 'on'=>array('register','changePassword','completeResetPassword')),
-            array('confirmEmail', 'required', 'on'=>array('register','changeEmail')),
-            array('confirmEmail', 'compare', 'compareAttribute'=>'email', 'on'=>array('register','changeEmail')),
-            array('confirmPassword', 'required', 'on'=>array('register','changePassword','completeResetPassword')),
-            array('confirmPassword', 'compare', 'compareAttribute'=>'password', 'on'=>array('register','changePassword','completeResetPassword')),
-            array('rememberMe', 'boolean', 'on'=>'login'),
+            array('password', 'required', 'on'=>array('login','changeEmail','changePassword','completeResetPassword','desactivate'), 'message'=>'A {attribute} kitöltése kötelező.'),
+            array('password', 'length', 'min'=>6, 'max'=>128, 'on'=>array('changePassword','completeResetPassword')),
             array('oldPassword', 'required', 'on'=>'changePassword'),
             array('password', 'authenticate', 'on'=>'login'),
+            array('verifyCode', 'safe'),
         );
     }
 
@@ -67,6 +60,14 @@ class Account extends CActiveRecord
         return crypt($password);
     }
 
+    /**
+	 * Generates a random code
+	 */
+	public function generateCode()
+	{
+		return md5(mt_rand());
+	}
+    
     /**
      * Authenticates the password.
      * This is the 'authenticate' validator as declared in rules().
@@ -105,7 +106,7 @@ class Account extends CActiveRecord
 
         if($this->_identity->errorCode===UserIdentity::ERROR_NONE)
         {
-            $duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
+            $duration = 3600*24*30; // 30 days
             Yii::app()->user->login($this->_identity,$duration);
             Yii::app()->session['uid'] = $this->_identity->uid;
 

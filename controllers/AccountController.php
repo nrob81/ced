@@ -5,9 +5,9 @@ class AccountController extends Controller
 	 * Registers a new account.
 	 * If registration is successful, the browser will be redirected to the to the previous page.
 	 */
-	public function actionRegister()
-	{
-		$model=new Account('register');
+	public function actionSignup()
+    {
+		$model=new Account('signup');
 	
 		if(isset($_POST['Account']))
 		{
@@ -15,39 +15,35 @@ class AccountController extends Controller
 			if($model->validate())
 			{
 				// Create account
-				$unhashedPassword=$model->password;
-				$model->password=$model->hashPassword($model->password);
-				$model->save(false);
+				$model->verifyCode = $model->generateCode();
+                $model->save(false);
 				
-				// Create verification
-				$verification=new Verification;
-				$verification->account_id=$model->id;
-				$verification->type=Verification::TYPE_REGISTER;
-				$verification->code=$verification->generateCode();
-				$verification->save(false);
-				
-				// Send verification mail
-				Yii::app()->mailer->sendMIME(
-					Yii::app()->name.' <'.Yii::app()->params['adminEmail'].'>',
-					$model->email,
-					'Registration at '.Yii::app()->name,
-					'',
-					$this->renderPartial('/verification/register', array(
-						'verification'=>$verification,
-					), true)
-				);
-				
-				// Login
-				$model->password=$unhashedPassword;
-				$model->login();
-				
-				// Redirect
-				Yii::app()->user->setFlash('notice','To complete your registration, please check your email');
-				$this->redirect(Yii::app()->user->returnUrl);
-			}
+                // Send verification mail
+                $mail=Yii::app()->smtpmail;
+                $mail->CharSet = 'utf-8';
+                $mail->SetFrom('natkay.robert@nrcode.com', 'ced.local'); //todo: activate sender
+                $mail->Subject    = "Carp-e Diem regisztráció";
+                $message = $this->renderPartial('_verification', ['model'=>$model], true);
+                $mail->MsgHTML($message);
+                $mail->AddAddress($model->email, "");
+                $sent = true; 
+                $sent = $mail->Send(); //todo: activate on production
+                if(!$sent) {
+                    //echo "Mailer Error: " . $mail->ErrorInfo;
+				    Yii::app()->user->setFlash('error', 'A regisztráció befejezéséhez szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
+                } else {
+                    Yii::app()->user->setFlash('success', 'A regisztráció befejezéséhez szükséges teendőket elküldtük e-mailben.');
+                    $this->redirect('/');
+                }
+
+            } else {
+                foreach ($model->errors as $error) {
+				    Yii::app()->user->setFlash('error', $error[0]);
+                }
+            }
 		}
 	
-		$this->render('register',array(
+		$this->render('signup',array(
 			'model'=>$model,
 		));
 	}
@@ -83,14 +79,6 @@ class AccountController extends Controller
 		}
 		
 		$this->redirect(Yii::app()->homeUrl);
-	}
-
-	/**
-	 * Displays the login page
-	 */
-	public function actionLogin()
-	{
-		
 	}
 
 	/**

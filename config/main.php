@@ -2,14 +2,13 @@
 return array(
     'basePath'=>'/data/www/ced',
     'name'=>'Carp-e Diem',
-    'defaultController'=>'public',
 
     // preloading 'log' component
     'preload'=>['log'],
 
     'aliases' => [
-    'vendor' => realpath(__DIR__ . '/../lib/vendor/'),
-        ],
+        'vendor' => realpath(__DIR__ . '/../lib/vendor/')
+    ],
 
         // autoloading model and component classes
         'import'=>array(
@@ -35,7 +34,7 @@ return array(
             'class'=>'vendor.limi7less.minscript.components.ExtMinScript',
             ],
             'user'=>[
-            'allowAutoLogin'=>true, //for non-wline site
+            'allowAutoLogin'=>false,
             ],
             'player' => [
             'class'=> 'application.components.PlayerComponent',
@@ -112,6 +111,15 @@ return array(
                 ['host'=>'localhost', 'port'=>11211],
             ],
             ],
+            'smtpmail'=>array(
+                'class'=>'vendor.smtpmail.PHPMailer',
+                'Host'=>"mail.yourdomain.com",
+                'Username'=>'test@yourdomain.com',
+                'Password'=>'test',
+                'Mailer'=>'smtp',
+                'Port'=>26,
+                'SMTPAuth'=>true, 
+            ),
         ),
 
         'params'=>require('params.php'),

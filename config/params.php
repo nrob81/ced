@@ -1,7 +1,7 @@
 <?php
 return [
     'adminEmail'=>'natkay.robert@nrcode.com',
-    'isPartOfWline' => false,
+    'isPartOfWline' => true,
     'maxtime'=>1800, //30min
     'cacheDuration'=>3600,
     'waters_version'=>3,
