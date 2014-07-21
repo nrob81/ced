@@ -39,14 +39,19 @@ class Account extends CActiveRecord
         return array(
             array('username', 'required', 'on'=>array('completeSignup'), 'message'=>'A {attribute} kitöltése kötelező.'),
             array('username', 'unique', 'on'=>'completeSignup', 'message'=>'A választott {attribute} már foglalt.'),
-            array('username', 'length', 'min'=>4, 'max'=>16, 'on'=>array('completeSignup')),
+            array('username', 'length', 'on'=>array('login, completeSignup'), 'min'=>4, 'max'=>16, 'on'=>array('completeSignup')),
+            array('username', 'match', 'pattern' => '/^[A-Za-z0-9-]+$/u', 'on'=>array('login','completeSignup'), 'message'=>'A {attribute} csak a következő karakterekből állhat: A-Z, a-z, 0-9 és -'),
+            array('username', 'match', 'on'=>array('login', 'completeSignup'), 'pattern' => '/^[A-Za-z]+/u', 'message'=>'A {attribute} csak a betűvel kezdődhet.'),
+            array('username', 'match', 'on'=>array('login', 'completeSignup'), 'pattern' => '/(\-).*(\-)/u', 'not'=>true, 'message'=>'A {attribute} csak egy kötőjelet tartalmazhat.'),
             array('email', 'required', 'on'=>array('signup','login','changeEmail','resetPassword'), 'message'=>'Az {attribute} kitöltése kötelező.'),
             array('email', 'length', 'max'=>128, 'on'=>array('signup','changeEmail')),
             array('email', 'email', 'on'=>array('signup','changeEmail'), 'message'=>'Az {attribute} nem érvényes.'),
             array('email', 'unique', 'on'=>array('signup','changeEmail'), 'message'=>'A választott {attribute} már foglalt.'),
             array('email', 'exist', 'on'=>'resetPassword'),
             array('password', 'required', 'on'=>array('login', 'completeSignup', 'changeEmail','changePassword','completeResetPassword','desactivate'), 'message'=>'A {attribute} kitöltése kötelező.'),
-            array('password', 'length', 'min'=>6, 'max'=>255, 'on'=>array('changePassword','completeResetPassword')),
+            array('password', 'length', 'min'=>6, 'max'=>255, 'on'=>array('completeSignup','changePassword','completeResetPassword')),
+            array('password', 'match', 'on'=>array('completeSignup','changePassword','completeResetPassword'), 'pattern' => '/[A-Za-z]/u', 'message'=>'A {attribute}nak tartalmaznia kell legalább egy betűt: A-Z, a-z'),
+            array('password', 'match', 'on'=>array('completeSignup','changePassword','completeResetPassword'), 'pattern' => '/[0-9]/u', 'message'=>'A {attribute}nak tartalmaznia kell legalább egy számot.'),
             array('oldPassword', 'required', 'on'=>'changePassword'),
             array('password', 'authenticate', 'on'=>'login'),
             array('verifyCode, verified', 'safe', 'on'=>'completeSignup'),
@@ -63,6 +68,12 @@ class Account extends CActiveRecord
             ];
     }
 
+    public function validatePassword($password)
+    {
+        Yii::import('vendor.*');
+        require_once('ircmaxell/password-compat/lib/password.php');
+        return password_verify($password, $this->password);
+    }
 
     /**
 	 * Generates a random code
@@ -81,8 +92,10 @@ class Account extends CActiveRecord
         if(!$this->hasErrors())
         {
             $this->_identity=new UserIdentity($this->email,$this->password);
-            if(!$this->_identity->authenticate())
-                $this->addError('password','Incorrect email or password.');
+            if(!$this->_identity->authenticate()) {
+                $this->addError('validation','Incorrect email or password.');
+                echo $this->_identity->errorCode;
+            }
         }
     }
 
@@ -92,20 +105,21 @@ class Account extends CActiveRecord
      */
     public function login()
     {
-        if($this->_identity===null)
-        {
+        echo __FUNCTION__;
+        if($this->_identity===null) {
             $this->_identity=new UserIdentity($this->email,$this->password);
             $this->_identity->authenticate();
         }
 
-        if($this->_identity->errorCode===UserIdentity::ERROR_NONE)
-        {
+        if($this->_identity->errorCode===UserIdentity::ERROR_NONE) {
             $duration = 3600*24*30; // 30 days
             Yii::app()->user->login($this->_identity,$duration);
             Yii::app()->session['uid'] = $this->_identity->uid;
 
+            echo 't';
             return true;
         } else {
+            echo 'f';
             return false;
         }
     }

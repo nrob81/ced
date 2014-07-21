@@ -16,20 +16,19 @@ class UserIdentity extends CUserIdentity
      */
     public function authenticate()
     {
-        $account=Account::model()->find('LOWER(email)=?',array(strtolower($this->username)));
-        if($account===null)
+        $account = Account::model()->find('LOWER(email) = :email', [':email' => strtolower($this->username)]);
+        if($account===null) {
             $this->errorCode=self::ERROR_USERNAME_INVALID;
-        else if(!$account->validatePassword($this->password))
+        } elseif(!$account->validatePassword($this->password)) {
             $this->errorCode=self::ERROR_PASSWORD_INVALID;
-        else
-        {
+        } else {
             //check player
             if ($this->playerExists($account->id)) {
                 $this->uid=$account->id;
-                $this->username=$account->email;
+                $this->username=$account->username;
                 $this->errorCode=self::ERROR_NONE;
             } else {
-                $this->errorCode=self::ERROR_USERNAME_INVALID;
+                $this->errorCode=3; //username exists without player
             }
         }
         return $this->errorCode==self::ERROR_NONE;
