@@ -4,7 +4,9 @@
 	'id'=>'login-form',
 	'enableAjaxValidation'=>false,
     'htmlOptions'=>['data-ajax'=>'false'],
-)); ?>
+));
+echo $form->errorSummary($model, '');
+?>
 
 <div data-role="fieldcontain">
     <?= $form->error($model,'email'); ?>

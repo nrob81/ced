@@ -4,7 +4,9 @@
 	'id'=>'signup-form',
 	'enableAjaxValidation'=>false,
     'htmlOptions'=>['data-ajax'=>'false'],
-)); ?>
+));
+echo $form->errorSummary($model, '');
+?>
 
 <div data-role="fieldcontain">
 	<?= $form->labelEx($model,'email'); ?>

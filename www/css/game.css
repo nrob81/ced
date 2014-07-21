@@ -512,6 +512,24 @@ ul.board .ui-li-aside { width: 10em; }
 /* story */
 .story p { margin-bottom: 1em; }
 
+/* errorSummary */
+.errorSummary {
+    display: block;
+    padding: 8px 35px 8px 14px;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #FCF8E3;
+    border: 1px solid #FBEED5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+.errorSummary ul { padding:0; margin:0; }
+.errorSummary li { list-style-type: none; }
+
 /* left panel */
 .nav-alert {
     background-image: -webkit-gradient(linear, left top, left bottom, from( #333 /*{a-bup-background-start}*/), to( #dd3333 /*{a-bup-background-end}*/));

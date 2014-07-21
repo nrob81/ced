@@ -37,28 +37,32 @@ class Account extends CActiveRecord
     public function rules()
     {
         return array(
+            array('username', 'required', 'on'=>array('completeSignup'), 'message'=>'A {attribute} kitöltése kötelező.'),
+            array('username', 'unique', 'on'=>'completeSignup', 'message'=>'A választott {attribute} már foglalt.'),
+            array('username', 'length', 'min'=>4, 'max'=>16, 'on'=>array('completeSignup')),
             array('email', 'required', 'on'=>array('signup','login','changeEmail','resetPassword'), 'message'=>'Az {attribute} kitöltése kötelező.'),
             array('email', 'length', 'max'=>128, 'on'=>array('signup','changeEmail')),
-            array('email', 'email', 'on'=>array('signup','changeEmail')),
-            array('email', 'unique', 'on'=>array('signup','changeEmail')),
+            array('email', 'email', 'on'=>array('signup','changeEmail'), 'message'=>'Az {attribute} nem érvényes.'),
+            array('email', 'unique', 'on'=>array('signup','changeEmail'), 'message'=>'A választott {attribute} már foglalt.'),
             array('email', 'exist', 'on'=>'resetPassword'),
-            array('password', 'required', 'on'=>array('login','changeEmail','changePassword','completeResetPassword','desactivate'), 'message'=>'A {attribute} kitöltése kötelező.'),
-            array('password', 'length', 'min'=>6, 'max'=>128, 'on'=>array('changePassword','completeResetPassword')),
+            array('password', 'required', 'on'=>array('login', 'completeSignup', 'changeEmail','changePassword','completeResetPassword','desactivate'), 'message'=>'A {attribute} kitöltése kötelező.'),
+            array('password', 'length', 'min'=>6, 'max'=>255, 'on'=>array('changePassword','completeResetPassword')),
             array('oldPassword', 'required', 'on'=>'changePassword'),
             array('password', 'authenticate', 'on'=>'login'),
-            array('verifyCode', 'safe'),
+            array('verifyCode, verified', 'safe', 'on'=>'completeSignup'),
         );
     }
 
-    /**
-     * Generates the password hash.
-     * @param string password
-     * @return string hash
-     */
-    public function hashPassword($password)
+    public function AttributeLabels()
     {
-        return crypt($password);
+        return [
+            'username' => 'felhasználónév',
+            'email' => 'e-mail cím',
+            'password' => 'jelszó',
+            'oldPassword' => 'régi jelszó',
+            ];
     }
+
 
     /**
 	 * Generates a random code
@@ -80,16 +84,6 @@ class Account extends CActiveRecord
             if(!$this->_identity->authenticate())
                 $this->addError('password','Incorrect email or password.');
         }
-    }
-
-    /**
-     * Checks if the given password is correct.
-     * @param string the password to be validated
-     * @return boolean whether the password is valid
-     */
-    public function validatePassword($password)
-    {
-        return crypt($password,$this->password)===$this->password;
     }
 
     /**
