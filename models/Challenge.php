@@ -192,7 +192,7 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if ($res['id'] and !$res['winner']) {
+        if ($res['id'] && !$res['winner']) {
             return true;
         }
         return false;
