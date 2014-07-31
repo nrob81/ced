@@ -95,7 +95,7 @@ class Duel extends CModel
             ->limit(1)
             ->queryRow();
 
-        if ($last['caller']==$c and $last['opponent']==$o or $last['caller']==$o and $last['opponent']==$c) {
+        if ($last['caller']==$c && $last['opponent']==$o || $last['caller']==$o && $last['opponent']==$c) {
             $this->setClubAttributes($last);
         }
     }

@@ -344,13 +344,6 @@ class Club extends CModel implements ISubject
     
     public function deleteJoinRequest($uid)
     {
-        $player = Yii::app()->player->model;
-
-        $selfMod = $uid == $player->uid;
-        if (!$selfMod and $player->in_club != $this->id) {
-            return false;
-        }
-
         $del = Yii::app()->db->createCommand()
             ->delete(
                 'club_members',

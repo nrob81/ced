@@ -85,7 +85,7 @@ class CommonBadgeActivator extends BadgeActivator
             '46d' => [46, 81]
             ];
         foreach ($map as $key => $params) {
-            if ($id == $params[0] and $routine >= $params[1]) {
+            if ($id == $params[0] && $routine >= $params[1]) {
                 $this->activate('loc_routine_' . $key);
             }
         }

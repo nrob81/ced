@@ -3,7 +3,7 @@ class DuelBadgeActivator extends BadgeActivator
 {
     public function triggerDuelFirstWin($role, $winner)
     {
-        if ($role == 'caller' and $winner == 'caller') {
+        if ($role == 'caller' && $winner == 'caller') {
             $this->activate('first_duel_win');
         }
     }
@@ -84,7 +84,7 @@ class DuelBadgeActivator extends BadgeActivator
 
     public function triggerDuel2h($role)
     {
-        if ($role == 'caller' and date('G') == 2) {
+        if ($role == 'caller' && date('G') == 2) {
             $this->activate('duel_2h');
         }
     }
