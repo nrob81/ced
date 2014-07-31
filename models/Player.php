@@ -441,7 +441,7 @@ class Player extends CModel implements ISubject
 
     private function incrementLevel($incr)
     {
-        if (!isset($incr['xp_delta']) or $incr['xp_delta'] < 1) {
+        if (!isset($incr['xp_delta']) || $incr['xp_delta'] < 1) {
             return $incr; //do not touch level
         }
 

@@ -91,7 +91,7 @@ class PlayerStats extends CModel
         $this->stats['duel_success'] = @(int)$stat['duel_success'];
         $this->stats['duel_fail'] = @(int)$stat['duel_fail'];
         $this->stats['duel_rate'] = '?';
-        if ($this->stats['duel_success'] or $this->stats['duel_fail']) {
+        if ($this->stats['duel_success'] || $this->stats['duel_fail']) {
             $this->stats['duel_rate'] = round($this->stats['duel_success'] / (($this->stats['duel_success'] + $this->stats['duel_fail'])/100), 1);
         }
     }
@@ -106,7 +106,7 @@ class PlayerStats extends CModel
             ->queryAll();
         $best = 0;
         foreach ($res as $dat) {
-            if ($best < 3 and $dat['item_count']) {
+            if ($best < 3 && $dat['item_count']) {
                 $this->stats['setitems'][$dat['item_id']] = $dat['item_count'];
                 $best++;
             }

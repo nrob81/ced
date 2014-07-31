@@ -4,7 +4,7 @@
         <span><?= CHtml::link('klubtagok', '#popupUsers', ['data-rel'=>'popup']); ?></span><br/>
         alapítva: <span><?= date('Y.m.d. H:i', strtotime($club->created)); ?></span><br/>
         versenyezne: <span>
-        <?php if (isset($editable) and $editable): ?>
+        <?php if (isset($editable) && $editable): ?>
             <?= CHtml::link($club->would_compete?'igen':'nem', ['', 'switch'=>'compete'], ['data-ajax'=>'false']);?></span><br/>
         <?php else: ?>
             <?= $club->would_compete?'igen':'nem';?></span><br/>

@@ -4,9 +4,9 @@
     <?php if (isset($error) && $error) echo CHtml::tag('p', ['class'=>'error'], $error); ?>
     <div class="grid ui-grid-c">
         <div class="ui-block-a"><h3>követelmény</h3>
-            <p<?php if ($notify and !$data->action->reqPassed['energy']): ?> class="error"<?php endif; ?>><?= $data->req_energy ?> energia</p>
+            <p<?php if ($notify && !$data->action->reqPassed['energy']): ?> class="error"<?php endif; ?>><?= $data->req_energy ?> energia</p>
             <?php if ($data->gate): ?>
-            <p<?php if ($notify and !$data->action->reqPassed['routinesFull']): ?> class="error"<?php endif; ?>>100% rutin a megbízásokban</p>
+            <p<?php if ($notify && !$data->action->reqPassed['routinesFull']): ?> class="error"<?php endif; ?>>100% rutin a megbízásokban</p>
             <?php endif; ?>
             
             <?php foreach ($data->req_baits as $req): ?>
@@ -24,7 +24,7 @@
         <div class="ui-block-b"><h3>jutalom</h3>
             <p><?= $data['award_xp'] ?> tp</p>
             <p><?= $data['award_dollar'] ?></p>
-            <?php if (!$data->gate_visited and $data->gate): ?>
+            <?php if (!$data->gate_visited && $data->gate): ?>
             <p>utazás ide: <?= $data->gate_name ?></p>
             <p>10 arany</p>
             <?php endif; ?>

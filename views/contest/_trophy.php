@@ -1,4 +1,4 @@
-<?php if ($contestList->isActive and count($contestList->winners)): ?>
+<?php if ($contestList->isActive && count($contestList->winners)): ?>
 <li>
     <img src="/images/trophy2.png" alt="Trófea" />
     <h1><?php echo count($contestList->winners)>1 ? 'A legesélyesebb játékosok' : 'A legesélyesebb játékos'; ?></h1>
@@ -13,7 +13,7 @@
 </li>
 <?php endif; ?>
 
-<?php if (!$contestList->isActive and count($contestList->winners)): ?>
+<?php if (!$contestList->isActive && count($contestList->winners)): ?>
 <li>
     <img src="/images/trophy.png" alt="Trófea" />
     <h1><?php echo count($contestList->winners)>1 ? 'A verseny győztesei' : 'A verseny győztese'; ?></h1>

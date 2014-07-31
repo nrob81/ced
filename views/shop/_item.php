@@ -18,7 +18,7 @@
     <?= $item->title ?>
     </h3>
 
-    <?php if (isset($notify) and $notify): ?>
+    <?php if (isset($notify) && $notify): ?>
         <?php if ($item->errors['amount']): ?><p class="error">Egynél kevesebb csalit nem vehetsz.</p><?php endif; ?>
         <?php if ($item->errors['dollar']): ?><p class="error">Nincs elég pénzed.</p><?php endif; ?>
         <?php if ($item->errors['isLast']): ?><p class="error">Az utolsó felszerelést és csalit nem adhatod el.</p><?php endif; ?>

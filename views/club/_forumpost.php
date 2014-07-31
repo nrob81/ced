@@ -10,7 +10,7 @@
     <p class="ui-li-aside muted">
         <abbr class="timeago" title="<?= date(DATE_ISO8601, strtotime($item['created'])); ?>"><?= $item['created']; ?></abbr>
     <?php 
-    if (Yii::app()->player->model->in_club==$item['club_id'] and Yii::app()->player->uid==$item['uid']) {
+    if (Yii::app()->player->model->in_club==$item['club_id'] && Yii::app()->player->uid==$item['uid']) {
         echo CHtml::link('törlés', ['club/forum', 'id'=>$item['club_id'], 'delete'=>$item['id'], 'page'=>$page], ['data-ajax'=>'false']);
     } 
     ?>

@@ -3,7 +3,7 @@ $now = time();
 if ($now < $challenge->startTime):
 ?>
     <p>A verseny még nem indult el. Az indulásig hátralévő idő <strong><?= Time::secondsToDifference($challenge->startTime - $now); ?></strong>.
-    <?php elseif ($now >= $challenge->startTime and $now <= $challenge->endTime): ?>
+    <?php elseif ($now >= $challenge->startTime && $now <= $challenge->endTime): ?>
     <p>A verseny folyamatban van. Hátralévő idő <strong><?= Time::secondsToDifference($challenge->endTime - $now); ?></strong>.
     <?php else: ?>
     <p>A verseny lezárult.
@@ -46,7 +46,7 @@ if ($now < $challenge->startTime):
 </div>
 
 <?php
-    if ($now >= $challenge->startTime and $now <= $challenge->endTime) {
+    if ($now >= $challenge->startTime && $now <= $challenge->endTime) {
         $ajax = CHtml::ajax(array(
             'url' => Yii::app()->createUrl('ajax/test', ['id'=>$challenge->id]),
             'dataType' => 'html', 

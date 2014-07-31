@@ -6,13 +6,13 @@
         <p><?= $p->skill; ?> SzP<br/>
         <?= $p->chance; ?>% nyerési esély</p>
 
-        <?php if (!$p->energy and !$p->winner): ?>
+        <?php if (!$p->energy && !$p->winner): ?>
             <p class="error">Nincs energiája, ezért pénzt nem veszíthet.</p>
         <?php endif; ?>
     </li>
 
 
-    <?php if ($p->awardXp or $p->awardDollar or $p->awardPoints): ?>
+    <?php if ($p->awardXp || $p->awardDollar || $p->awardPoints): ?>
         <li>
             <h5>jutalmak</h5>
             <p>
@@ -26,7 +26,7 @@
             </p>
         </li>
 
-        <?php if ($p->winner and $isChallenge): ?>
+        <?php if ($p->winner && $isChallenge): ?>
         <li>
             <h5>jutalmak a klubnak</h5>
             <p>

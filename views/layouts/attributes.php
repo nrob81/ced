@@ -17,7 +17,7 @@ if (Yii::app()->player->model->status_points) {
     <div class="block spr block-energy ui-block-b">
         <p id="energy"><?= Yii::app()->player->model->energy ?>/<?= Yii::app()->player->model->energy_max ?></p>
 <?php 
-        if (Yii::app()->player->model->energy_missing>0 and Yii::app()->player->model->remainingTimeToRefill > 0): ?>
+        if (Yii::app()->player->model->energy_missing>0 && Yii::app()->player->model->remainingTimeToRefill > 0): ?>
             <span id="refillTime" class="hint-indent"><?= Time::secondsToDifference(Yii::app()->player->model->remainingTimeToRefill) ?> múlva +<?= Yii::app()->player->model->refillPerInterval ?></span>
         <?php endif; ?>
     </div>

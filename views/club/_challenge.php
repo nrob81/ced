@@ -7,7 +7,7 @@ if ($now < $challenge->startTime):
     $secToDiff = $challenge->startTime - $now;
 ?>
 ..még nem indult el. Az indulásig hátralévő idő <strong id="challStartTime"><?= Time::secondsToDifference($secToDiff); ?></strong>. 
-<?php elseif ($now >= $challenge->startTime and $now <= $challenge->endTime): 
+<?php elseif ($now >= $challenge->startTime && $now <= $challenge->endTime): 
     $secToDiff = $challenge->endTime - $now;
 ?>
 ..folyamatban van. Hátralévő idő <strong id="challStartTime"><?= Time::secondsToDifference($secToDiff); ?></strong>.
@@ -56,7 +56,7 @@ A vesztes klub által zsákmányolt pénz a horgásszövetségé lesz.]</p-->
 </div>
 
 <?php
-if ($now >= $challenge->startTime and $now <= $challenge->endTime) {
+if ($now >= $challenge->startTime && $now <= $challenge->endTime) {
     $ajax = CHtml::ajax(array(
         'url' => Yii::app()->createUrl('ajax/test', ['id'=>$challenge->id]),
         'dataType' => 'html', 
