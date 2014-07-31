@@ -78,7 +78,7 @@ class LocationAction extends CModel
     private function allMissionRoutinesAreFull()
     {
         foreach ($this->location->missions as $mission) {
-            if (!$mission->gate and $mission->routine < 100) {
+            if (!$mission->gate && $mission->routine < 100) {
                 return false;
             }
         }

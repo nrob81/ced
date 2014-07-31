@@ -264,7 +264,7 @@ class Mission extends CModel
     {
         /* skillA = percentP * 100 / skillP */
         $skillM = 0;
-        if ($this->skill_extended_at_visit and $percent) {
+        if ($this->skill_extended_at_visit && $percent) {
             $skillA = ($this->skill_extended_at_visit * 100) / $percent;
             $skillM = $skillA - $this->skill_extended_at_visit;
         }
@@ -297,7 +297,7 @@ class Mission extends CModel
             $key = 'req_bait_'.$b;
             $keyCount = 'req_bait_'.$b.'_count';
 
-            if ($this->$key and $this->$keyCount) {
+            if ($this->$key && $this->$keyCount) {
                 $tmp = [];
                 $tmp['required'] = $this->$keyCount;
 

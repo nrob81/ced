@@ -133,7 +133,7 @@ class MissionAction extends CModel
         $incr['dollar'] = $this->gainDollar();
         
         if ($this->success) {
-            if ($this->mission->gate and !$this->mission->gate_visited) {
+            if ($this->mission->gate && !$this->mission->gate_visited) {
                 $incr['gold'] = 10;
             }
             if ($this->mission->award_setpart) {

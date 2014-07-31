@@ -168,7 +168,7 @@ class Location extends CModel
             ->where('uid=:uid AND water_id=:id', [':uid'=>$uid, ':id'=>$id])
             ->queryScalar();
 
-        if (!$visited and $id==1) {
+        if (!$visited && $id==1) {
             //visit 1. location
             Yii::app()->db->createCommand()
                 ->insert('visited', [
@@ -191,7 +191,7 @@ class Location extends CModel
 
         $attr = ['last_location'=>$this->id];
         
-        if ($this->id > 1 and $player->tutorial_mission==6) {
+        if ($this->id > 1 && $player->tutorial_mission==6) {
             $attr['tutorial_mission'] = 7;
         }
         

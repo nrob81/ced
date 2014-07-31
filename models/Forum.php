@@ -99,7 +99,7 @@ class Forum extends CModel
         $player = Yii::app()->player->model;
         $uid = $isMentor ? 1 : $player->uid;
         $user = $isMentor ? 'Áron bá' : $player->user;
-        if ($uid > 1 and $player->in_club != $this->id) {
+        if ($uid > 1 && $player->in_club != $this->id) {
             return false; //nem klubtag, nem mentor
         }
 

@@ -64,7 +64,7 @@ class Help extends CModel
             if ($res) {
                 $this->items[$i] = $res;
                 $added++;
-                if ($limit>0 and $added>=$limit) {
+                if ($limit>0 && $added>=$limit) {
                     break;
                 }
             }
