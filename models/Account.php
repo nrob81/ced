@@ -38,6 +38,7 @@ class Account extends CActiveRecord
     public function rules()
     {
         return array(
+            array('oldPassword', 'required', 'on'=>'changePassword', 'message'=>'A {attribute} kitöltése kötelező.'),
             array('username', 'required', 'on'=>array('completeSignup'), 'message'=>'A {attribute} kitöltése kötelező.'),
             array('username', 'unique', 'on'=>'completeSignup', 'message'=>'A választott {attribute} már foglalt.'),
             array('username', 'length', 'min'=>4, 'max'=>16, 'on'=>array('login', 'completeSignup')),
@@ -53,8 +54,7 @@ class Account extends CActiveRecord
             array('password', 'length', 'min'=>6, 'max'=>255, 'on'=>array('completeSignup','changePassword','completeResetPassword')),
             array('password', 'match', 'pattern' => '/[A-Za-z]/u', 'on'=>array('completeSignup','changePassword','completeResetPassword'), 'message'=>'A {attribute}nak tartalmaznia kell legalább egy betűt: A-Z, a-z'),
             array('password', 'match', 'pattern' => '/[0-9]/u', 'on'=>array('completeSignup','changePassword','completeResetPassword'), 'message'=>'A {attribute}nak tartalmaznia kell legalább egy számot.'),
-            array('oldPassword', 'required', 'on'=>'changePassword'),
-            array('confirmPassword', 'required', 'on'=>array('changePassword','completeResetPassword')),
+            array('confirmPassword', 'required', 'on'=>array('changePassword','completeResetPassword'), 'message'=>'A {attribute} kitöltése kötelező.'),
             array('confirmPassword', 'compare', 'compareAttribute'=>'password', 'on'=>array('changePassword','completeResetPassword')),
             array('password', 'authenticate', 'on'=>'login'),
             array('verifyCode, verified', 'safe', 'on'=>'completeSignup'),
@@ -69,13 +69,12 @@ class Account extends CActiveRecord
             'email' => 'e-mail cím',
             'password' => 'jelszó',
             'oldPassword' => 'régi jelszó',
+            'confirmPassword' => 'jelszó újra',
             ];
     }
 
     public function validatePassword($password)
     {
-        Yii::import('vendor.*');
-        require_once('ircmaxell/password-compat/lib/password.php');
         return password_verify($password, $this->password);
     }
 
@@ -109,7 +108,6 @@ class Account extends CActiveRecord
      */
     public function login()
     {
-        echo __FUNCTION__;
         if($this->_identity===null) {
             $this->_identity=new UserIdentity($this->email,$this->password);
             $this->_identity->authenticate();
@@ -120,10 +118,8 @@ class Account extends CActiveRecord
             Yii::app()->user->login($this->_identity,$duration);
             Yii::app()->session['uid'] = $this->_identity->uid;
 
-            echo 't';
             return true;
         } else {
-            echo 'f';
             return false;
         }
     }

@@ -1,15 +1,21 @@
 <?php
 $this->pageTitle='Adatlap: ' . $player->user;
 ?>
-
 <div class="nav">
-    <?php 
-    if (!$player->itsMe()) {
-        $cssClass = 'right';
-        if ($player->level < Duel::REQ_LEVEL) $cssClass .= ' ui-disabled';
+    <div class="right">
+        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+        <?php 
+        if ($player->itsMe()) {
+            echo CHtml::link('e-mail', ['/setup/email'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
+            echo CHtml::link('jelszó', ['/setup/password'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
+        } else {
+            $cssClass = '';
+            if ($player->level < Duel::REQ_LEVEL) $cssClass .= ' ui-disabled';
             echo CHtml::link('párbajra hívom', ['duel/go', 'opponentId'=>$player->uid], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>$cssClass]);
-    }
-    ?>
+        }
+        ?>
+        </div>
+    </div>
     <h1>játékos: <?= $player->user ?></h1>
 </div>
 
