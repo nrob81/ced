@@ -68,9 +68,6 @@ class AccountController extends Controller
             $valid = $model->validate();
 
             if ($valid) {
-                Yii::import('vendor.*');
-                require_once('ircmaxell/password-compat/lib/password.php');
-
                 $hash = password_hash($model->password, PASSWORD_BCRYPT);
 
                 if (password_verify($model->password, $hash)) {
