@@ -26,7 +26,7 @@ echo $form->errorSummary($model, '');
 
 <div class="c">
 <?php
-echo CHtml::link('Elfelejtett jelszó', ['account/password']);
+echo CHtml::link('Elfelejtett jelszó', ['account/resetPassword']);
 echo CHtml::link('Regisztráció', ['account/signup'], ['data-role'=>'button', 'data-inline'=>'true', 'data-theme'=>'e']);
 ?>
 </div>

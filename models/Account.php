@@ -10,6 +10,7 @@
 class Account extends CActiveRecord
 {
     public $oldPassword;
+    public $confirmPassword;
 
     private $_identity;
 
@@ -53,8 +54,11 @@ class Account extends CActiveRecord
             array('password', 'match', 'pattern' => '/[A-Za-z]/u', 'on'=>array('completeSignup','changePassword','completeResetPassword'), 'message'=>'A {attribute}nak tartalmaznia kell legalább egy betűt: A-Z, a-z'),
             array('password', 'match', 'pattern' => '/[0-9]/u', 'on'=>array('completeSignup','changePassword','completeResetPassword'), 'message'=>'A {attribute}nak tartalmaznia kell legalább egy számot.'),
             array('oldPassword', 'required', 'on'=>'changePassword'),
+            array('confirmPassword', 'required', 'on'=>array('changePassword','completeResetPassword')),
+			array('confirmPassword', 'compare', 'compareAttribute'=>'password', 'on'=>array('changePassword','completeResetPassword')),
             array('password', 'authenticate', 'on'=>'login'),
             array('verifyCode, verified', 'safe', 'on'=>'completeSignup'),
+            array('resetPasswordCode, passwordReset', 'safe', 'on'=>'completeResetPassword'),
         );
     }
 

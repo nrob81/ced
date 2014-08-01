@@ -9,8 +9,7 @@ class AccountController extends Controller
     {
         $model=new Account('signup');
 
-        if(isset($_POST['Account']))
-        {
+        if(isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
             if($model->validate()) {
                 // Create account
@@ -67,11 +66,11 @@ class AccountController extends Controller
             $model->attributes=$_POST['Account'];
             $originalPassword = $model->password;
             $valid = $model->validate();
-            
+
             if ($valid) {
                 Yii::import('vendor.*');
                 require_once('ircmaxell/password-compat/lib/password.php');
-                
+
                 $hash = password_hash($model->password, PASSWORD_BCRYPT);
 
                 if (password_verify($model->password, $hash)) {
@@ -99,14 +98,114 @@ class AccountController extends Controller
                         Yii::app()->user->setFlash('error', 'Hiba lépett fel a játékos mentése során.');
                     }
                     $model->password = $originalPassword;
-                    
+
                 } else {
                     Yii::app()->user->setFlash('error', 'Hiba lépett fel a jelszó titkosítása során.');
                 }
             }
         }
 
-        $this->render('complete-signup', ['model' => $model]);
+        $this->render('completeSignup', ['model' => $model]);
+    }
+
+    public function actionResetPassword()
+    {
+        $model = new Account('resetPassword');
+
+        if(isset($_POST['Account'])) {
+            $model->attributes=$_POST['Account'];
+
+            if($model->validate()) {
+                // Find account
+                $model = Account::model()->findByEmail($model->email);
+
+                if (!$model->password) {
+                    $model->addError('email', 'A megadott e-mail címhez tartozó játékost még nem regisztráltad.');
+                } else {
+                    $this->sendResetLink($model);
+                }
+            }
+        }
+
+        $this->render('resetPassword',array(
+            'model'=>$model,
+        ));
+    }
+    
+    public function actionCompleteResetPassword($id, $code)
+    {
+        $model = $this->loadModel($id);
+        $model->password = false;
+        $model->scenario = 'completeResetPassword';
+
+        if(!$model->resetPasswordCode) {
+            Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges oldal címe nem érvényes. Pontosan másoltad be az e-mailből?');
+            $this->redirect('/');
+        }
+
+        if($model->resetPasswordCode !== $code) {
+            Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges oldal címe nem érvényes. Pontosan másoltad be az e-mailből?');
+            $this->redirect('/');
+        }
+
+        if(isset($_POST['Account'])) {
+            $model->attributes=$_POST['Account'];
+            $originalPassword = $model->password;
+
+            if ($model->validate()) {
+                $hash = password_hash($model->password, PASSWORD_BCRYPT);
+
+                if (password_verify($model->password, $hash)) {
+                    //delete passwordCode
+                    $model->resetPasswordCode = null;
+                    $model->passwordReset = new CDbExpression('NOW()');
+
+                    //set new password
+                    $model->password = $hash;
+                    $model->save(false);
+                    $model->refresh();
+
+                    Yii::app()->user->setFlash('success', $model->username . ', a jelszó mentése sikerült!');
+                    Yii::app()->session->open();
+
+                    $model->password = $originalPassword;
+                    $model->login();
+                    $this->redirect('/site');
+
+                } else {
+                    Yii::app()->user->setFlash('error', 'Hiba lépett fel a jelszó titkosítása során.');
+                }
+            }
+        }
+
+        $this->render('completeResetPassword', ['model' => $model]);
+    }
+
+    private function sendResetLink($model)
+    {
+        // New verification if not exists
+        if(!$model->resetPasswordCode) {
+            $model->resetPasswordCode = $model->generateCode();
+            $model->save(false);
+        }
+
+        // Send verification mail
+        $mail=Yii::app()->smtpmail;
+        $mail->CharSet = 'utf-8';
+        $mail->SetFrom('natkay.robert@nrcode.com', 'ced.local'); //todo: activate sender
+        $mail->Subject    = "Carp-e Diem elfelejtett jelszó";
+        $message = $this->renderPartial('_resetPassword', ['model'=>$model], true);
+        $mail->MsgHTML($message);
+        $mail->AddAddress($model->email, "");
+        //$sent = true; 
+        $sent = $mail->Send(); //todo: activate on production
+        if(!$sent) {
+            //echo "Mailer Error: " . $mail->ErrorInfo;
+            Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
+        } else {
+            Yii::app()->user->setFlash('success', 'A jelszó visszaállításához szükséges teendőket elküldtük e-mailben.');
+            $this->redirect('/');
+        }
     }
 
     private function createPlayer($model)
@@ -142,7 +241,7 @@ class AccountController extends Controller
     public function loadModel($id)
     {
         $model=Account::model()->findByPk((int)$id);
-        
+
         if($model===null) {
             throw new CHttpException(1, 'A keresett játékos nem található. Ezen könnyen segíthetsz: ' . CHtml::link('regisztráld be.', ['signup']));
         }
