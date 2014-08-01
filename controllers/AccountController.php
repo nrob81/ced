@@ -155,7 +155,6 @@ class AccountController extends Controller
                 if (password_verify($model->password, $hash)) {
                     //delete passwordCode
                     $model->resetPasswordCode = null;
-                    $model->passwordReset = new CDbExpression('NOW()');
 
                     //set new password
                     $model->password = $hash;
