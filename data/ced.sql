@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.38-0+wheezy1)
 # Database: fish
-# Generation Time: 2014-08-01 15:46:26 +0200
+# Generation Time: 2014-08-01 21:01:35 +0200
 # ************************************************************
 
 
@@ -30,9 +30,10 @@ CREATE TABLE `account` (
   `password` varchar(255) NOT NULL DEFAULT '',
   `registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `verified` timestamp NULL DEFAULT NULL,
-  `passwordReset` timestamp NULL DEFAULT NULL,
   `verifyCode` varchar(128) NOT NULL DEFAULT '',
   `resetPasswordCode` varchar(128) NOT NULL DEFAULT '',
+  `changeMailCode` varchar(128) NOT NULL DEFAULT '',
+  `emailTemp` varchar(128) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)

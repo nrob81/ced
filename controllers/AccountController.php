@@ -128,7 +128,7 @@ class AccountController extends Controller
             'model'=>$model,
         ));
     }
-    
+
     public function actionCompleteResetPassword($id, $code)
     {
         $model = $this->loadModel($id);
@@ -175,6 +175,29 @@ class AccountController extends Controller
         }
 
         $this->render('completeResetPassword', ['model' => $model]);
+    }
+
+    public function actionCompleteChangeEmail($id, $code)
+    {
+        $model = $this->loadModel($id);
+        if(!$model->changeMailCode) {
+            Yii::app()->user->setFlash('error', 'A beállított e-mail címed már aktiválva van.');
+            $this->redirect('/');
+        }
+
+        if($model->changeMailCode !== $code) {
+            Yii::app()->user->setFlash('error', 'Az e-mail aktiválásához szükséges oldal címe nem érvényes.');
+            $this->redirect('/');
+        }
+
+        $account=$this->loadModel($id);
+        $account->email = $account->emailTemp;
+        $account->emailTemp = '';
+        $account->changeMailCode = '';
+        $account->save();
+
+        Yii::app()->user->setFlash('success', 'Sikeresen aktiváltuk az e-mail címedet.');
+        $this->redirect('/');
     }
 
     private function sendResetLink($model)
