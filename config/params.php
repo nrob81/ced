@@ -12,6 +12,7 @@ return [
     'parts_version'=>1,
     'parts_version'=>1,
     'listPerPage'=>10,
+    'shopItemsPerPage'=>4,
     'wlineHost'=>'http://wline.hu/',
     'packagesSms' => [],
     'cronPassword' => 'secret',

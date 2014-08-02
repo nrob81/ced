@@ -9,23 +9,25 @@ $this->renderPartial('/shop/nav', ['title'=>'Felszerelés eladása']);
 </ul>
 <?php endif; ?>
 
-<ul class="controls-in-right" data-role="listview" data-inset="true">
-    <li data-role="list-divider"><h2>Saját felszereléseid <span>eladás:</span></h2></li>
-    <?php
-        foreach($list as $item) {
-            Yii::app()->controller->renderPartial('_itemtosell', ['item' => $item, 'page' => $page, 'mode'=>'-']);
-        }
-    ?>
-</ul>
+<div class="shop-view">
+    <ul class="controls-in-right" data-role="listview" data-inset="true">
+        <li data-role="list-divider"><h2>Saját felszereléseid <span>eladás:</span></h2></li>
+        <?php
+            foreach($list as $item) {
+                Yii::app()->controller->renderPartial('_itemtosell', ['item' => $item, 'page' => $page, 'mode'=>'-']);
+            }
+        ?>
+    </ul>
 
-<div class="center-wrapper">
-<?php 
-$this->widget('JqmLinkPager', array(
-    'currentPage'=>$pagination->getCurrentPage(),
-    'itemCount'=>$count,
-    'pageSize'=>$page_size,
-));
-?>
+    <div class="center-wrapper">
+    <?php 
+    $this->widget('JqmLinkPager', array(
+        'currentPage'=>$pagination->getCurrentPage(),
+        'itemCount'=>$count,
+        'pageSize'=>$page_size,
+    ));
+    ?>
+    </div>
 </div>
 
 <?php $this->widget('HelpWidget', ['topic'=>'shop']); ?>

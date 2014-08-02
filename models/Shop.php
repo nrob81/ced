@@ -151,7 +151,7 @@ class Shop extends CModel
     
     public function fetchItems()
     {
-        $limit = Yii::app()->params['listPerPage'];
+        $limit = Yii::app()->params['shopItemsPerPage'];
         $levelLimit = $this->levelLimit;
 
         //echo __FUNCTION__ . "\n";
@@ -170,7 +170,7 @@ class Shop extends CModel
             ->queryAll();
          
         $this->pagination = new CPagination($this->count);
-        $this->pagination->setPageSize(Yii::app()->params['listPerPage']);
+        $this->pagination->setPageSize(Yii::app()->params['shopItemsPerPage']);
                 
         foreach ($res as $item) {
             $i = new Item();
@@ -184,7 +184,7 @@ class Shop extends CModel
 
     public function fetchPlayersItems()
     {
-        $limit = Yii::app()->params['listPerPage'];
+        $limit = Yii::app()->params['shopItemsPerPage'];
 
         //echo __FUNCTION__ . "\n";
         $this->count = Yii::app()->db->createCommand()
@@ -202,7 +202,7 @@ class Shop extends CModel
             ->queryAll();
          
         $this->pagination = new CPagination($this->count);
-        $this->pagination->setPageSize(Yii::app()->params['listPerPage']);
+        $this->pagination->setPageSize(Yii::app()->params['shopItemsPerPage']);
                 
         foreach ($res as $item) {
             $i = new Item();

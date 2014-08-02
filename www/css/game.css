@@ -415,6 +415,18 @@ a#map {
 }
 
 /* shop */
+.shop-view {
+    min-height: 344px;
+    background: transparent url(aronba.png) no-repeat bottom right;
+}
+.shop-view > ul,
+.shop-view > div { width:70%; }
+
+@media all and (max-width: 40em) {
+    .shop-view > ul,
+    .shop-view > div { width:100%; }
+}
+
 #supply {
     font-size: .8em;
     text-align: right;

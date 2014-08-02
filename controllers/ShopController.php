@@ -69,7 +69,7 @@ class ShopController extends GameController
             'list' => $shop->items,
             'pagination' => $shop->pagination,
             'count' => $shop->count,
-            'page_size' => Yii::app()->params['listPerPage'],
+            'page_size' => Yii::app()->params['shopItemsPerPage'],
             'owned_baits' => $shop->owned_baits,
             'owned_items' => $shop->owned_items,
             'nextItemsLevel' => $shop->nextItemsLevel,
