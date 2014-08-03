@@ -1,5 +1,5 @@
 <?php
-class PublicController extends Controller
+class PublicController extends LoginController
 {
     public function actionIndex()
     {
@@ -16,6 +16,12 @@ class PublicController extends Controller
             $model->attributes=$_POST['Account'];
             // validate user input and redirect to the previous page if valid
             if($model->validate() && $model->login()) {
+                $this->incrementLoginDays(Yii::app()->session['uid']);
+
+                $b = new CommonBadgeActivator;
+                $b->uid = Yii::app()->session['uid'];
+                $b->triggerLoginDays();
+
                 $this->redirect('/site');
             }
         }
