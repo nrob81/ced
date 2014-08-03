@@ -77,7 +77,13 @@
                 <li><?= CHtml::link('Súgó', ['/site/help']); ?></li>
             </ul>
                 
-            <?= CHtml::link('wline.hu', ['/gate/backToMenu'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']); ?>
+            <?php
+                if (Yii::app()->params['isPartOfWline']) {
+                    echo CHtml::link('wline.hu', ['/gate/logout'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']);
+                } else {
+                    echo CHtml::link('kilépés', ['/site/logout'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']);
+                }
+            ?>
         </div><!-- /panel -->
     </div><!-- page -->
 

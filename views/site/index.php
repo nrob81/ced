@@ -28,4 +28,4 @@ $this->pageTitle=Yii::app()->name;
 
 <?php $this->renderPartial('_story'); ?>
 
-<p class="r">© 2013 nrcode | <?= CHtml::link('fórum', ['gate/backToForum']); ?> | <?= CHtml::link('a játék készítői', ['site/credits']); ?></p>
+<p class="r">© 2013 nrcode<?= Yii::app()->params['isPartOfWline'] ? ' | ' . CHtml::link('fórum', ['/gate/forum']) : ''; ?> | <?= CHtml::link('a játék készítői', ['site/credits']); ?></p>

@@ -38,14 +38,15 @@ class GateController extends LoginController
             }
         }
     }
-
-    public function actionBackToMenu()
+    
+    public function actionLogout()
     {
         $this->redirect(Yii::app()->params['wlineHost'] . 'menu.php#btm');
     }
 
-    public function actionBackToForum()
+    public function actionForum()
     {
         $this->redirect(Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
     }
+    
 }

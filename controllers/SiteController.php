@@ -116,4 +116,10 @@ class SiteController extends GameController
             'store'=>$store,
             ]);
     }
+
+    public function actionLogout()
+    {
+        Yii::app()->user->logout();
+        $this->redirect(Yii::app()->homeUrl);
+    }
 }
