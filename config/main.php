@@ -2,6 +2,7 @@
 return array(
     'basePath'=>'/data/www/ced',
     'name'=>'Carp-e Diem',
+    'defaultController'=>'site',
 
     // preloading 'log' component
     'preload'=>['log'],

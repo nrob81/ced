@@ -64,13 +64,17 @@ class Account extends CActiveRecord
 
     public function AttributeLabels()
     {
-        return [
+        $attributes = [
             'username' => 'felhasználónév',
             'email' => 'e-mail cím',
             'password' => 'jelszó',
             'oldPassword' => 'régi jelszó',
             'confirmPassword' => 'jelszó újra',
             ];
+        if ($this->scenario == 'login') {
+            $attributes['email'] = 'email vagy felh.név';
+        }
+        return $attributes;
     }
 
     public function validatePassword($password)
@@ -96,8 +100,11 @@ class Account extends CActiveRecord
         {
             $this->_identity=new UserIdentity($this->email,$this->password);
             if(!$this->_identity->authenticate()) {
-                $this->addError('validation','Incorrect email or password.');
-                echo $this->_identity->errorCode;
+                if ($this->_identity->findEmail) {
+                    $this->addError('validation', 'A megadott e-mail cím és jelszó nem érvényes.');
+                } else {
+                    $this->addError('validation', 'A megadott felhasználónév és jelszó nem érvényes.');
+                }
             }
         }
     }

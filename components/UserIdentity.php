@@ -9,6 +9,7 @@
 class UserIdentity extends CUserIdentity
 {
     private $uid;
+    private $findEmail;
 
     /**
      * Authenticates a user.
@@ -16,9 +17,16 @@ class UserIdentity extends CUserIdentity
      */
     public function authenticate()
     {
-        $account = Account::model()->find('LOWER(email) = :email', [':email' => strtolower($this->username)]);
+        if (strpos($this->username,"@")) {
+            $this->findEmail = true;
+            $account = Account::model()->find('LOWER(email) = :email', [':email' => strtolower($this->username)]);
+        } else {
+            $this->findEmail = false;
+            $account = Account::model()->find('username = :username', [':username' => $this->username]);
+        }
+
         if($account===null) {
-            $this->errorCode=self::ERROR_USERNAME_INVALID;
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
         } elseif(!$account->validatePassword($this->password)) {
             $this->errorCode=self::ERROR_PASSWORD_INVALID;
         } else {
@@ -37,9 +45,13 @@ class UserIdentity extends CUserIdentity
     /**
      * @return integer the ID of the user record
      */
-    public function getuId()
+    public function getUid()
     {
         return $this->uid;
+    }
+    public function getFindEmail()
+    {
+        return $this->findEmail;
     }
 
     private function playerExists($uid)
