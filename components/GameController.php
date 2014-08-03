@@ -17,6 +17,7 @@ class GameController extends Controller
                 if (isset($_SESSION['uid'])) {
                     unset($_SESSION['uid']);
                 }
+                Yii::app()->user->logout();
                 $this->redirect(['/?ba']);
             }
         }

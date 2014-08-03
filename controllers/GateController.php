@@ -28,17 +28,6 @@ class GateController extends LoginController
         $this->render('check');
     }
 
-    public function actionError()
-    {
-        if ($error=Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest) {
-                echo $error['message'];
-            } else {
-                $this->render('error', $error);
-            }
-        }
-    }
-    
     public function actionLogout()
     {
         $this->redirect(Yii::app()->params['wlineHost'] . 'menu.php#btm');
@@ -49,4 +38,13 @@ class GateController extends LoginController
         $this->redirect(Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
     }
     
+    protected function beforeAction($action)
+    {
+        if (!Yii::app()->params['isPartOfWline']) {
+            throw new CHttpException(1, 'Ez az aloldal nem használható. ' . CHtml::link('főoldal', '/')); //own nick
+            return false;
+        }
+
+        return true;
+    }
 }

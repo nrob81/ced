@@ -29,4 +29,13 @@ class PublicController extends LoginController
         // display the login form
         $this->render('/account/login', ['model'=>$model]);   
     }
+
+    protected function beforeAction($action)
+    {
+        if (Yii::app()->params['isPartOfWline']) {
+            throw new CHttpException(1, 'Ez az aloldal nem használható. ' . CHtml::link('főoldal', ['/site'])); //own nick
+        }
+
+        return true;
+    }
 }

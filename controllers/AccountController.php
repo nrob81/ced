@@ -269,4 +269,13 @@ class AccountController extends Controller
 
         return $model;
     }
+    
+    protected function beforeAction($action)
+    {
+        if (Yii::app()->params['isPartOfWline']) {
+            throw new CHttpException(1, 'Ez az aloldal nem használható. ' . CHtml::link('főoldal', ['/site'])); //own nick
+        }
+
+        return true;
+    }
 }
