@@ -72,7 +72,7 @@ class Account extends CActiveRecord
             'confirmPassword' => 'jelszó újra',
             ];
         if ($this->scenario == 'login') {
-            $attributes['email'] = 'email vagy felh.név';
+            $attributes['email'] = 'e-mail vagy felh.név';
         }
         return $attributes;
     }
