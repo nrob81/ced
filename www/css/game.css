@@ -168,6 +168,12 @@ p { margin: 0; }
 .attributes a, .attributes a:visited { color:#aa9999 !important; }
 .attributes a:hover, .attributes a:active { color:#d5baa4 !important; }
 
+.attributes h1 {
+    margin: 0;
+    line-height: 36px;
+    font-size: 16px;
+}
+
 @media all and (min-width: 30em) {
     .attributes .ui-block-a { width: 30%; }
     .attributes .ui-block-b { width: 25%; }

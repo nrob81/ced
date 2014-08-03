@@ -1,6 +1,8 @@
 <?php
 class PublicController extends LoginController
 {
+    public $layout='//layouts/columnGuest';
+
     public function actionIndex()
     {
         Yii::app()->session->open();

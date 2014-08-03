@@ -9,24 +9,19 @@ echo $form->errorSummary($model, '');
 ?>
 
 <div data-role="fieldcontain">
-    <?= $form->error($model,'email'); ?>
 	<?= $form->labelEx($model,'email'); ?>
 	<?= $form->textField($model,'email'); ?>
 </div>
 <div data-role="fieldcontain">
-    <?= $form->error($model,'password'); ?>
 	<?= $form->labelEx($model,'password'); ?>
-	<?= $form->textField($model,'password'); ?>
+	<?= $form->passwordField($model,'password'); ?>
 </div>
-<?= CHtml::submitButton('Bejelentkezés'); ?>
+
+<fieldset class="ui-grid-a">
+    <div class="ui-block-b"><?= CHtml::submitButton('Bejelentkezés'); ?></div>
+    <div class="ui-block-b"><?= CHtml::link('Regisztráció', ['account/signup'], ['data-role'=>'button', 'data-theme'=>'e']); ?></div>
+</fieldset>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-
-<div class="c">
-<?php
-echo CHtml::link('Elfelejtett jelszó', ['account/resetPassword']);
-echo CHtml::link('Regisztráció', ['account/signup'], ['data-role'=>'button', 'data-inline'=>'true', 'data-theme'=>'e']);
-?>
-</div>

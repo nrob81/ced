@@ -1,6 +1,8 @@
 <?php
 class AccountController extends Controller
 {
+    public $layout='//layouts/columnGuest';
+
     /**
      * Registers a new account.
      * If registration is successful, the browser will be redirected to the to the previous page.
