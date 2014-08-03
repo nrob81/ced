@@ -1,4 +1,9 @@
-<div class="form">
+<?php
+$this->contentClass='water water-guest';
+$this->pageTitle=Yii::app()->name;
+?>
+
+<div class="form login-form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'login-form',

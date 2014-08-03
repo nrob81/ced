@@ -1,3 +1,6 @@
+<?php
+$this->pageTitle = 'Játékos mentése';
+?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

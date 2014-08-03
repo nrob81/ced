@@ -1,3 +1,6 @@
+<?php
+$this->pageTitle = 'Regisztráció';
+?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

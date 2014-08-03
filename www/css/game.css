@@ -154,6 +154,7 @@ p { margin: 0; }
     background-size:contain !important;
 }
 .water h2:first-child { margin-top: 2em; }
+.water-guest { background-position-y: 2em !important; }
 
 .attributes {
     white-space: nowrap;
@@ -547,6 +548,13 @@ ul.board .ui-li-aside { width: 10em; }
 }
 .errorSummary ul { padding:0; margin:0; }
 .errorSummary li { list-style-type: none; }
+
+/* guests */
+.login-form { margin-top: 1em; }
+.water-guest div.ui-input-text,
+.water-guest input.ui-input-text {
+    background: rgba(255, 255, 255, .8);
+}
 
 /* left panel */
 .nav-alert {
