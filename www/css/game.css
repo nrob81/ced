@@ -617,3 +617,6 @@ ul.board .ui-li-aside { width: 10em; }
 
 /* ydtb toolbar fix */
 #ydtb-toolbar { overflow:initial; }
+
+.credits-grid .ui-block-a { text-align: right; }
+.credits-grid .ui-block-b { padding: 108px 0 0 15px; }
