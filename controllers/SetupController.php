@@ -5,15 +5,15 @@ class SetupController extends GameController
     {
         $model=new Account('changePassword');
 
-        if(isset($_POST['Account'])) {
+        if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
-            if($model->validate()) {
+            if ($model->validate()) {
                 $account=$this->loadModel(Yii::app()->player->uid);
 
-                if($account->validatePassword($model->oldPassword)) {
+                if ($account->validatePassword($model->oldPassword)) {
                     $account->password = password_hash($model->password, PASSWORD_BCRYPT);
                     $account->save(false);
-                    
+
                     Yii::app()->user->setFlash('success', 'A jelszócsere sikerült.');
                     $this->redirect(['/player']);
                 } else {
@@ -24,16 +24,16 @@ class SetupController extends GameController
 
         $this->render('changePassword', ['model'=>$model]);
     }
-    
+
     public function actionEmail()
-	{
-		$model=new Account('changeEmail');
+    {
+        $model=new Account('changeEmail');
         $account = $this->loadModel(Yii::app()->player->uid);
 
-		if(isset($_POST['Account'])) {
-			$model->attributes=$_POST['Account'];
-			if($model->validate()) {
-				if($account->validatePassword($model->password)) {
+        if (isset($_POST['Account'])) {
+            $model->attributes=$_POST['Account'];
+            if ($model->validate()) {
+                if ($account->validatePassword($model->password)) {
                     if (!$account->changeMailCode) {
                         $account->changeMailCode = $account->generateCode();
                     }
@@ -53,7 +53,7 @@ class SetupController extends GameController
                     $mail->AddAddress($model->email, "");
                     //$sent = true; 
                     $sent = $mail->Send(); //todo: activate on production
-                    if(!$sent) {
+                    if (!$sent) {
                         //echo "Mailer Error: " . $mail->ErrorInfo;
                         Yii::app()->user->setFlash('error', 'Az új e-mail cím aktiválásához szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
                     } else {
@@ -61,18 +61,18 @@ class SetupController extends GameController
                         $this->redirect('email');
                     }
 
-				} else {
-					$model->addError('password', 'A megadott jelszó nem érvényes.');
-				}
-			}
-		}
+                } else {
+                    $model->addError('password', 'A megadott jelszó nem érvényes.');
+                }
+            }
+        }
 
         $this->render('changeEmail', [
             'model'=>$model,
             'account'=>$account,
             ]);
-	}
-    
+    }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
@@ -84,7 +84,7 @@ class SetupController extends GameController
     {
         $model=Account::model()->findByPk((int)$id);
 
-        if($model===null) {
+        if ($model===null) {
             throw new CHttpException(1, 'A keresett játékos nem található.');
         }
 
