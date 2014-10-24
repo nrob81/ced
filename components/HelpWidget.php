@@ -1,7 +1,11 @@
 <?php
+/**
+ * @property string $title
+ * @property string $topic
+ */
 class HelpWidget extends CWidget
 {
-    public $title='';
+    public $title = '';
     public $topic = '';
 
     public function run()
