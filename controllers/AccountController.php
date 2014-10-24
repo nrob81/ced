@@ -11,9 +11,9 @@ class AccountController extends Controller
     {
         $model=new Account('signup');
 
-        if(isset($_POST['Account'])) {
+        if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
-            if($model->validate()) {
+            if ($model->validate()) {
                 // Create account
                 $model->verifyCode = $model->generateCode();
                 $model->save(false);
@@ -28,7 +28,7 @@ class AccountController extends Controller
                 $mail->AddAddress($model->email, "");
                 $sent = true; 
                 $sent = $mail->Send(); //todo: activate on production
-                if(!$sent) {
+                if (!$sent) {
                     //echo "Mailer Error: " . $mail->ErrorInfo;
                     Yii::app()->user->setFlash('error', 'A regisztráció befejezéséhez szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
                 } else {
@@ -54,17 +54,17 @@ class AccountController extends Controller
         $model = $this->loadModel($id);
         $model->scenario = 'completeSignup';
 
-        if(!$model->verifyCode || $model->username) {
+        if (!$model->verifyCode || $model->username) {
             Yii::app()->user->setFlash('info', 'Már állítottál be magadnak felhasználónevet. Kérlek jelentkezz be.');
             $this->redirect('/');
         }
 
-        if($model->verifyCode !== $code) {
+        if ($model->verifyCode !== $code) {
             Yii::app()->user->setFlash('error', 'Az első belépéshez szükséges oldal címe nem érvényes. Pontosan másoltad be az e-mailből?');
             $this->redirect('/');
         }
 
-        if(isset($_POST['Account'])) {
+        if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
             $originalPassword = $model->password;
             $valid = $model->validate();
@@ -111,10 +111,10 @@ class AccountController extends Controller
     {
         $model = new Account('resetPassword');
 
-        if(isset($_POST['Account'])) {
+        if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
 
-            if($model->validate()) {
+            if ($model->validate()) {
                 // Find account
                 $model = Account::model()->findByEmail($model->email);
 
@@ -137,17 +137,17 @@ class AccountController extends Controller
         $model->password = false;
         $model->scenario = 'completeResetPassword';
 
-        if(!$model->resetPasswordCode) {
+        if (!$model->resetPasswordCode) {
             Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges oldal címe nem érvényes. Pontosan másoltad be az e-mailből?');
             $this->redirect('/');
         }
 
-        if($model->resetPasswordCode !== $code) {
+        if ($model->resetPasswordCode !== $code) {
             Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges oldal címe nem érvényes. Pontosan másoltad be az e-mailből?');
             $this->redirect('/');
         }
 
-        if(isset($_POST['Account'])) {
+        if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
             $originalPassword = $model->password;
 
@@ -182,12 +182,12 @@ class AccountController extends Controller
     public function actionCompleteChangeEmail($id, $code)
     {
         $model = $this->loadModel($id);
-        if(!$model->changeMailCode) {
+        if (!$model->changeMailCode) {
             Yii::app()->user->setFlash('error', 'A beállított e-mail címed már aktiválva van.');
             $this->redirect('/');
         }
 
-        if($model->changeMailCode !== $code) {
+        if ($model->changeMailCode !== $code) {
             Yii::app()->user->setFlash('error', 'Az e-mail aktiválásához szükséges oldal címe nem érvényes.');
             $this->redirect('/');
         }
@@ -208,7 +208,7 @@ class AccountController extends Controller
     private function sendResetLink($model)
     {
         // New verification if not exists
-        if(!$model->resetPasswordCode) {
+        if (!$model->resetPasswordCode) {
             $model->resetPasswordCode = $model->generateCode();
             $model->save(false);
         }
@@ -223,7 +223,7 @@ class AccountController extends Controller
         $mail->AddAddress($model->email, "");
         //$sent = true; 
         $sent = $mail->Send(); //todo: activate on production
-        if(!$sent) {
+        if (!$sent) {
             //echo "Mailer Error: " . $mail->ErrorInfo;
             Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
         } else {
@@ -269,7 +269,7 @@ class AccountController extends Controller
     {
         $model=Account::model()->findByPk((int)$id);
 
-        if($model===null) {
+        if ($model===null) {
             throw new CHttpException(1, 'A keresett játékos nem található. Ezen könnyen segíthetsz: ' . CHtml::link('regisztráld be.', ['signup']));
         }
 
