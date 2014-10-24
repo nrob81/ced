@@ -202,6 +202,9 @@ class AccountController extends Controller
         $this->redirect('/');
     }
 
+    /**
+     * @param Account $model
+     */
     private function sendResetLink($model)
     {
         // New verification if not exists

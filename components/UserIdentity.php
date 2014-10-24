@@ -54,6 +54,9 @@ class UserIdentity extends CUserIdentity
         return $this->findEmail;
     }
 
+    /**
+     * @param integer $uid
+     */
     private function playerExists($uid)
     {
         $foundUid = Yii::app()->db->createCommand()

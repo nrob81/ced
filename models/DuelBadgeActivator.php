@@ -117,6 +117,8 @@ class DuelBadgeActivator extends BadgeActivator
 
     /**
      * @param integer $limit
+     * @param integer $cntSuccess
+     * @param integer $cntFail
      */
     private function getSuccessRate($limit, $cntSuccess, $cntFail)
     {
