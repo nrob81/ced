@@ -1,6 +1,10 @@
 <?php
 class DuelBadgeActivator extends BadgeActivator
 {
+    /**
+     * @param boolean $role
+     * @param string $winner
+     */
     public function triggerDuelFirstWin($role, $winner)
     {
         if ($role == 'caller' && $winner == 'caller') {
@@ -8,6 +12,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param integer $cnt
+     */
     public function triggerDuelSuccess($cnt)
     {
         if ($cnt >= 100) {
@@ -15,6 +22,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param integer $cnt
+     */
     public function triggerDuelFail($cnt)
     {
         if ($cnt >= 100) {
@@ -22,6 +32,10 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param integer $cntSuccess
+     * @param integer $cntFail
+     */
     public function triggerDuelRate($cntSuccess, $cntFail)
     {
         $mapMax = [
@@ -47,6 +61,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param integer $dollar
+     */
     public function triggerDuelMoney($dollar)
     {
         foreach ([100, 1000] as $limit) {
@@ -56,6 +73,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param boolean $isWinner
+     */
     public function triggerDuelWinChance($isWinner, $chance)
     {
         if (!$isWinner) {
@@ -69,6 +89,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param boolean $isWinner
+     */
     public function triggerDuelLoseChance($isWinner, $chance)
     {
         if ($isWinner) {
@@ -82,6 +105,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param string $role
+     */
     public function triggerDuel2h($role)
     {
         if ($role == 'caller' && date('G') == 2) {
@@ -89,6 +115,9 @@ class DuelBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param integer $limit
+     */
     private function getSuccessRate($limit, $cntSuccess, $cntFail)
     {
         $rate = 50;

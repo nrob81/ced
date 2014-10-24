@@ -206,6 +206,9 @@ class Club extends CModel implements ISubject
         return (int)$res;
     }
 
+    /**
+     * @param integer $id
+     */
     public function joinRequest($id)
     {
         $player = Yii::app()->player->model;
@@ -243,6 +246,9 @@ class Club extends CModel implements ISubject
         return true;
     }
 
+    /**
+     * @param integer $id
+     */
     public function deleteOwnJoinRequest($id)
     {
         $player = Yii::app()->player->model;

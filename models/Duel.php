@@ -115,6 +115,10 @@ class Duel extends CModel
         }
     }
 
+    /**
+     * @param integer $start
+     * @param integer $end
+     */
     private function isBetweenDates($start, $end)
     {
         $now = time();
@@ -243,6 +247,9 @@ class Duel extends CModel
         }
     }
 
+    /**
+     * @param integer $duelId
+     */
     public function replay($duelId)
     {
         //fetch duel data

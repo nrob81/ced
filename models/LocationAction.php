@@ -123,6 +123,11 @@ class LocationAction extends CModel
         }
     }
     
+    /**
+     * @param integer $sp
+     * @param integer $gold
+     * @param string $title
+     */
     private function addAward($sp, $gold, $title)
     {
         $player = Yii::app()->player->model;

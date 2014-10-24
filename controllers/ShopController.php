@@ -46,6 +46,10 @@ class ShopController extends GameController
             ]);
     }
 
+    /**
+     * @param integer $page
+     * @param string $transaction
+     */
     private function room($type, $page, $transaction)
     {
         $item_id = Yii::app()->request->getPost('item_id', 0);
