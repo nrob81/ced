@@ -34,6 +34,9 @@ class ProfileBadgeActivator extends BadgeActivator
         }
     }
 
+    /**
+     * @param integer $uid
+     */
     public function triggerDollar($uid, $dollar)
     {
         $this->setUid($uid);
@@ -45,6 +48,10 @@ class ProfileBadgeActivator extends BadgeActivator
         }
     }
     
+    /**
+     * @param integer $uid
+     * @param integer $level
+     */
     public function triggerLevel($uid, $level)
     {
         $this->setUid($uid);

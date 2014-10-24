@@ -229,6 +229,9 @@ class AccountController extends Controller
         }
     }
 
+    /**
+     * @param Account $model
+     */
     private function createPlayer($model)
     {
         $command = Yii::app()->db->createCommand();

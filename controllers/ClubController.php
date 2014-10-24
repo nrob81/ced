@@ -23,6 +23,10 @@ class ClubController extends GameController
         $this->renderList($page, true);
     }
 
+    /**
+     * @param integer $page
+     * @param boolean $compete
+     */
     protected function renderList($page, $compete)
     {
         $model=new Club;
@@ -185,6 +189,11 @@ class ClubController extends GameController
             ]);
     }
 
+    /**
+     * @param Club $club
+     * @param Challenge $challenge
+     * @param Forum $forum
+     */
     private function fireMember($club, $challenge, $forum)
     {
         $player = Yii::app()->player->model;
@@ -207,6 +216,10 @@ class ClubController extends GameController
         }
     }
 
+    /**
+     * @param Club $club
+     * @param Forum $forum
+     */
     private function acceptApproval($club, $forum)
     {
         $player = Yii::app()->player->model;
@@ -224,6 +237,10 @@ class ClubController extends GameController
         }
     }
 
+    /**
+     * @param Club $club
+     * @param Forum $forum
+     */
     private function deleteApproval($club, $forum)
     {
         $player = Yii::app()->player->model;
@@ -242,6 +259,10 @@ class ClubController extends GameController
         }
     }
 
+    /**
+     * @param Club $club
+     * @param Challenge $challenge
+     */
     private function switchCompete($club, $challenge)
     {
         $switch = Yii::app()->request->getParam('switch', '');

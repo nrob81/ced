@@ -198,6 +198,9 @@ class Challenge extends CModel
         return false;
     }
 
+    /**
+     * @param integer $opponentID
+     */
     public function underCallTimeLimit($clubID, $opponentID)
     {
         $res = Yii::app()->db->createCommand()
@@ -228,6 +231,9 @@ class Challenge extends CModel
         return true;
     }
 
+    /**
+     * @param Club $opponent
+     */
     public function callToChallenge($opponent)
     {
         $player = Yii::app()->player->model;
