@@ -275,6 +275,9 @@ class ClubController extends GameController
         }
     }
 
+    /**
+     * @param Club $club
+     */
     private function wallNotice($club, $type, $uid)
     {
         $player = Yii::app()->player->model;

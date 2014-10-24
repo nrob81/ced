@@ -166,6 +166,9 @@ class Competitor extends CModel
         $this->club = $club;
     }
 
+    /**
+     * @param integer $duelId
+     */
     public function fetchFromLog($duelId)
     {
         $role = $this->isCaller ? 'caller' : 'opponent';

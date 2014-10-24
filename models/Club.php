@@ -283,6 +283,9 @@ class Club extends CModel implements ISubject
         }
     }
 
+    /**
+     * @param integer $uid
+     */
     public function fireMember($uid)
     {
         $player = Yii::app()->player->model;
@@ -308,6 +311,9 @@ class Club extends CModel implements ISubject
         return (bool)$del;
     }
     
+    /**
+     * @param integer $uid
+     */
     public function approveMember($uid)
     {
         $player = Yii::app()->player->model;
@@ -348,6 +354,9 @@ class Club extends CModel implements ISubject
         return (bool)$update;
     }
     
+    /**
+     * @param integer $uid
+     */
     public function deleteJoinRequest($uid)
     {
         $del = Yii::app()->db->createCommand()

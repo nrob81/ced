@@ -216,6 +216,9 @@ class Challenge extends CModel
         return true;
     }
 
+    /**
+     * @param integer $clubID
+     */
     public function underLastCallTimeLimit($clubID)
     {
         $res = Yii::app()->db->createCommand()
