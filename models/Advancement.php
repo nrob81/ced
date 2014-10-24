@@ -68,7 +68,9 @@ class Advancement extends CModel
         if ($increment) {
             $player->updateAttributes($increment, ['status_points'=>1]);
             //badge
-            $b = Yii::app()->badge->model;
+            $b = new ProfileBadgeActivator();
+            $b->uid = $this->uid;
+
             if ($id==1) {
                 $b->triggerMaxNrg($player->energy_max);
             }

@@ -397,7 +397,7 @@ class Player extends CModel implements ISubject
             $this->$k = $newValue;
 
             if ($k=='dollar') {
-                Yii::app()->badge->model->triggerDollar($this->uid, $newValue);
+                (new ProfileBadgeActivator())->triggerDollar($this->uid, $newValue);
             }
         }
 
@@ -462,7 +462,7 @@ class Player extends CModel implements ISubject
 
         $this->justAdvanced = true;
 
-        Yii::app()->badge->model->triggerLevel($this->uid, $this->level+1);
+        (new ProfileBadgeActivator())->triggerLevel($this->uid, $this->level+1);
         return $incr;
     }
 
