@@ -150,7 +150,7 @@ p { margin: 0; }
 
 .water {
     min-height: 200px;
-    background:transparent url(jul-s.png?1) center 4em no-repeat fixed !important;
+    background:transparent url(oct-s.png) center 4em no-repeat fixed !important;
     background-size:contain !important;
 }
 .water h2:first-child { margin-top: 2em; }
@@ -184,7 +184,7 @@ p { margin: 0; }
 
     .water { 
         min-height: 500px;
-        background:transparent url(jul-b.png?1) center 0% no-repeat fixed !important; 
+        background:transparent url(oct-b.png) center 0% no-repeat fixed !important; 
         background-size:contain !important;
     }
 }
