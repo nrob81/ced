@@ -203,6 +203,9 @@ class Item extends CModel
         $this->setSellAmount();
     }
 
+    /**
+     * @param integer $amount
+     */
     public function buy($amount)
     {
         //echo __FUNCTION__ . "\n";

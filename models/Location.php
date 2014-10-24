@@ -26,6 +26,9 @@ class Location extends CModel
         return [];
     }
 
+    /**
+     * @param integer $id
+     */
     public function setId($id)
     {
         $this->id = (int)$id;

@@ -101,6 +101,9 @@ class Contest extends CModel
         return true;
     }
 
+    /**
+     * @param integer $energy
+     */
     public function addPoints($uid, $activity, $energy, $xp, $dollar)
     {
         //todo: log common collecting

@@ -36,6 +36,9 @@ class DuelList extends CModel
         return $this->count;
     }
 
+    /**
+     * @param Club $club
+     */
     public function getClubName($club, $id)
     {
         if ($id) {

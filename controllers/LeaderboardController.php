@@ -11,6 +11,9 @@ class LeaderboardController extends GameController
         $this->makeBoard(Leaderboard::TYPE_CLUB, $range);
     }
 
+    /**
+     * @param string $range
+     */
     private function makeBoard($type, $range)
     {
         $board = new Leaderboard;

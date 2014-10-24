@@ -43,11 +43,18 @@ class Logger extends CModel
         $this->uid = (int)$uid;
     }
 
+    /**
+     * @param string $value
+     */
     public function addToSet($value)
     {
         Yii::app()->redis->getClient()->rPush('debug:'.$this->key, $value);
     }
 
+    /**
+     * @param string $field
+     * @param integer $value
+     */
     public function increment($field, $value)
     {
         if (!$this->uid) {
