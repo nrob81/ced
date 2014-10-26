@@ -40,3 +40,7 @@ Club, Contest, Leaderboards, Help
 ![Contest](http://ced.wline.hu/screenshots/ced-contest.png)
 ![Leaderboards](http://ced.wline.hu/screenshots/ced-leaderboard.png)
 ![Help](http://ced.wline.hu/screenshots/ced-help.png)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/heal25/ced/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
