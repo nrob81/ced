@@ -12,14 +12,14 @@ class Account extends CActiveRecord
     public $oldPassword;
     public $confirmPassword;
 
-    private $_identity;
+    private $identity;
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Account the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -62,7 +62,7 @@ class Account extends CActiveRecord
         );
     }
 
-    public function AttributeLabels()
+    public function attributeLabels()
     {
         $attributes = [
             'username' => 'felhasználónév',
@@ -94,13 +94,12 @@ class Account extends CActiveRecord
      * Authenticates the password.
      * This is the 'authenticate' validator as declared in rules().
      */
-    public function authenticate($attribute,$params)
+    public function authenticate($attribute, $params)
     {
-        if(!$this->hasErrors())
-        {
-            $this->_identity=new UserIdentity($this->email,$this->password);
-            if(!$this->_identity->authenticate()) {
-                if ($this->_identity->findEmail) {
+        if (!$this->hasErrors()) {
+            $this->identity=new UserIdentity($this->email, $this->password);
+            if (!$this->identity->authenticate()) {
+                if ($this->identity->findEmail) {
                     $this->addError('validation', 'A megadott e-mail cím és jelszó nem érvényes.');
                 } else {
                     $this->addError('validation', 'A megadott felhasználónév és jelszó nem érvényes.');
@@ -115,15 +114,15 @@ class Account extends CActiveRecord
      */
     public function login()
     {
-        if($this->_identity===null) {
-            $this->_identity=new UserIdentity($this->email,$this->password);
-            $this->_identity->authenticate();
+        if ($this->identity===null) {
+            $this->identity=new UserIdentity($this->email, $this->password);
+            $this->identity->authenticate();
         }
 
-        if($this->_identity->errorCode===UserIdentity::ERROR_NONE) {
+        if ($this->identity->errorCode===UserIdentity::ERROR_NONE) {
             $duration = 3600*24*30; // 30 days
-            Yii::app()->user->login($this->_identity,$duration);
-            Yii::app()->session['uid'] = $this->_identity->uid;
+            Yii::app()->user->login($this->identity, $duration);
+            Yii::app()->session['uid'] = $this->identity->uid;
 
             return true;
         } else {
@@ -137,6 +136,6 @@ class Account extends CActiveRecord
      */
     public function findByEmail($email)
     {
-        return $this->find('LOWER(email)=?',array(strtolower($email)));
+        return $this->find('LOWER(email)=?', array(strtolower($email)));
     }
 }
