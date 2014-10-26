@@ -26,8 +26,7 @@ class AccountController extends Controller
                 $message = $this->renderPartial('_verification', ['model'=>$model], true);
                 $mail->MsgHTML($message);
                 $mail->AddAddress($model->email, "");
-                $sent = true; 
-                $sent = $mail->Send(); //todo: activate on production
+                $sent = $mail->Send();
                 if (!$sent) {
                     //echo "Mailer Error: " . $mail->ErrorInfo;
                     Yii::app()->user->setFlash('error', 'A regisztráció befejezéséhez szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
@@ -39,7 +38,7 @@ class AccountController extends Controller
             }
         }
 
-        $this->render('signup',array(
+        $this->render('signup', array(
             'model'=>$model,
         ));
     }
@@ -126,7 +125,7 @@ class AccountController extends Controller
             }
         }
 
-        $this->render('resetPassword',array(
+        $this->render('resetPassword', array(
             'model'=>$model,
         ));
     }
@@ -221,8 +220,7 @@ class AccountController extends Controller
         $message = $this->renderPartial('_resetPassword', ['model'=>$model], true);
         $mail->MsgHTML($message);
         $mail->AddAddress($model->email, "");
-        //$sent = true; 
-        $sent = $mail->Send(); //todo: activate on production
+        $sent = $mail->Send();
         if (!$sent) {
             //echo "Mailer Error: " . $mail->ErrorInfo;
             Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');

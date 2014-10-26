@@ -1,7 +1,7 @@
 <?php
 class ProfileBadgeActivator extends BadgeActivator
 {
-   public function triggerMaxNrg($max)
+    public function triggerMaxNrg($max)
     {
         if ($max >= 35) {
             $this->activate('max_nrg_35');
@@ -22,7 +22,7 @@ class ProfileBadgeActivator extends BadgeActivator
             $this->activate('skill_100');
         }
     } 
-    
+
     public function triggerStrength($max)
     {
         if ($max >= 35) {
@@ -47,7 +47,7 @@ class ProfileBadgeActivator extends BadgeActivator
             $this->activate('dollar_5000');
         }
     }
-    
+
     /**
      * @param integer $uid
      * @param integer $level
