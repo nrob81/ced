@@ -59,7 +59,6 @@ class Help extends CModel
         $this->items = []; //reset
         $added = 0;
         for ($i=$max; $i>=0; $i--) {
-            //echo $i.':'.$this->topic."\n";
             $res = Yii::app()->redis->getClient()->get('help:' . $this->topic . ':'.$i);
             if ($res) {
                 $this->items[$i] = $res;

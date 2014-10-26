@@ -202,7 +202,6 @@ class Competitor extends CModel
         } else {
             $this->losePrize();
         }
-        //print_r($this);
     }
 
     public function finish($player)
@@ -236,7 +235,6 @@ class Competitor extends CModel
                 $result[$sql] = $this->$member;
             }
         }
-        //print_r($result);
         return $result;
     }
 

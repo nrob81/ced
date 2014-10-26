@@ -28,7 +28,6 @@ class AccountController extends Controller
                 $mail->AddAddress($model->email, "");
                 $sent = $mail->Send();
                 if (!$sent) {
-                    //echo "Mailer Error: " . $mail->ErrorInfo;
                     Yii::app()->user->setFlash('error', 'A regisztráció befejezéséhez szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
                 } else {
                     Yii::app()->user->setFlash('success', 'A regisztráció befejezéséhez szükséges teendőket elküldtük e-mailben.');
@@ -222,7 +221,6 @@ class AccountController extends Controller
         $mail->AddAddress($model->email, "");
         $sent = $mail->Send();
         if (!$sent) {
-            //echo "Mailer Error: " . $mail->ErrorInfo;
             Yii::app()->user->setFlash('error', 'A jelszó visszaállításához szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
         } else {
             Yii::app()->user->setFlash('success', 'A jelszó visszaállításához szükséges teendőket elküldtük e-mailben.');

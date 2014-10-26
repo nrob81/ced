@@ -60,7 +60,6 @@ class BadgeList extends Badge
         }
 
         $redis = Yii::app()->redis->getClient();
-        //$all = $redis->sMembers('badges:all');
         $all = $redis->zRange('badges:all', 0, -1);
 
         $categ = 'b';

@@ -62,7 +62,6 @@ class DuelList extends CModel
         if ($minLevel < self::REQ_LEVEL) {
             $minLevel = self::REQ_LEVEL;
         }
-        //$maxLevel = $player->level + (self::LIMIT_WEAKER_OPPONENT_LEVEL_DIFF * 2);
 
         $this->count = Yii::app()->db->createCommand()
             ->select('COUNT(*) AS count')

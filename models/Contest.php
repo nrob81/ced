@@ -53,18 +53,15 @@ class Contest extends CModel
     public function getRecommendedCollect()
     {
         if (!$this->recommendedCollect) {
-            //echo 'rec.from.cache, ';
             $this->recommendedCollect = Yii::app()->redis->getClient()->get(self::ID_RECOMMENDED_COLLECT);
             Yii::app()->redis->getClient()->del(self::ID_RECOMMENDED_COLLECT);
         }
 
         if (!in_array($this->recommendedCollect, $this->collectTypes)) {
-            //echo 'rec.not.found, ';
             $randomId = array_rand($this->collectTypes);
             $this->recommendedCollect = $this->collectTypes[$randomId];
         }
 
-        //echo 'rec:'.$this->recommendedCollect;
         return $this->recommendedCollect;
     }
 
@@ -182,7 +179,6 @@ class Contest extends CModel
 
         //check the lifetime
         if (time() > $this->activeId + self::LIFETIME) {
-            //echo 'quit, reason: lifetime, ';
             return false;
         }
 
@@ -228,7 +224,6 @@ class Contest extends CModel
         }
 
         if (!$valid) {
-            //echo 'quit, reason: , '.$toCollect;
             return false;
         }
 

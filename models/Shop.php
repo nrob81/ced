@@ -112,7 +112,6 @@ class Shop extends CModel
     
     public function fetchSets()
     {
-        //echo __FUNCTION__ . "\n";
         $res = Yii::app()->db->createCommand()
             ->select('id, parts, title')
             ->from('itemsets')
@@ -154,7 +153,6 @@ class Shop extends CModel
         $limit = Yii::app()->params['shopItemsPerPage'];
         $levelLimit = $this->levelLimit;
 
-        //echo __FUNCTION__ . "\n";
         $this->count = Yii::app()->db->createCommand()
             ->select('COUNT(*) AS count')
             ->from($this->item_type.'s')
@@ -186,7 +184,6 @@ class Shop extends CModel
     {
         $limit = Yii::app()->params['shopItemsPerPage'];
 
-        //echo __FUNCTION__ . "\n";
         $this->count = Yii::app()->db->createCommand()
             ->select('COUNT(*) AS count')
             ->from('users_'.$this->item_type.'s')
@@ -222,11 +219,9 @@ class Shop extends CModel
     public function buyItem($id, $amount)
     {
         if (!isset($this->items[$id])) {
-            //todo log missing mission
             return false;
         }
 
-        //echo __FUNCTION__ . "\n";
         $this->transactionId = $id;
         $i = $this->items[$id];
         $i->buy($amount);
@@ -249,11 +244,9 @@ class Shop extends CModel
     public function sellItem($id, $amount)
     {
         if (!isset($this->items[$id])) {
-            //todo log missing mission
             return false;
         }
 
-        //echo __FUNCTION__ . "\n";
         $this->transactionId = $id;
         $i = $this->items[$id];
         $i->sell($amount);

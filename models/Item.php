@@ -26,7 +26,6 @@ class Item extends CModel
     private $level;
     private $title;
     private $price;
-    private $parts;
     private $owned;
     private $buy_amount = [];
     private $sell_amount = [];
@@ -208,20 +207,17 @@ class Item extends CModel
      */
     public function buy($amount)
     {
-        //echo __FUNCTION__ . "\n";
         $decr = [];
         $amount = (int)$amount;
         if ($amount < 1) {
             $this->errors['amount'] = true;
             return false;
         }
-        //echo "amount - ok\n";
 
         if ($this->price * $amount > Yii::app()->player->model->dollar) {
             $this->errors['dollar'] = true;
             return false;
         }
-        //echo "dollar - ok\n";
 
         if ($this->item_type !== self::TYPE_PART) {
             if ($amount > Yii::app()->player->model->freeSlots) {
@@ -229,8 +225,6 @@ class Item extends CModel
                 return false;
             }
         }
-
-        //echo "amount: {$amount}\n";
 
         $uid = Yii::app()->player->uid;
 
@@ -263,21 +257,17 @@ class Item extends CModel
     
     public function sell($amount)
     {
-        //echo __FUNCTION__ . "\n";
         $incr = [];
         $amount = (int)$amount;
         if ($amount < 1) {
             $this->errors['amount'] = true;
             return false;
         }
-        //echo "amount - ok\n";
 
         if ($this->owned < $amount) {
             $this->errors['owned'] = true;
             return false;
         }
-        //echo "owned - ok\n";
-        //echo "amount: {$amount}\n";
 
         $player = Yii::app()->player->model;
 
@@ -294,7 +284,6 @@ class Item extends CModel
             ->execute();
         
         //give money for it
-        //echo "amount: $amount \n";
         $incr['dollar'] = $amount * $this->price_sell;
         Yii::app()->player->model->updateAttributes($incr, []);
         

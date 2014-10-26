@@ -341,24 +341,18 @@ class Player extends CModel implements ISubject
         if ($last<0) {
             $last = 0;
         }
-        //echo 'REF_INT: ' . self::ENERGY_REFILL_INTERVAL . "\n";
-        //echo 'last: '. date(" Y.m.d. H:i:s", $last) . "\n";
-        //echo 'now: '. date("Y-m-d. H:i:s", $now) . "\n";
 
         $interval = $now - $last;
-        //echo 'interval: ' . $interval . "\n";
         if ($interval < self::ENERGY_REFILL_INTERVAL) {
             return false;
         }
 
         $refillMultiplier = floor($interval / self::ENERGY_REFILL_INTERVAL); //incement energy every 5 minutes
-        //echo 'refillMultiplier: ' . $refillMultiplier . "\n";
 
         $refillSum = $refillMultiplier * $this->refillPerInterval;
         if ($refillSum > $refillable) {
             $refillSum = $refillable;
         }
-        //echo 'refillSum: ' . $refillSum . "\n";
 
         if ($refillSum < 1) {
             return false; //don't need to rest
@@ -385,11 +379,10 @@ class Player extends CModel implements ISubject
 
     public function updateAttributes($toIncrement, $toDecrement)
     {
-        //$this->logEnergyUsage($toDecrement);
+        $this->logEnergyUsage($toDecrement);
         $attributes = [];
 
         $toIncrement = $this->incrementLevel($toIncrement);
-        //print_r($toIncrement);
 
         foreach ($toIncrement as $k => $v) {
             $newValue = $this->$k + $v;
@@ -424,11 +417,12 @@ class Player extends CModel implements ISubject
         }
     }
 
-    /*protected function logEnergyUsage($attributes)
+    protected function logEnergyUsage($attributes)
     {
         //todo: implement redis log
         return false;
-    }*/
+    }
+
     public function rewriteAttributes($attributes)
     {
         foreach ($attributes as $k => $v) {

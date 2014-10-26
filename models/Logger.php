@@ -77,15 +77,6 @@ class Logger extends CModel
         return $return;
     }
 
-    public function log($data)
-    {
-        $params = $this->getPlayerParams();
-        foreach ($data as $k => $v) {
-            $params[$k] = $v;
-        }
-        //print_r($params);
-    }
-
     private function getCounterKey()
     {
         $suid = (string)$this->uid;

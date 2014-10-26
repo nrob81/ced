@@ -7,7 +7,6 @@ class BackgroundController extends CronController
         $mc->fetchFinishable();
         $mc->process();
 
-        //$this->render('//site/dummy');
         echo 'ok';
     }
 
@@ -34,7 +33,6 @@ class BackgroundController extends CronController
         }
         echo 'started, ';
 
-        //Yii::app()->redis->getClient()->set('contest:r_collect', 'xp'); //set recommended collection type for testing
         $contest->create();
         
         if ($addPoints) {

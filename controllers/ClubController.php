@@ -162,7 +162,6 @@ class ClubController extends GameController
 
         //challenge
         $ch = new Challenge;
-        //$ch->caller = $player->in_club;
         $ch->opponent = $club->id;
         $ch->fetchActiveChallenge();
 

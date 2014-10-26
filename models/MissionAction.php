@@ -72,14 +72,10 @@ class MissionAction extends CModel
     
     public function complete()
     {
-        //echo "complete\n";
-
         if (!$this->requirementsOk()) {
             return false;
         }
         
-        //echo "requirements are OK\n";
-
         if (!$this->doMission()) {
             throw new CFlashException('A követelményeknek megfelelsz, mégsem sikerül teljesíteni a megbízást mivel csak '. $this->mission->chance .'% esélyed volt rá.<br/>
                 Nagyobb szakértelemmel (több felszereléssel és csalival) ez növelhető.');
@@ -160,7 +156,7 @@ class MissionAction extends CModel
         }
 
         $uid = Yii::app()->player->model->uid;
-        $routine = (int)$this->mission->routine_gain;// - $this->mission->routine_reduction;
+        $routine = (int)$this->mission->routine_gain;
         if ($routine<1) {
             $routine = 1;
         }
@@ -192,12 +188,10 @@ class MissionAction extends CModel
     private function beatMission()
     {
         $random = rand(1, 100);
-        //echo "rnd: $random\n";
         $success = ($random <= $this->mission->chance); //win
 
         //log mission counter
         $cell = 'mission_' . ($this->mission->gate ? 'gate_' : '') . ($success ? 'success' : 'fail');
-        //todo:delete Yii::app()->gameLogger->logCounter($cell);
 
         $logger = new Logger;
         $logger->uid = Yii::app()->player->model->uid;
@@ -236,16 +230,10 @@ class MissionAction extends CModel
         $logger = new Logger;
         $logger->key = 'setitem:'.$player->uid;
         $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
-        //echo __FUNCTION__ . "\n";
 
         $minTimeDiff = 3600*24*1;
         $minXpDiff = 100;
         $findChance = 5; //  Chance % to find something
-        /*if ($player->uid == 1981) {
-            $minTimeDiff = 10;
-            $minXpDiff = 1;
-            $findChance = 3; //  "1/findChance" to find something
-        }*/
         $logger->addToSet('initialize variables');
 
         $now = time();

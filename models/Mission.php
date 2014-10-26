@@ -268,7 +268,6 @@ class Mission extends CModel
             $skillA = ($this->skill_extended_at_visit * 100) / $percent;
             $skillM = $skillA - $this->skill_extended_at_visit;
         }
-        //echo $this->skill_extended_at_visit. 'SEAV, '.$percent . '%, skillM: ' . $skillM . "\n";
         return $skillM;
     }
 
@@ -325,16 +324,13 @@ class Mission extends CModel
     {
         $skillMission = $this->skill;
         $skillPlayer = Yii::app()->player->model->skill_extended;
-        //echo "$skillPlayer vs. $skillMission\n";
 
         $all = $skillMission + $skillPlayer;
 
         $percentPlayer = round($skillPlayer / ($all / 100), 1);
-        //echo $percentPlayer . '% vs. ' . round($skillMission / ($all / 100), 1) . "% \n";
 
         if ($percentPlayer >= 90) {
             $percentPlayer = 100;
-            //echo "new $percentPlayer% \n";
         }
         return $percentPlayer;
     }
