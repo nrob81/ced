@@ -13,7 +13,7 @@ Players can make missions, compete, create and join fishing clubs and play in co
 The game was built using Yii and jQuery Mobile frameworks.
 At this time, the users can't join the game with registration, because the game is a part of another site, but this will change.
 
-The game's language is hungarian, now.
+The game's language is hungarian, now.  
 [Documentation of model classes](http://ced-doc.nrcode.com/classes.html)
 
 Todo:
