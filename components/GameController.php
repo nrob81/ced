@@ -11,7 +11,7 @@ class GameController extends Controller
         $this->checkCookie();
 
         if (!Yii::app()->player->uid) {
-            if (Yii::app()->params['isPartOfWline'] == true) {
+            if (Yii::app()->params['isPartOfWline'] === true) {
                 throw new CHttpException(403, 'Regisztráció nélkül a játék nem használható.'); //own nick
             } else {
                 if (isset($_SESSION['uid'])) {
@@ -22,7 +22,7 @@ class GameController extends Controller
             }
         }
 
-        if (Yii::app()->params['isPartOfWline'] == true) {
+        if (Yii::app()->params['isPartOfWline'] === true) {
             $this->updateInternals();
             $this->autoLogout();
             $this->setTimers();
@@ -46,7 +46,7 @@ class GameController extends Controller
             }
         }
 
-        if (Yii::app()->params['isPartOfWline'] == true && $missingGameVar) {
+        if (Yii::app()->params['isPartOfWline'] === true && $missingGameVar) {
             $this->redirect(['gate/cookie']);
         }
     }
