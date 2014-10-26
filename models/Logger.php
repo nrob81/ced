@@ -82,16 +82,4 @@ class Logger extends CModel
         $suid = (string)$this->uid;
         return 'counter:' . $suid[0] . ':' . $suid[1] . ':' .$suid[2] . ':' . $suid;
     }
-
-    private function getPlayerParams()
-    {
-        $params = ['uid','xp_all','xp_delta','level','energy_max','energy','skill','skill_extended','strength','dollar','gold','owned_items','owned_baits'];
-
-        $ret = [];
-        foreach ($params as $param) {
-            $ret[$param] = Yii::app()->player->$param;
-        }
-
-        return $ret;
-    }
 }

@@ -365,12 +365,6 @@ class Player extends CModel implements ISubject
             $remain = $interval - ($refillMultiplier * self::ENERGY_REFILL_INTERVAL);
         }
 
-        /*
-        echo 'remain: ' . $remain . "\n";
-        echo date("now> Y.m.d. H:i:s", $now) . "\n";
-        echo date("rem> Y.m.d. H:i:s", $now-$remain) . "\n";
-         */
-
         $this->energy_incr_at = date("Y-m-d H:i:s", $now-$remain);
 
         Yii::app()->db->createCommand()
