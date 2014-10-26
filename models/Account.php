@@ -6,6 +6,9 @@
  * @property integer $id
  * @property string $email
  * @property string $password
+ * @property string $verifyCode
+ * @property string $verified
+ * @property string $emailTemp
  */
 class Account extends CActiveRecord
 {

@@ -42,7 +42,6 @@ class GateController extends LoginController
     {
         if (!Yii::app()->params['isPartOfWline']) {
             throw new CHttpException(1, 'Ez az aloldal nem használható. ' . CHtml::link('főoldal', '/')); //own nick
-            return false;
         }
 
         return true;
