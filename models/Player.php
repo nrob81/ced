@@ -186,7 +186,7 @@ class Player extends CModel implements ISubject
     }
     
     public function getLevel_percent()
-    { 
+    {
         if (!$this->xp_recommended) {
             return 0;
         }
@@ -381,7 +381,7 @@ class Player extends CModel implements ISubject
 
         Yii::app()->db->createCommand()
             ->update('main', ['energy'=>$this->energy, 'energy_incr_at'=>$this->energy_incr_at], 'uid=:uid', [':uid'=>(int)$this->uid]);
-    }    
+    }
 
     public function updateAttributes($toIncrement, $toDecrement)
     {

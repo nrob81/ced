@@ -15,7 +15,7 @@ class Store extends CModel
     }
 
     public function getUid()
-    { 
+    {
         return $this->uid;
     }
 

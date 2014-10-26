@@ -21,7 +21,7 @@ class ProfileBadgeActivator extends BadgeActivator
         if ($max >= 100) {
             $this->activate('skill_100');
         }
-    } 
+    }
 
     public function triggerStrength($max)
     {

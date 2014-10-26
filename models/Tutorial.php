@@ -21,9 +21,9 @@ class Tutorial extends CModel
     }
 
     public function getDescriptionToShow()
-    { 
+    {
         $this->update();
-        return (int)$this->descriptionToShow; 
+        return (int)$this->descriptionToShow;
     }
     
     public function setState($state)

@@ -298,5 +298,4 @@ class Location extends CModel
             ->queryRow();
         return $res;
     }
-
 }

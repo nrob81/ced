@@ -13,7 +13,7 @@ class SiteController extends GameController
 
         $this->render('index', [
             'posts'=>$wall->posts,
-            ]);        
+            ]);
     }
 
     public function actionCredits()

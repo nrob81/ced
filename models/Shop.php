@@ -80,7 +80,7 @@ class Shop extends CModel
         if ($player->black_market) {
             $levelLimit += 2;
         }
-        return (int)$levelLimit;    
+        return (int)$levelLimit;
     }
     
     public function getNextItemsLevel()

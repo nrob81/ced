@@ -17,7 +17,7 @@ class UserIdentity extends CUserIdentity
      */
     public function authenticate()
     {
-        if (strpos($this->username,"@")) {
+        if (strpos($this->username, "@")) {
             $this->findEmail = true;
             $account = Account::model()->find('LOWER(email) = :email', [':email' => strtolower($this->username)]);
         } else {
@@ -25,9 +25,9 @@ class UserIdentity extends CUserIdentity
             $account = Account::model()->find('username = :username', [':username' => $this->username]);
         }
 
-        if($account===null) {
+        if ($account===null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        } elseif(!$account->validatePassword($this->password)) {
+        } elseif (!$account->validatePassword($this->password)) {
             $this->errorCode=self::ERROR_PASSWORD_INVALID;
         } else {
             //check player

@@ -191,7 +191,7 @@ class MissionAction extends CModel
 
     private function beatMission()
     {
-        $random = rand(1,100);
+        $random = rand(1, 100);
         //echo "rnd: $random\n";
         $success = ($random <= $this->mission->chance); //win
 

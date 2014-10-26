@@ -119,7 +119,7 @@ return array(
                 'Password'=>'test',
                 'Mailer'=>'smtp',
                 'Port'=>26,
-                'SMTPAuth'=>true, 
+                'SMTPAuth'=>true,
             ),
         ),
 

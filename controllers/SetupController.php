@@ -51,10 +51,8 @@ class SetupController extends GameController
                     $message = $this->renderPartial('_changeEmail', ['model'=>$account], true);
                     $mail->MsgHTML($message);
                     $mail->AddAddress($model->email, "");
-                    //$sent = true; 
-                    $sent = $mail->Send(); //todo: activate on production
+                    $sent = $mail->Send();
                     if (!$sent) {
-                        //echo "Mailer Error: " . $mail->ErrorInfo;
                         Yii::app()->user->setFlash('error', 'Az új e-mail cím aktiválásához szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
                     } else {
                         Yii::app()->user->setFlash('success', 'Az új e-mail cím aktiválásához szükséges teendőket elküldtük e-mailben.');

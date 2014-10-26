@@ -13,10 +13,10 @@ class PublicController extends LoginController
         $model=new Account('login');
 
         // collect user input data
-        if(isset($_POST['Account'])) {
+        if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
             // validate user input and redirect to the previous page if valid
-            if($model->validate() && $model->login()) {
+            if ($model->validate() && $model->login()) {
                 $this->incrementLoginDays(Yii::app()->session['uid']);
 
                 $b = new CommonBadgeActivator;
@@ -27,7 +27,7 @@ class PublicController extends LoginController
             }
         }
         // display the login form
-        $this->render('/account/login', ['model'=>$model]);   
+        $this->render('/account/login', ['model'=>$model]);
     }
 
     protected function beforeAction($action)
