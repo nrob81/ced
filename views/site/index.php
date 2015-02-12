@@ -7,6 +7,12 @@ $this->pageTitle=Yii::app()->name;
 <li>Carp-e Diem :: Élj a halnak!</li>
 </ul>
 
+<?php if ($banner): ?>
+<ul data-role="listview" data-inset="true" data-theme="d">
+<li class="alert-info"><?= $banner; ?></li>
+</ul>
+<?php endif; ?>
+
 <h2>Játéknapló</h2>
 <ul class="gamelog" data-role="listview" data-inset="true" data-theme="d">
     <?php 

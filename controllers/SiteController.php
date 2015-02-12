@@ -13,6 +13,7 @@ class SiteController extends GameController
 
         $this->render('index', [
             'posts'=>$wall->posts,
+            'banner'=>(date("nd") == Yii::app()->params['smsDate']) ? Yii::app()->params['smsText'] : '',
             ]);
     }
 
@@ -114,6 +115,7 @@ class SiteController extends GameController
 
         $this->render('store', [
             'store'=>$store,
+            'banner'=>(date("nd") == Yii::app()->params['smsDate']) ? Yii::app()->params['smsText'] : '',
             ]);
     }
 

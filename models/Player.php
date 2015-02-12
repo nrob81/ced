@@ -306,7 +306,7 @@ class Player extends CModel implements ISubject
 
     public function setAllAttributes($uid = 0)
     {
-        $this->subjectId = $uid ? $uid : @$_SESSION['uid'];
+        $this->setSubjectId( $uid ? $uid : @$_SESSION['uid'] );
 
         if (!$this->uid) {
             return false;

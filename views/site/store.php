@@ -3,6 +3,12 @@ $this->pageTitle=Yii::app()->name;
 $this->pageTitle='Arany felhasználása';
 ?>
 
+<?php if ($banner): ?>
+<ul data-role="listview" data-inset="true" data-theme="d">
+<li class="alert-info"><?= $banner; ?></li>
+</ul>
+<?php endif; ?>
+
 <div id="store" class="responsive-a ui-grid-a ui-responsive">
     <div class="ui-block-a">
         <h2>Aranyad: <?= Yii::app()->player->model->gold; ?></h2>

@@ -9,7 +9,7 @@ class GameController extends Controller
     protected function beforeAction($action)
     {
         $this->checkCookie();
-
+        
         if (!Yii::app()->player->uid) {
             if (Yii::app()->params['isPartOfWline'] === true) {
                 throw new CHttpException(403, 'Regisztráció nélkül a játék nem használható.'); //own nick
