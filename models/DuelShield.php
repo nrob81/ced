@@ -64,7 +64,7 @@ class DuelShield extends CModel
 
         $prices = $this->getPrices();
         if (!array_key_exists($time, $prices)) {
-            throw new CFlashException('A pajzsot csak 10, 30 vagy 60 percre aktiválhatod.');
+            throw new CFlashException('A pajzsot csak a listában megadott időkre aktiválhatod.');
         }
         $price = $prices[$time]['price'];
 
