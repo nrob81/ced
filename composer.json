@@ -1,0 +1,34 @@
+{
+    "name": "heal25/ced",
+    "description": "Carp-e Diem",
+    "keywords": ["game", "fishing game"],
+    "homepage": "https://github.com/heal25/ced",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "config": {
+        "vendor-dir": "lib/vendor"
+    },
+    "authors": [
+        {
+            "name": "Robert Natkay",
+            "email": "natkay.robert@nrcode.com",
+            "role": "Founder and project lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/heal25/ced/issues?state=open",
+        "source": "https://github.com/heal25/ced"
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "malyshev/yii-debug-toolbar": "dev-master",
+        "codemix/yiiredis": "dev-master",
+        "limi7less/minscript": "dev-arturf/composerjson-1399303780468",
+        "yiisoft/yii": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "ced": "lib/"
+        }
+    }
+}
