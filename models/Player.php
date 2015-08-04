@@ -419,8 +419,17 @@ class Player extends CModel implements ISubject
 
     protected function logEnergyUsage($attributes)
     {
+        if (!isset($attributes['energy'])) {
+            return false;
+        }
+
         //todo: implement redis log
-        return false;
+        $used = $attributes['energy'];
+        $percent = round($used / ($this->energy_max / 100), 2) * 100;
+        
+        $redis = Yii::app()->redis->getClient();
+        $key = 'counter:activity:' . date('Ymd');
+        $return = $redis->hIncrBy($key, $this->uid, $percent);
     }
 
     public function rewriteAttributes($attributes)
