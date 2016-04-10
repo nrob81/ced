@@ -1,6 +1,6 @@
 <li>
     <h2><?= $data->title ?></h2>
-    
+
     <?php if (isset($error) && $error) echo CHtml::tag('p', ['class'=>'error'], $error); ?>
     <div class="grid ui-grid-c">
         <div class="ui-block-a"><h3>követelmény</h3>
@@ -8,7 +8,7 @@
             <?php if ($data->gate): ?>
             <p<?php if ($notify && !$data->action->reqPassed['routinesFull']): ?> class="error"<?php endif; ?>>100% rutin a megbízásokban</p>
             <?php endif; ?>
-            
+
             <?php foreach ($data->req_baits as $req): ?>
                 <p><?php
                 if ($req['haveEnought']) {
@@ -36,7 +36,7 @@
             <?php if (!$data->gate): ?>
             <p<?php if ($data['routine']>99) echo ' class="muted"'; ?>>rutin: <?= $data['routine'] < 100 ? $data['routine'] : 100; ?>%</p>
             <?php endif; ?>
-            
+
             <?php if ($data['chance'] < 100): ?>
             <p>esély: <?= $data['chance'] ?>%</p>
             <?php endif; ?>

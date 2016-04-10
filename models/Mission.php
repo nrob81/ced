@@ -53,7 +53,7 @@ class Mission extends CModel
     private $chance;
     private $skill_extended_at_visit;
     private $locationRoutinesFull;
-    
+
     public function attributeNames()
     {
         return [];
@@ -211,7 +211,7 @@ class Mission extends CModel
     {
         $this->gate_visited = (bool)$visited;
     }
-    
+
     public function setRoutine_reduction($reduction)
     {
         $this->routine_reduction = (int)$reduction;
@@ -234,7 +234,7 @@ class Mission extends CModel
     {
         $this->locationRoutinesFull = (bool)$value;
     }
-    
+
     public function fetch()
     {
         if (!$this->id) {
@@ -256,6 +256,12 @@ class Mission extends CModel
         $this->routine = $this->fetchRoutine();
         $this->skill = $this->missionSkill($this->chance);
         $this->chance = $this->chanceOfPlayer(); //recalculate chance
+
+        //dollar redurcion
+        if (!$this->gate) {
+            $this->award_dollar_min = ceil($this->award_dollar_min / 2);
+            $this->award_dollar_max = ceil($this->award_dollar_max / 2);
+        }
 
         $this->req_baits = $this->fetchBaits();
     }
@@ -309,7 +315,7 @@ class Mission extends CModel
                 $title = ($i->owned < $tmp['required'] ? $i->owned : $tmp['required']) . '/' . $tmp['required'] .' '. $i->title;
                 $tmp['linkTitle'] = $title;
                 $tmp['haveEnought'] = $i->owned >= $tmp['required'];
-                
+
                 if ($i->title) {
                     //item found in shop, add to requirements
                     $baits[$b] = $tmp;
@@ -319,7 +325,7 @@ class Mission extends CModel
         }
         return $baits;
     }
-    
+
     private function chanceOfPlayer()
     {
         $skillMission = $this->skill;

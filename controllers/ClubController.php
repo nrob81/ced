@@ -10,7 +10,7 @@ class ClubController extends GameController
     public function actionIndex()
     {
         $controller = Yii::app()->player->model->in_club ? 'own' : 'list';
-        $this->redirect('club/' . $controller);
+        $this->redirect('/club/' . $controller);
     }
 
     public function actionList($page = 0)
@@ -52,7 +52,7 @@ class ClubController extends GameController
             $model->attributes=$_POST['ClubAR'];
             if ($model->validate()) {
                 if ($model->save()) {
-                    $this->redirect(['club/own']);
+                    $this->redirect(['/club/own']);
                 }
             }
         }
@@ -146,7 +146,7 @@ class ClubController extends GameController
     {
         $player = Yii::app()->player->model;
         if (!$player->in_club) {
-            $this->redirect(['club/list']);
+            $this->redirect(['/club/list']);
         }
 
         //forum
@@ -344,7 +344,7 @@ class ClubController extends GameController
     {
         $player = Yii::app()->player->model;
         if (!$player->in_club) {
-            $this->redirect(['club/list']);
+            $this->redirect(['/club/list']);
         }
 
         //members
@@ -361,7 +361,7 @@ class ClubController extends GameController
                         $this->wallNotice($club, Wall::TYPE_CLUB_CLOSE, $member['uid']);
                     }
                     Yii::app()->user->setFlash('success', "A klubot megszüntetted.");
-                    $this->redirect(['club/list']);
+                    $this->redirect(['/club/list']);
                 }
             } catch (CFlashException $e) {
                 Yii::app()->user->setFlash('error', $e->getMessage());

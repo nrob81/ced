@@ -69,24 +69,24 @@ class MissionAction extends CModel
     {
         return [];
     }
-    
+
     public function complete()
     {
         if (!$this->requirementsOk()) {
             return false;
         }
-        
+
         if (!$this->doMission()) {
             throw new CFlashException('A követelményeknek megfelelsz, mégsem sikerül teljesíteni a megbízást mivel csak '. $this->mission->chance .'% esélyed volt rá.<br/>
                 Nagyobb szakértelemmel (több felszereléssel és csalival) ez növelhető.');
         }
         $this->incrementRoutine();
     }
-    
+
     private function requirementsOk()
     {
         $player = Yii::app()->player->model;
-        
+
         //check if the mission is gate and the submissions are maxed out
         if ($this->mission->gate) {
             $this->reqPassed['routinesFull'] = $this->mission->locationRoutinesFull;
@@ -105,7 +105,7 @@ class MissionAction extends CModel
                 throw new CFlashException('Nem tudod elvégezni a megbízást, mert nem teljesíted a követelményeket.');
             }
         }
-        
+
         //routine full
         if ($this->mission->routine >= 100) {
             throw new CFlashException('Ezt a megbízást már 100% rutinnal végzed, ezért unalmas lenne ismételgetni.');
@@ -113,7 +113,7 @@ class MissionAction extends CModel
 
         return true;
     }
-    
+
     private function doMission()
     {
         $incr = $decr = [];
@@ -127,7 +127,7 @@ class MissionAction extends CModel
         //add awards
         $incr['xp_all'] = $incr['xp_delta'] = $this->gainXP();
         $incr['dollar'] = $this->gainDollar();
-        
+
         if ($this->success) {
             if ($this->mission->gate && !$this->mission->gate_visited) {
                 $incr['gold'] = 10;
@@ -160,7 +160,7 @@ class MissionAction extends CModel
         if ($routine<1) {
             $routine = 1;
         }
-        
+
         if ($this->mission->routine >= 100) {
             $this->mission->routine_gain = 0;
             return false;
@@ -200,7 +200,7 @@ class MissionAction extends CModel
 
         return $success;
     }
-    
+
     private function gainXP()
     {
         $xp = $this->mission->award_xp;
@@ -222,7 +222,7 @@ class MissionAction extends CModel
 
         return $dollar;
     }
-    
+
     private function addSetPart()
     {
         $player = Yii::app()->player->model;

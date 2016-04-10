@@ -30,14 +30,18 @@ class GateController extends LoginController
 
     public function actionLogout()
     {
-        $this->redirect(Yii::app()->params['wlineHost'] . 'menu.php#btm');
+        //$this->redirect(Yii::app()->params['wlineHost'] . 'menu.php#btm');
+        header('Location: ' . Yii::app()->params['wlineHost'] . 'menu.php#btm');
+        Yii::app()->die();
     }
 
     public function actionForum()
     {
-        $this->redirect(Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
+        //$this->redirect(Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
+        header('Location: ' . Yii::app()->params['wlineHost'] . 'forum_read.php?id=1865');
+        Yii::app()->die();
     }
-    
+
     protected function beforeAction($action)
     {
         if (!Yii::app()->params['isPartOfWline']) {

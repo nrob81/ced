@@ -1,6 +1,6 @@
 <li>
     <h2><?= $data->title ?></h2>
-    <p class="success">Hurrá, ez egész jól ment!</p> 
+    <p class="success">Hurrá, ez egész jól ment!</p>
     <div class="grid ui-grid-c">
         <div class="ui-block-a">
             <?php if ($data->req_energy): ?>

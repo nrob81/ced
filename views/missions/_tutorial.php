@@ -12,7 +12,7 @@ $descr = [
 ];
 if (isset($descr[$id])) echo $descr[$id];
 ?><br/>
-<strong>Feladat: </strong> 
+<strong>Feladat: </strong>
 <?php
 $tasks = [
 1=>'Teljesíts egy megbízást.',
