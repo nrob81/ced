@@ -14,12 +14,12 @@ $this->pageTitle=Yii::app()->name;
 <?php endif; ?>
 
 <ul class="gamelog" data-role="listview" data-inset="true" data-theme="e">
-    <li><?= CHtml::link('Zavar, hogy párbajra hívnak? Aktiváld a párbaj-pajzsot.', ['store']); ?></li>
+    <li>A wline bankban aranyra válthatod a zsetonjaidat. :)</li>
 </ul>
 
 <h2>Játéknapló</h2>
 <ul class="gamelog" data-role="listview" data-inset="true" data-theme="d">
-    <?php 
+    <?php
     if (count($posts)) {
     foreach ($posts as $post) {
         $this->renderPartial('_wall_'.$post['content_type'], ['data'=>$post['body'], 'created'=>$post['created']]);

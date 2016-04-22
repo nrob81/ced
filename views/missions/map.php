@@ -1,14 +1,14 @@
 <?php
 $this->pageTitle='Térkép';
 $this->pageID = 'index';
-$baseUrl = Yii::app()->baseUrl; 
+$baseUrl = Yii::app()->baseUrl;
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile('http://maps.google.com/maps/api/js?sensor=true&1', CClientScript::POS_END);
-$cs->registerScriptFile('http://jquery-ui-map.googlecode.com/svn/trunk/ui/min/jquery.ui.map.full.min.js', CClientScript::POS_END);
-$cs->registerScriptFile('http://jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.extensions.js', CClientScript::POS_END);
+$cs->registerScriptFile('//maps.google.com/maps/api/js?sensor=true&1', CClientScript::POS_END);
+$cs->registerScriptFile('//jquery-ui-map.googlecode.com/svn/trunk/ui/min/jquery.ui.map.full.min.js', CClientScript::POS_END);
+$cs->registerScriptFile('//jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.extensions.js', CClientScript::POS_END);
 
 $cs->registerScript('mapSize', "
-$(document).on('pageshow', '#index',function(e,data){   
+$(document).on('pageshow', '#index',function(e,data){
     $('#content').height(getRealContentHeight());
     $('#map_canvas').height(getRealContentHeight());
     function getRealContentHeight() {
@@ -21,7 +21,7 @@ $(document).on('pageshow', '#index',function(e,data){
         var content_height = viewport_height - header.outerHeight() - footer.outerHeight() - attributes.outerHeight();
         if((content.outerHeight() - header.outerHeight() - footer.outerHeight() - attributes.outerHeight()) <= viewport_height) {
             content_height -= (content.outerHeight() - content.height());
-        } 
+        }
         return content_height;
     }
 });
@@ -38,7 +38,7 @@ $(function() {
             ]
         }
     ];
-    
+
     var map = new google.maps.Map(document.getElementById('map_canvas'), {
         zoom: 8,
         minZoom: 7,
