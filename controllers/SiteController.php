@@ -115,6 +115,17 @@ class SiteController extends GameController
         }
 
         //missing set items
+        $setItem = (int)$r->getPost('setItem', 0);
+        try {
+            if ($setItem) {
+                if ($store->buySetItem($setItem)) {
+                    Yii::app()->user->setFlash('success', "Megvetted a kiválasztott szett elemet. Ilyen típusút jövő héten vásárolhatsz legközelebb.");
+                    $this->redirect(['']);
+                }
+            }
+        } catch (CFlashException $e) {
+            Yii::app()->user->setFlash('error', $e->getMessage());
+        }
 
         $this->render('store', [
             'store'=>$store,
