@@ -76,7 +76,7 @@ class GameController extends Controller
             $wid =  @Yii::app()->request->cookies['PHPSESSID']->value;
             //$this->redirect(Yii::app()->params['wlineHost'] . "menu.php?wid=$wid#autoLogout");
             header('Location: ' . Yii::app()->params['wlineHost'] . "menu.php?wid=$wid#autoLogout");
-            Yii::app()->die();
+            Yii::app()->end();
         }
     }
 
