@@ -82,7 +82,6 @@ class SiteController extends GameController
     {
         $store = new Store;
         $store->uid = Yii::app()->player->model->uid;
-        $store->fetch();
 
         $r = Yii::app()->request;
 
@@ -115,19 +114,7 @@ class SiteController extends GameController
             Yii::app()->user->setFlash('error', $e->getMessage());
         }
 
-        //black market
-        $blackMarket = (int)$r->getPost('blackMarket', 0);
-        try {
-            if ($blackMarket) {
-                if ($store->activateBlackMarket()) {
-                    Yii::app()->user->setFlash('success', "10 percig pult alól vásárolhatsz csalit Áron bá boltjában.");
-                    $this->redirect(['/shop/buyBaits']);
-                }
-            }
-        } catch (CFlashException $e) {
-            Yii::app()->user->setFlash('error', $e->getMessage());
-        }
-
+        //missing set items
 
         $this->render('store', [
             'store'=>$store,

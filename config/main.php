@@ -69,7 +69,7 @@ return array(
                 ),
             ),
             'db'=>array(
-                'connectionString' => 'mysql:host=localhost;dbname=fish',
+                'connectionString' => 'mysql:host=localhost;dbname=ced',
                 'emulatePrepare' => true,
                 'username' => 'user',
                 'password' => 'password',

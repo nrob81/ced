@@ -32,7 +32,7 @@ class Item extends CModel
 
     private $errors = ['dollar'=>false, 'amount'=>false, 'owned'=>false, 'isLast'=>false, 'freeSlots'=>false];
     private $success;
-    
+
     public function attributeNames()
     {
         return [];
@@ -112,7 +112,7 @@ class Item extends CModel
     {
         $this->owned = (int)$owned;
     }
-    
+
     public function fetch()
     {
         if (!$this->id) {
@@ -140,7 +140,7 @@ class Item extends CModel
 
             $this->$k = $v;
         }
-        
+
         $own = Yii::app()->db->createCommand()
             ->select('item_count')
             ->from('users_'.$this->item_type.'s')
@@ -151,7 +151,7 @@ class Item extends CModel
         $this->setBuyAmount();
         $this->setSellAmount();
     }
-    
+
     public function fetchSet()
     {
         if (!$this->id) {
@@ -184,7 +184,7 @@ class Item extends CModel
 
             $this->$k = $v;
         }
-        
+
         $own = Yii::app()->db->createCommand()
             ->select('skill, item_count, price')
             ->from('users_items')
@@ -233,7 +233,7 @@ class Item extends CModel
             ->createCommand("UPDATE users_{$this->item_type}s SET item_count=item_count+:amount WHERE uid=:uid AND item_id=:item_id")
             ->bindValues([':uid'=>$uid, ':item_id'=>(int)$this->id, ':amount'=>$amount])
             ->execute();
-        
+
         if (!$update) {
             Yii::app()->db->createCommand()
                 ->insert('users_'.$this->item_type.'s', [
@@ -254,7 +254,7 @@ class Item extends CModel
         $this->owned += $amount;
         $this->setBuyAmount();
     }
-    
+
     public function sell($amount)
     {
         $incr = [];
@@ -282,15 +282,15 @@ class Item extends CModel
             ->createCommand("UPDATE users_{$this->item_type}s SET item_count=item_count-:amount WHERE uid=:uid AND item_id=:item_id")
             ->bindValues([':uid'=>$player->uid, 'item_id'=>(int)$this->id, ':amount'=>$amount])
             ->execute();
-        
+
         //give money for it
         $incr['dollar'] = $amount * $this->price_sell;
         Yii::app()->player->model->updateAttributes($incr, []);
-        
+
         $this->success = true;
         $this->owned -= $amount;
         $this->setSellAmount();
-        
+
     }
 
     private function setBuyAmount()

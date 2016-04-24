@@ -155,7 +155,7 @@ class PlayerStats extends CModel
         foreach ($this->stats['setitems'] as $dat => $cnt) {
             $i = new Item;
             $i->item_type = Item::TYPE_ITEMSET;
-            $i->id = $dat;
+            $i->id = (int)$dat;
             $i->fetchSet();
             $this->stats['sets'][] = $i->title;
         }

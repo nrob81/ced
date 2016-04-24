@@ -7,8 +7,7 @@
 class Store extends CModel
 {
     private $uid;
-    private $blackBait = ['id'=>0];
-    
+
     public function attributeNames()
     {
         return [];
@@ -19,11 +18,6 @@ class Store extends CModel
         return $this->uid;
     }
 
-    public function getBlackBait()
-    {
-        return $this->blackBait;
-    }
-
     public function getPackagesSms()
     {
         return Yii::app()->params['packagesSms'];
@@ -32,19 +26,6 @@ class Store extends CModel
     public function setUid($uid)
     {
         $this->uid = (int)$uid;
-    }
-
-    public function fetch()
-    {
-        $level = Yii::app()->player->model->level;
-        $bait = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('baits')
-            ->where('level >= :min AND level <= :max', [':min'=>$level, ':max'=>$level+2])
-            ->order('skill DESC, level DESC')
-            ->limit(1)
-            ->queryRow();
-        $this->blackBait = $bait;
     }
 
     public function refillEnergy()
@@ -69,38 +50,29 @@ class Store extends CModel
 
         $player->updateAttributes(['energy'=>$player->energy_missing], ['gold'=>20]);
         $logger->addToSet('energy increased, gold decreased');
-        
+
         $logger->addToSet('---- end: '.date('H:i:s').'----');
-        
+
         Yii::app()->badge->model->triggerSimple('energy_drink');
         return true;
     }
 
-    public function activateBlackMarket()
+    public function listMissingSetItems()
     {
-        $player = Yii::app()->player->model;
-        $logger = new Logger;
-        $logger->key = 'blackMarket:'.date('Y-m-d').':'.$this->uid;
-        $logger->addToSet('----start: '.date('H:i:s').'----');
-        $logger->addToSet('gold:'.$player->gold.', level: ' . $player->level);
-        
-        if ($player->gold < 10) {
-            throw new CFlashException('Nincs elég aranyad.');
+        $shop = new Shop;
+        $shop->item_type = Shop::TYPE_PART;
+        $shop->fetchSets();
+        $sets = $shop->items;
+
+        $missing = [];
+        foreach ($sets as $set) {
+            foreach ($set['items'] as $item) {
+                if (!$item->owned) {
+                    $missing[] = $item;
+                }
+            }
         }
 
-        $logger->addToSet('gold > 10');
-        if ($player->black_market) {
-            throw new CFlashException('Még működik az előzőleg aktivált feketepiac.');
-        }
-
-        $logger->addToSet('black_market inactive');
-
-        $timeBlackMarket = date('Y-m-d H:i:s', time()+600);
-        $player->rewriteAttributes(['black_market'=>$timeBlackMarket, 'gold'=>$player->gold-10]);
-
-        $logger->addToSet('timeBM:'.$timeBlackMarket);
-        $logger->addToSet('---- end: '.date('H:i:s').'----');
-
-        return true;
+        return $missing;
     }
 }
