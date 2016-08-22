@@ -13,7 +13,7 @@ return array(
             'cookieMode' => 'only',
             'cookieParams' => array(
                 'path' => '/',
-                'domain' => '.wline.nrcode.local', //wline or ced.hu?
+                'domain' => 'ced.nrcode.local', //wline or ced.hu?
                 'httpOnly' => true,
             ),
         ),
@@ -42,7 +42,7 @@ return array(
             "hostname" => "localhost",
             "port" => 6379,
             "database" => 1,
-            "prefix" => "fish:" //wline or ced.hu?
+            "prefix" => "ced.nrcode:" //wline or ced.hu?
         ),
 
         'log'=>array(
@@ -59,7 +59,7 @@ return array(
             ),
         ),
         'smtpmail'=>array(
-            'class'=>'vendor.smtpmail.PHPMailer',
+            'class'=>'lib.smtpmail.PHPMailer',
             'Host'=>"in.mailjet.com",
             'Username'=>'c14f3e8951aebe00bc0afb81ec278d80',
             'Password'=>'86ee93cac5335f8bf5f08b0309971b8c',

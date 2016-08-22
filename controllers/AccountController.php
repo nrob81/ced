@@ -15,8 +15,8 @@ class AccountController extends Controller
             $model->attributes=$_POST['Account'];
             if ($model->validate()) {
                 // Create account
-                $model->verifyCode = $model->generateCode();
                 $model->save(false);
+                $model->verifyCode = $model->generateCode();
 
                 // Send verification mail
                 $mail=Yii::app()->smtpmail;
@@ -30,6 +30,7 @@ class AccountController extends Controller
                 if (!$sent) {
                     Yii::app()->user->setFlash('error', 'A regisztráció befejezéséhez szükséges információkat nem sikerült elküldeni. Kérlek próbálkozz később.');
                 } else {
+                    $model->save(false);
                     Yii::app()->user->setFlash('success', 'A regisztráció befejezéséhez szükséges teendőket elküldtük e-mailben.');
                     $this->redirect('/');
                 }
@@ -271,7 +272,7 @@ class AccountController extends Controller
 
         return $model;
     }
-    
+
     protected function beforeAction($action)
     {
         if (Yii::app()->params['isPartOfWline']) {

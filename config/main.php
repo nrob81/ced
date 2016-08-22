@@ -1,6 +1,6 @@
 <?php
 return array(
-    'basePath'=>'/data/www/ced',
+    'basePath'=>'/data/www/ced.nrcode',
     'name'=>'Carp-e Diem',
     'defaultController'=>'site',
 
@@ -8,6 +8,7 @@ return array(
     'preload'=>['log'],
 
     'aliases' => [
+        'lib' => realpath(__DIR__ . '/../lib/'),
         'vendor' => realpath(__DIR__ . '/../lib/vendor/')
     ],
 
