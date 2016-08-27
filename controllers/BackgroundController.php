@@ -15,13 +15,13 @@ class BackgroundController extends CronController
         $mp = new MaintenancePlayer;
 
         $user = Yii::app()->request->getParam('user', 'x');
-        echo $user . "<br/>";
-        
+        echo $user . '<br/>';
+
         if ($user) {
             $mp->setUid($user);
         }
         $mp->reset();
-        
+
         $this->render('//site/dummy', ['log'=>$mp->log]);
     }
 
@@ -34,14 +34,14 @@ class BackgroundController extends CronController
         echo 'started, ';
 
         $contest->create();
-        
+
         if ($addPoints) {
             for ($i=0; $i<1000; $i++) {
-                $contest->addPoints(rand(1981, 2100), Contest::ACT_MISSION, 1, 1, 1); //activity, uid, xp, dollar,
+                $contest->addPoints(rand(1981, 2100), Contest::ACT_MISSION, 1, 1, 1);
             }
         }
     }
-    
+
     public function actionContestStop()
     {
         $contest = new Contest;
@@ -50,7 +50,7 @@ class BackgroundController extends CronController
             $contest->complete();
         }
     }
-    
+
     public function actionContestStartStop($addPoints = 0)
     {
         $this->actionContestStart($addPoints);
@@ -70,19 +70,19 @@ class BackgroundController extends CronController
             //pay for gold routine
             @$users[$d['uid']]['gold'] += 30;
             @$users[$d['uid']]['r_gold']++;
-            
+
             //pay for diamand
             if ($d['routine'] >= 81) {
                 $users[$d['uid']]['gold'] += 70;
                 @$users[$d['uid']]['r_diamant']++;
             }
         }
-        
+
         $log = print_r($users, true);
         $wall = new Wall();
         foreach ($users as $uid => $award) {
             Yii::app()->db->createCommand("UPDATE main SET gold=gold+{$award['gold']} WHERE uid={$uid}")->execute();
-            
+
             $wall->content_type = Wall::TYPE_NEW_AWARD;
             $wall->uid = $uid;
             $wall->add([
