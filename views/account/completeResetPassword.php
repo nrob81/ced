@@ -13,11 +13,11 @@ echo $form->errorSummary($model, '');
 
 <div data-role="fieldcontain">
 	<?= $form->labelEx($model,'password'); ?>
-	<?= $form->passwordField($model,'password'); ?>
+	<?= $form->passwordField($model,'password', ['autocomplete'=>'off']); ?>
 </div>
 <div data-role="fieldcontain">
 	<?= $form->labelEx($model,'confirmPassword'); ?>
-	<?= $form->passwordField($model,'confirmPassword'); ?>
+	<?= $form->passwordField($model,'confirmPassword', ['autocomplete'=>'off']); ?>
 </div>
 <?= CHtml::submitButton('Jelszó mentése'); ?>
 
