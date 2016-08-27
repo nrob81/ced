@@ -3,9 +3,9 @@ $this->pageTitle='Térkép';
 $this->pageID = 'index';
 $baseUrl = Yii::app()->baseUrl;
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile('//maps.google.com/maps/api/js?sensor=true&1', CClientScript::POS_END);
-$cs->registerScriptFile('//jquery-ui-map.googlecode.com/svn/trunk/ui/min/jquery.ui.map.full.min.js', CClientScript::POS_END);
-$cs->registerScriptFile('//jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.extensions.js', CClientScript::POS_END);
+$cs->registerScriptFile('https://maps.google.com/maps/api/js?sensor=true&1', CClientScript::POS_END);
+$cs->registerScriptFile('https://jquery-ui-map.googlecode.com/svn/trunk/ui/min/jquery.ui.map.full.min.js', CClientScript::POS_END);
+$cs->registerScriptFile('https://jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.extensions.js', CClientScript::POS_END);
 
 $cs->registerScript('mapSize', "
 $(document).on('pageshow', '#index',function(e,data){
