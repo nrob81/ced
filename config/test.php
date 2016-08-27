@@ -1,6 +1,6 @@
 <?php
 return array(
-    'basePath'=>'/data/www/ced',
+    'basePath'=>'/data/www/ced.nrcode',
     'name'=>'Carp-e Diem',
 
     // preloading 'log' component
