@@ -37,7 +37,7 @@ class DuelController extends GameController
             'list'=>$duelList->opponents,
             ]);
     }
-    
+
     public function actionHistory()
     {
         $duelList = new DuelList();
@@ -56,7 +56,7 @@ class DuelController extends GameController
         $duel->fetchClubChallengeState();
 
         try {
-            if ($duel->validate()) {
+            if ($duel->validateDuel()) {
                 $duel->play();
             }
         } catch (CFlashException $e) {
@@ -67,7 +67,7 @@ class DuelController extends GameController
             'duel'=>$duel,
             ]);
     }
-    
+
     public function actionReplay($id)
     {
         $duel = new Duel;

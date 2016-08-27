@@ -118,7 +118,7 @@ class Duel extends CModel
 
             $this->callersClubRole = $challenge['caller'] == $this->caller->in_club ? 'caller' : 'opponent';
             $this->callersClub = $challenge['caller'] == $this->caller->in_club ? $challenge['name_caller'] : $challenge['name_opponent'];
-            
+
             $this->opponentsClubRole = $challenge['opponent'] == $this->opponent->in_club ? 'opponent' : 'caller';
             $this->opponentsClub = $challenge['opponent'] == $this->opponent->in_club ? $challenge['name_opponent'] : $challenge['name_caller'];
         }
@@ -134,7 +134,7 @@ class Duel extends CModel
         return ($now >= $start && $now <= $end);
     }
 
-    public function validate()
+    public function validateDuel()
     {
         if (!$this->opponent->uid) {
             throw new CFlashException('Az ellenfél nem létezik.');
@@ -209,7 +209,7 @@ class Duel extends CModel
 
         $c->energy = $this->caller->energyRequiredForDuel;
         $o->energy = min($this->opponent->energyRequiredForDuel, $this->opponent->energy);
-        
+
         $avgEnergy = round(($c->energy + $o->energy) / 2);
         $c->avgEnergy = $avgEnergy;
         $o->avgEnergy = $avgEnergy;
@@ -280,9 +280,9 @@ class Duel extends CModel
         if (Yii::app()->player->uid != $duel['caller'] && Yii::app()->player->uid != $duel['opponent']) {
             throw new CFlashException('A lekért párbajt mások játszották.');
         }
-        
+
         $this->challengeID = (int)$duel['challenge_id'];
-        
+
         $this->setCaller($duel['caller']);
         $this->setOpponent($duel['opponent']);
 

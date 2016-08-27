@@ -108,7 +108,7 @@ class Contest extends CModel
         if (!$this->getActiveId()) {
             return false; //no active contest
         }
-        if (!$this->validate($activity, $xp, $dollar)) {
+        if (!$this->validateContest($activity, $xp, $dollar)) {
             return false;
         }
 
@@ -125,7 +125,7 @@ class Contest extends CModel
         Yii::app()->redis->getClient()->zIncrBy(self::ID_LIST . $this->getActiveId() . ':points', $points, $uid);
         return true;
     }
-    
+
     public function complete()
     {
         $redis = Yii::app()->redis->getClient();
@@ -164,7 +164,7 @@ class Contest extends CModel
         //get max point
         $key = self::ID_LIST . $this->activeId . ':points';
         $max = $redis->zRevRange($key, 0, 0, true);
-        
+
         if (count($max)) {
             $maxScore = array_values($max)[0];
             $winners = $redis->zRevRangeByScore($key, $maxScore, $maxScore);
@@ -173,7 +173,7 @@ class Contest extends CModel
         return false;
     }
 
-    public function validate($activity, $xp, $dollar)
+    public function validateContest($activity, $xp, $dollar)
     {
         $toCollect = $this->getCollect();
 
