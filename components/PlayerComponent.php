@@ -59,6 +59,6 @@ class PlayerComponent extends CApplicationComponent
 
     protected function checkNewContest()
     {
-        $this->newContest = (int)Yii::app()->redis->getClient()->get('contest:active');
+        $this->newContest = (bool)Yii::app()->redis->getClient()->get('contest:active');
     }
 }
