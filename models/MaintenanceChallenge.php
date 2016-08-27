@@ -47,11 +47,9 @@ class MaintenanceChallenge extends CModel
 
         if ($ch['point_caller'] <> $ch['point_opponent']) {
             //not equal points
-            $withpoints = true;
             $winnerTag = $ch['point_caller'] < $ch['point_opponent'] ? 'opponent' : 'caller'; //caller only lose, if she has less points, that opponent.
         } else {
             //equal points
-            $withpoints = false;
             $winnerTag = $ch['cnt_won_caller'] < $ch['cnt_won_opponent'] ? 'opponent' : 'caller'; //caller only lose, if she has less won games, that opponent.
         }
 
@@ -69,7 +67,7 @@ class MaintenanceChallenge extends CModel
             $forum->save($msg, true);
 
             //update the winner-state
-            $cmd = Yii::app()->db->createCommand()
+            Yii::app()->db->createCommand()
                 ->update('challenge', ['winner'=>3], 'id=:id', [':id'=>$id]);
             return false;
         }
@@ -132,14 +130,14 @@ class MaintenanceChallenge extends CModel
 
         //refresh the winner state of the challenge
         $winner = $winnerTag=='caller' ? 1 : 2;
-        $cmd = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->update('challenge', ['winner'=>$winner], 'id=:id', [':id'=>$id]);
 
         return true;
     }
 
     private function deleteCommand($id) {
-        $del = Yii::app()->db->createCommand()
+        Yii::app()->db->createCommand()
             ->delete('command_stack', 'id=:id', [':id'=>(int)$id]);
     }
 }

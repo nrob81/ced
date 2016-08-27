@@ -429,7 +429,7 @@ class Player extends CModel implements ISubject
 
         $redis = Yii::app()->redis->getClient();
         $key = 'counter:activity:' . date('Ymd');
-        $return = $redis->hIncrBy($key, $this->uid, $percent);
+        $redis->hIncrBy($key, $this->uid, $percent);
     }
 
     public function rewriteAttributes($attributes)
