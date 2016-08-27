@@ -31,7 +31,7 @@ class PlayerComponent extends CApplicationComponent
         $lastSeen = (int)Yii::app()->redis->getClient()->get('contest:lastcheck:'.$this->model->uid);
         return $this->newContest > $lastSeen;
     }
-    
+
     public function init()
     {
         $this->model = new Player();
@@ -56,7 +56,7 @@ class PlayerComponent extends CApplicationComponent
             $this->clubChallenge = true;
         }
     }
-    
+
     protected function checkNewContest()
     {
         $this->newContest = (int)Yii::app()->redis->getClient()->get('contest:active');

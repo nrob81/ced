@@ -184,14 +184,14 @@ class Player extends CModel implements ISubject
     {
         return (int)$this->in_club;
     }
-    
+
     public function getLevel_percent()
     {
         if (!$this->xp_recommended) {
             return 0;
         }
         $percent = (int)$this->xp_delta / ((int)$this->xp_recommended / 100);
-        
+
         if ($percent < 0) {
             $percent = 0;
         }
@@ -225,7 +225,7 @@ class Player extends CModel implements ISubject
 
         return $remaining;
     }
-    
+
     public function getJustAdvanced()
     {
         return (int)$this->justAdvanced;
@@ -250,7 +250,7 @@ class Player extends CModel implements ISubject
     {
         return $this->skill_extended>0 ? $this->skill_extended : 1;
     }
-    
+
     public function getClubName()
     {
         if (!$this->in_club) {
@@ -296,7 +296,7 @@ class Player extends CModel implements ISubject
         }
         $this->user = $user;
     }
-    
+
     public function getSubjectName()
     {
         $name = Yii::app()->db->cache(86400)->createCommand()
@@ -426,7 +426,7 @@ class Player extends CModel implements ISubject
         //todo: implement redis log
         $used = $attributes['energy'];
         $percent = round($used / ($this->energy_max / 100), 2) * 100;
-        
+
         $redis = Yii::app()->redis->getClient();
         $key = 'counter:activity:' . date('Ymd');
         $return = $redis->hIncrBy($key, $this->uid, $percent);

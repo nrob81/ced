@@ -89,7 +89,7 @@ class Item extends CModel
         return $this->sell_amount;
     }
 
-    public function getErrors()
+    public function getErrors($attribute = NULL)
     {
         return $this->errors;
     }

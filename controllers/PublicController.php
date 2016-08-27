@@ -9,7 +9,6 @@ class PublicController extends LoginController
         if (isset(Yii::app()->session['uid'])) {
             $this->redirect(['/site']);
         }
-
         $model=new Account('login');
 
         // collect user input data
@@ -29,7 +28,6 @@ class PublicController extends LoginController
         // display the login form
         $this->render('/account/login', ['model'=>$model]);
     }
-
     protected function beforeAction($action)
     {
         if (Yii::app()->params['isPartOfWline']) {

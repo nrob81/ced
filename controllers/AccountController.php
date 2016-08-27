@@ -9,7 +9,57 @@ class AccountController extends Controller
      */
     public function actionSignup()
     {
-        $model=new Account('signup');
+        //$this->signupWithMail();
+        $this->signupNoMail();
+    }
+
+    private function signupNoMail()
+    {
+        $model=new Account('signupNoMail');
+
+        if (isset($_POST['Account'])) {
+            $model->attributes=$_POST['Account'];
+            $originalPassword = $model->password;
+            $valid = $model->validate();
+
+            if ($valid) {
+                $hash = password_hash($model->password, PASSWORD_BCRYPT);
+
+                if (password_verify($model->password, $hash)) {
+                    $model->password = $hash;
+                    $model->verifyCode = null;
+                    $model->verified = new CDbExpression('NOW()');
+
+                    $transaction = $model->getDbConnection()->beginTransaction();
+                    try {
+                        $model->save(false);
+                        $model->refresh();
+
+                        $this->createPlayer($model);
+
+                        $transaction->commit();
+
+                        Yii::app()->user->setFlash('success', $model->username . ', a regisztrációd elkészült! Bejelentkezhetsz.');
+                        $this->redirect('/');
+                    } catch (Exception $e) {
+                        $transaction->rollback();
+                        Yii::app()->user->setFlash('error', 'Hiba lépett fel a játékos mentése során.');
+                    }
+                    $model->password = $originalPassword;
+
+                } else {
+                    Yii::app()->user->setFlash('error', 'Hiba lépett fel a jelszó titkosítása során..');
+                }
+            }
+        }
+
+        $this->render('signupNoMail', array(
+            'model'=>$model,
+        ));
+    }
+    private function signupWithMail()
+    {
+        $model=new Account('signupWithMail');
 
         if (isset($_POST['Account'])) {
             $model->attributes=$_POST['Account'];
