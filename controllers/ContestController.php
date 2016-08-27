@@ -17,10 +17,10 @@ class ContestController extends GameController
         if (!$cl->isValid) {
             $lastId = $cl->lastId;
             if ($lastId) {
-                Yii::app()->user->setFlash('info', 'A keresett verseny nem található, helyette a legújabbat láthatod.');
+                Yii::app()->user->setFlash('error', 'A keresett verseny nem található, helyette a legújabbat láthatod.');
                 $this->redirect(['/contest/view', 'id'=>$lastId]);
             } else {
-                Yii::app()->user->setFlash('info', 'Még nem található horgászvarseny a játékban, de ez hamarosan megváltozik.');
+                Yii::app()->user->setFlash('error', 'Még nem található horgászvarseny a játékban, de ez hamarosan megváltozik.');
                 $this->redirect('/site');
             }
         }
