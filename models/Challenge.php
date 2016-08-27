@@ -192,10 +192,7 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if ($res['id'] && !$res['winner']) {
-            return true;
-        }
-        return false;
+        return $res['id'] && !$res['winner'];
     }
 
     /**
@@ -210,10 +207,7 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if (time() - strtotime($res['created']) > (self::TIME_LIMIT_HOURS * 3600)) {
-            return false;
-        }
-        return true;
+        if !(time() - strtotime($res['created']) > (self::TIME_LIMIT_HOURS * 3600));
     }
 
     /**
@@ -228,10 +222,7 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if (time() - strtotime($res['created']) > (self::TIME_LIMIT_LASTCALL_HOURS * 3600)) {
-            return false;
-        }
-        return true;
+        if !(time() - strtotime($res['created']) > (self::TIME_LIMIT_LASTCALL_HOURS * 3600));
     }
 
     /**

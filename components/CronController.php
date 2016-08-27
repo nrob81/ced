@@ -5,10 +5,6 @@ class CronController extends CController
 
     protected function beforeAction($action)
     {
-        if (Yii::app()->request->getParam('p', '') !== Yii::app()->params['cronPassword']) {
-            return false;
-        }
-        
-        return true;
+        return (Yii::app()->request->getParam('p', '') === Yii::app()->params['cronPassword']);
     }
 }
