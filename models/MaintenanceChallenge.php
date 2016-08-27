@@ -43,8 +43,6 @@ class MaintenanceChallenge extends CModel
 
         if ($ch['winner']) return false;
 
-        //$winnerTag = $ch['point_caller'] < $ch['point_opponent'] ? 'opponent' : 'caller'; //caller only lose, if she has less points, that opponent.
-
         if ($ch['point_caller'] <> $ch['point_opponent']) {
             //not equal points
             $winnerTag = $ch['point_caller'] < $ch['point_opponent'] ? 'opponent' : 'caller'; //caller only lose, if she has less points, that opponent.
