@@ -13,10 +13,6 @@ $this->pageTitle=Yii::app()->name;
 </ul>
 <?php endif; ?>
 
-<ul class="gamelog" data-role="listview" data-inset="true" data-theme="e">
-    <li>A wline bankban aranyra válthatod a zsetonjaidat. :)</li>
-</ul>
-
 <h2>Játéknapló</h2>
 <ul class="gamelog" data-role="listview" data-inset="true" data-theme="d">
     <?php
