@@ -11,7 +11,7 @@ class HelpWidget extends CWidget
     public function run()
     {
         $help = new Help;
-        $help->topic = $this->topic;
+        $help->setTopic($this->topic);
         $item = $help->getRandomItemByType();
         if ($item) {
             echo '<p class="spr help"><strong>tipp:</strong><br/>' . $item . '</p>';

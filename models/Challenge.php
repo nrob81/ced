@@ -207,7 +207,7 @@ class Challenge extends CModel
             ->order('created DESC')
             ->limit(1)
             ->queryRow();
-        if !(time() - strtotime($res['created']) > (self::TIME_LIMIT_HOURS * 3600));
+        return time() - strtotime($res['created']) <= self::TIME_LIMIT_HOURS * 3600;
     }
 
     /**
