@@ -223,10 +223,6 @@ class Contest extends CModel
                 break;
         }
 
-        if (!$valid) {
-            return false;
-        }
-
-        return true;
+        return $valid;
     }
 }

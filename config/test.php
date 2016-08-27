@@ -72,8 +72,6 @@ return array(
             'username' => 'user',
             'password' => 'password',
             'charset' => 'utf8',
-            //'enableProfiling' => true,
-            //'enableParamLogging' => true,
         ),
         'dbWline'=>array(
             'class' => 'CDbConnection',

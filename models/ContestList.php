@@ -34,7 +34,7 @@ class ContestList extends CModel
         'xp','xp_duel','xp_mission',
         'dollar','dollar_duel','dollar_mission'
         ];
-    
+
     public function attributeNames()
     {
         return [];
@@ -62,7 +62,7 @@ class ContestList extends CModel
         }
         return $this->collect;
     }
-    
+
     public function getIsValid()
     {
         if (is_null($this->isValid)) {
@@ -81,7 +81,7 @@ class ContestList extends CModel
         $active = (int)Yii::app()->redis->getClient()->get('contest:active');
         return $active == $this->id;
     }
-    
+
     public function getSecUntilEnd()
     {
         $sue = ($this->id + self::LIFETIME - time());
@@ -90,7 +90,6 @@ class ContestList extends CModel
 
     public function hasWinner()
     {
-        //if ($this->secUntilEnd > 0) return false; //contest is active
         return Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':winners');
     }
 
@@ -111,7 +110,7 @@ class ContestList extends CModel
         }
         return $this->history;
     }
-    
+
     public function getRankDescription()
     {
         if (!$this->getIsActive()) {
@@ -135,14 +134,14 @@ class ContestList extends CModel
             return 'Jobb vagy, mint a versenytársaid ' . $percent . '%-a!';
         }
     }
-    
+
     public function getMaxScore()
     {
         if (!$this->maxScore) {
             $redis = Yii::app()->redis->getClient();
             $key = 'contest:list:'.$this->id.':points';
             $max = $redis->zRevRange($key, 0, 0, true);
-            
+
             if (count($max)) {
                 $this->maxScore = array_values($max)[0];
             }
@@ -207,7 +206,7 @@ class ContestList extends CModel
             $i++;
         }
     }
-    
+
     public function listBestPlayers()
     {
         $redis = Yii::app()->redis->getClient();
@@ -229,7 +228,7 @@ class ContestList extends CModel
         }
         $this->winners = $list;
     }
-    
+
     public function canClaimPrize()
     {
         //is active?
@@ -248,11 +247,7 @@ class ContestList extends CModel
         }
 
         //she has claimed the prize already?
-        if (Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':claimed-'.$this->uid)) {
-            return false;
-        }
-
-        return true;
+        return !Yii::app()->redis->getClient()->exists('contest:list:'.$this->id.':claimed-'.$this->uid);
     }
 
     public function claimPrize()

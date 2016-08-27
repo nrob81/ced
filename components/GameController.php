@@ -74,7 +74,6 @@ class GameController extends Controller
 
         if (time() - $session['r_time'] > Yii::app()->params['maxtime']) {
             $wid =  @Yii::app()->request->cookies['PHPSESSID']->value;
-            //$this->redirect(Yii::app()->params['wlineHost'] . "menu.php?wid=$wid#autoLogout");
             header('Location: ' . Yii::app()->params['wlineHost'] . "menu.php?wid=$wid#autoLogout");
             Yii::app()->end();
         }

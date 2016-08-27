@@ -9,7 +9,6 @@ class AccountController extends Controller
      */
     public function actionSignup()
     {
-        //$this->signupWithMail();
         $this->signupNoMail();
     }
 
