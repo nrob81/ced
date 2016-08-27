@@ -4,3 +4,5 @@ composer.lock
 /runtime
 /.sonar
 sonar*
+config/params-local.php
+config/main-local.php
