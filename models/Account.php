@@ -80,6 +80,9 @@ class Account extends CActiveRecord
         return $attributes;
     }
 
+    /**
+     * @return boolean
+     */
     public function validatePassword($password)
     {
         return password_verify($password, $this->password);
@@ -136,6 +139,7 @@ class Account extends CActiveRecord
     /**
      * Finds an account by email
      * @param string $email The email
+     * @return Account
      */
     public function findByEmail($email)
     {

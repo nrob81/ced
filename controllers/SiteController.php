@@ -32,7 +32,7 @@ class SiteController extends GameController
         $help = new Help;
         $news = [];
         foreach ($help->topics as $topic => $name) {
-            $help->topic = $topic;
+            $help->topic = (string)$topic;
             $help->fetchItems(1);
             $items = $help->items;
 
