@@ -31,12 +31,12 @@ class Club extends CModel implements ISubject
     private $members = [];
     private $entrants = [];
     private $challenges = [];
-    
+
     public function attributeNames()
     {
         return [];
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -96,7 +96,7 @@ class Club extends CModel implements ISubject
     {
         return $this->challenges;
     }
-    
+
     public function getRank($getActual = false)
     {
         $redis = Yii::app()->redis->getClient();
@@ -108,12 +108,12 @@ class Club extends CModel implements ISubject
         }
         return $rank;
     }
-    
+
     public function setId($id)
     {
         $this->id = (int)$id;
     }
-    
+
     public function setSubjectId($id)
     {
         $this->setId($id);
@@ -137,7 +137,7 @@ class Club extends CModel implements ISubject
             ->leftJoin('main m', 'c.owner=m.uid')
             ->where('c.id=:id', [':id'=>$this->id])
             ->queryRow();
-        
+
         if (!is_array($res)) {
             $this->id = 0;
             return false;
@@ -171,17 +171,17 @@ class Club extends CModel implements ISubject
         return $name;
     }
 
-    public function fetchItems($would_compete = false)
+    public function fetchItems($wouldCompete = false)
     {
-        $where = $would_compete ? 'would_compete=1' : '';
+        $where = $wouldCompete ? 'would_compete=1' : '';
         $limit = Yii::app()->params['listPerPage'];
-        
+
         $this->count = Yii::app()->db->createCommand()
             ->select('COUNT(*) AS count')
             ->from('club')
             ->where($where)
             ->queryScalar();
-        
+
         $res = Yii::app()->db->createCommand()
             ->select('*')
             ->from('club')
@@ -189,7 +189,7 @@ class Club extends CModel implements ISubject
             ->order('id DESC')
             ->limit($limit, ($this->page * $limit) - $limit) // the trick is here!
             ->queryAll();
-        
+
         $this->pagination = new CPagination($this->count);
         $this->pagination->setPageSize(Yii::app()->params['listPerPage']);
 
@@ -273,7 +273,7 @@ class Club extends CModel implements ISubject
             ->join('main m', 'cm.uid=m.uid')
             ->where('cm.club_id=:club_id', [':club_id'=>$this->id])
             ->queryAll();
-        
+
         foreach ($res as $u) {
             if ($u['approved']) {
                 $this->members[$u['uid']] = $u;
@@ -307,10 +307,10 @@ class Club extends CModel implements ISubject
 
             unset($this->members[$uid]);
         }
-        
+
         return (bool)$del;
     }
-    
+
     /**
      * @param integer $uid
      */
@@ -337,11 +337,11 @@ class Club extends CModel implements ISubject
         if ($update) {
             Yii::app()->db->createCommand()
             ->update('main', ['in_club'=>$this->id], 'uid=:uid', [':uid'=>(int)$uid]);
-            
+
             $this->members[$uid] = $this->entrants[$uid];
             unset($this->entrants[$uid]);
             $cnt++;
-            
+
             $b = Yii::app()->badge->model;
             $b->uid = $uid;
             $b->triggerSimple('club_join');
@@ -350,10 +350,10 @@ class Club extends CModel implements ISubject
             $b->triggerClubMembers($cnt);
             $b->uid - $player->uid; //reset
         }
-        
+
         return (bool)$update;
     }
-    
+
     /**
      * @param integer $uid
      */
@@ -375,7 +375,7 @@ class Club extends CModel implements ISubject
         if (!$this->requirementsForClose($pass)) {
             return false;
         }
-        
+
         $this->fireMembers();
         $this->deleteForum();
         $this->deleteClub();
@@ -452,7 +452,7 @@ class Club extends CModel implements ISubject
             ->order('id DESC')
             ->limit((int)$limit)
             ->queryAll();
-        
+
         foreach ($res as $u) {
             $this->challenges[$u['id']] = $u;
         }

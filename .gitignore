@@ -2,3 +2,5 @@
 composer.lock
 /www/assets
 /runtime
+/.sonar
+sonar*
