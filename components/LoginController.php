@@ -1,6 +1,9 @@
 <?php
 class LoginController extends Controller
 {
+    /**
+     * @return int
+     */
     protected function incrementLoginDays($uid)
     {
         if (!$uid) {

@@ -9,6 +9,9 @@ class JqmLinkPager extends CLinkPager
     public $firstPageLabel = '<<';
     public $lastPageLabel = '>>';
 
+    /**
+     * @return string
+     */
     protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
         if ($hidden) {
