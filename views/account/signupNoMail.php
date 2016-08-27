@@ -28,3 +28,8 @@ echo $form->errorSummary($model, '');
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<div class="c">
+Már regisztráltál?
+<?= CHtml::link('Belépés', '/', ['data-role'=>'button', 'data-inline'=>'true', 'data-theme'=>'e']); ?>
+</div>
