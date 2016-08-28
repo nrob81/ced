@@ -18,4 +18,6 @@ return [
     'cronPassword' => 'secret',
     'wlineUsersTable' => 'users',
     'wlineRefreshAttribute' => 'lastRefresh',
+    //gameMechanicAttributes
+    'goldPerGateMission' => 5,
 ];

@@ -26,7 +26,7 @@
             <p><?= $data['award_dollar'] ?></p>
             <?php if (!$data->gate_visited && $data->gate): ?>
             <p>utazás ide: <?= $data->gate_name ?></p>
-            <p>10 arany</p>
+            <p><?= Yii::app()->params['goldPerGateMission'] ?> arany</p>
             <?php endif; ?>
             <?php if ($data->award_setpart): ?>
             <p>szett elemet találhatsz</p>

@@ -23,7 +23,7 @@
             <?php endif; ?>
             <?php if ($data->action->gained_visit): ?>
             <p>utazás: <?= $data->gate_name ?></p>
-            <p>+10 arany</p>
+            <p>+<?= Yii::app()->params['goldPerGateMission'] ?> arany</p>
             <?php endif; ?>
             <?php if ($data->action->found_setpart): ?>
             <p>tárgy: <?= CHtml::link($data->action->found_setpart->title, ['/shop/makeSets']); ?></p>

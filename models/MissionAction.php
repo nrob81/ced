@@ -130,7 +130,7 @@ class MissionAction extends CModel
 
         if ($this->success) {
             if ($this->mission->gate && !$this->mission->gate_visited) {
-                $incr['gold'] = 10;
+                $incr['gold'] = Yii::app()->params['goldPerGateMission'];
             }
             if ($this->mission->award_setpart) {
                 $this->addSetPart();

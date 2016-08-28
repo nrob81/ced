@@ -8,7 +8,7 @@ $descr = [
 'Egy megbízás teljesítésekor mindig növekszik kicsit a rutinod.',
 'Remek! A főmegbízást csak akkor teljesítheted, ha az itt látható összes megbízásnál eléred a 100% rutint.',
 'Most már teljesítheted a főmegbízást, amiért cserébe elérhetővé válik számodra a következő helyszín.',
-'Gratulálok! Teljesítetted a főmegbízást, kaptál 10 aranyat és lehetőséget arra, hogy tovább utazz.',
+'Gratulálok! Teljesítetted a főmegbízást, kaptál ' . Yii::app()->params['goldPerGateMission'] . ' aranyat és lehetőséget arra, hogy tovább utazz.',
 ];
 if (isset($descr[$id])) echo $descr[$id];
 ?><br/>
