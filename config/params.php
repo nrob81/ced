@@ -19,6 +19,11 @@ return [
     'wlineUsersTable' => 'users',
     'wlineRefreshAttribute' => 'lastRefresh',
     'googleMapsApiKey' => '',
-    //gameMechanicAttributes
+    //game mechanic attributes
     'goldPerGateMission' => 5,
+    'setPartFindTimeLimit' => 86400,
+    'setPartFindXpLimit' => 100,
+    'setPartFindChanceInitial' => 5,
+    'setPartFindChanceTimeLimit' => 2,
+    'setPartFindChanceXpLimit' => 1,
 ];

@@ -231,17 +231,15 @@ class MissionAction extends CModel
         $logger->key = 'setitem:'.$player->uid;
         $logger->addToSet('----start: '.date('Y.m.d. H:i:s').'----');
 
-        $minTimeDiff = 3600*24*1;
-        $minXpDiff = 100;
-        $findChance = 5; //  Chance % to find something
+        $findChance = Yii::app()->params['setPartFindChanceInitial']; //  Chance % to find something
         $logger->addToSet('initialize variables');
 
         $now = time();
-        if ($now - strtotime($player->found_setitem_time) < $minTimeDiff) {
-            $findChance = 2; //decrease chance in last 24 hour
+        if ($now - strtotime($player->found_setitem_time) < Yii::app()->params['setPartFindTimeLimit']) {
+            $findChance = Yii::app()->params['setPartFindChanceTimeLimit']; //decrease chance in last 24 hour
         }
-        if ($player->xp_all - $player->found_setitem_xp < $minXpDiff) {
-            $findChance = 1; //decrease chance in last xp interval
+        if ($player->xp_all - $player->found_setitem_xp < Yii::app()->params['setPartFindXpLimit']) {
+            $findChance = Yii::app()->params['setPartFindChanceXpLimit']; //decrease chance in last xp interval
         }
 
         $rnd = rand(1, 100);
