@@ -18,6 +18,7 @@ return [
     'cronPassword' => 'secret',
     'wlineUsersTable' => 'users',
     'wlineRefreshAttribute' => 'lastRefresh',
+    'googleMapsApiKey' => '',
     //gameMechanicAttributes
     'goldPerGateMission' => 5,
 ];
