@@ -148,6 +148,7 @@ p { margin: 0; }
 }
 .game-content { padding-top: 5px; }
 
+/*
 .water {
     min-height: 200px;
     background:transparent url(oct-s.png) center 4em no-repeat fixed !important;
@@ -155,7 +156,7 @@ p { margin: 0; }
 }
 .water h2:first-child { margin-top: 2em; }
 .water-guest { background-position-y: 2em !important; }
-
+*/
 .attributes {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -182,11 +183,13 @@ p { margin: 0; }
     .attributes .ui-block-d { width: 20%; }
     .pb_wrap { margin-right: 10px !important; }
 
+    /*
     .water { 
         min-height: 500px;
         background:transparent url(oct-b.png) center 0% no-repeat fixed !important; 
         background-size:contain !important;
     }
+    */
 }
 
 .attributes .block {
