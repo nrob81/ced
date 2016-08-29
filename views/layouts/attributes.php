@@ -5,7 +5,7 @@
             <div class="progressbar"><div style="width:<?= Yii::app()->player->model->level_percent ?>%"></div></div>
         </div>
         <span class="hint">
-<?php 
+<?php
 if (Yii::app()->player->model->status_points) {
     echo CHtml::link('Fejlődhetsz!', ['/player']);
 } else {
@@ -16,7 +16,7 @@ if (Yii::app()->player->model->status_points) {
     </div>
     <div class="block spr block-energy ui-block-b">
         <p id="energy"><?= Yii::app()->player->model->energy ?>/<?= Yii::app()->player->model->energy_max ?></p>
-<?php 
+<?php
         if (Yii::app()->player->model->energy_missing>0 && Yii::app()->player->model->remainingTimeToRefill > 0): ?>
             <span id="refillTime" class="hint-indent"><?= Time::secondsToDifference(Yii::app()->player->model->remainingTimeToRefill) ?> múlva +<?= Yii::app()->player->model->refillPerInterval ?></span>
         <?php endif; ?>
@@ -24,6 +24,6 @@ if (Yii::app()->player->model->status_points) {
     <div class="block spr block-dollar ui-block-c"><p><?= Yii::app()->player->model->dollar ?>$</p></div>
     <div class="block spr block-gold ui-block-d">
         <p><?= Yii::app()->player->model->gold ?> arany</p>
-        <span class="hint-indent"><?= CHtml::link('+energia', ['site/store']); ?></a>
+        <span class="hint-indent"><?= CHtml::link('+energia', ['site/store']); ?></span>
     </div>
 </div>

@@ -3,10 +3,9 @@ $this->pageTitle='Térkép';
 $this->pageID = 'index';
 $baseUrl = Yii::app()->baseUrl;
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile('https://maps.google.com/maps/api/js?sensor=true&1', CClientScript::POS_END);
-$cs->registerScriptFile('https://jquery-ui-map.googlecode.com/svn/trunk/ui/min/jquery.ui.map.full.min.js', CClientScript::POS_END);
-$cs->registerScriptFile('https://jquery-ui-map.googlecode.com/svn/trunk/ui/jquery.ui.map.extensions.js', CClientScript::POS_END);
-
+$cs->registerScriptFile('https://maps.google.com/maps/api/js?key=AIzaSyBri9OCmH4uHnA46rwYTdMlGTDhaMDUZtk', CClientScript::POS_END);
+$cs->registerScriptFile('https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.extensions.min.js', CClientScript::POS_END);
+$cs->registerScriptFile('https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/min/jquery.ui.map.full.min.js', CClientScript::POS_END);
 $cs->registerScript('mapSize', "
 $(document).on('pageshow', '#index',function(e,data){
     $('#content').height(getRealContentHeight());
@@ -77,4 +76,4 @@ console.log(last);
 ", CClientScript::POS_END);
 ?>
 
-<div id="map_canvas" style="height:400px; width:100%"></div>
+<div id="map_canvas" data-role="content" style="height:100%; width:100%;"></div>

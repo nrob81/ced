@@ -73,6 +73,8 @@ class MissionsController extends GameController
 
     public function actionMap()
     {
+        $this->layout = 'fullscreen';
+
         $location = new Location();
         $visited = $location->listVisited();
 
