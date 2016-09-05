@@ -28,6 +28,17 @@ class PublicController extends LoginController
         // display the login form
         $this->render('/account/login', ['model'=>$model]);
     }
+
+    public function actionTerms()
+    {
+        $this->render('terms');
+    }
+
+    public function actionPrivacy()
+    {
+        $this->render('privacy');
+    }
+
     protected function beforeAction($action)
     {
         if (Yii::app()->params['isPartOfWline']) {
