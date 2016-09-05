@@ -19,6 +19,10 @@ echo $form->errorSummary($model, '');
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->textField($model,'password'); ?>
 </div>
+<div data-role="fieldcontain">
+	<?= $form->labelEx($model,'acceptTerms'); ?>
+	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'slider']); ?>
+</div>
 <?= CHtml::submitButton('Mentés'); ?>
 
 <?php $this->endWidget(); ?>

@@ -6,3 +6,5 @@ composer.lock
 sonar*
 config/params-local.php
 config/main-local.php
+/views/public/terms.php
+/views/public/privacy.php

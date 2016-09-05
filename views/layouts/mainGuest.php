@@ -31,6 +31,8 @@
                 <li><?= CHtml::link('Főoldal', '/'); ?></li>
                 <li><?= CHtml::link('Regisztráció', ['/account/signup']); ?></li>
                 <li><?= CHtml::link('Elfelejtett jelszó', ['/account/resetPassword']); ?></li>
+                <li><?= CHtml::link('Általános felhasználói feltételek', ['/public/terms']); ?></li>
+                <li><?= CHtml::link('Adatvédelmi nyilatkozat', ['/public/privacy']); ?></li>
             </ul>
         </div><!-- /panel -->
 
