@@ -23,6 +23,11 @@ echo $form->errorSummary($model, '');
 	<?= $form->labelEx($model,'confirmPassword'); ?>
 	<?= $form->passwordField($model,'confirmPassword'); ?>
 </div>
+<div data-role="fieldcontain">
+	<?= $form->labelEx($model,'acceptTerms'); ?>
+	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'slider']); ?>
+asd
+</div>
 <?= CHtml::submitButton('Regisztráció'); ?>
 
 <?php $this->endWidget(); ?>
