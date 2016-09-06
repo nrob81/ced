@@ -29,4 +29,8 @@ return [
     'mapCenterCoords' => '45.807504,17.82389',
     'duelLevelRequirement' => 20,
     'duelWeakerOpponentLevelDiff' => 5,
+    'duelMaxCallPerHour' => 3,
+    'duelRevengeTimeLimitHours' => 12,
+    'competitorCompensatorMin' => 33,
+    'competitorCompensatorMax' => 66,
 ];

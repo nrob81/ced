@@ -264,12 +264,15 @@ class Competitor extends CModel
 
     public function compensator($value)
     {
-        if ($value < 33) {
-            $value = 33;
+        $min = Yii::app()->params['competitorCompensatorMin'];
+        $max = Yii::app()->params['competitorCompensatorMax'];
+
+        if ($value < $min) {
+            $value = $min;
         }
 
-        if ($value > 66) {
-            $value = 66;
+        if ($value > $max) {
+            $value = $max;
         }
 
         return $value;
