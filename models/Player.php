@@ -58,6 +58,7 @@ class Player extends CModel implements ISubject
     private $owned_baits;
     private $found_setitem_time;
     private $found_setitem_xp;
+    private $duel_points;
     private $tutorial_mission;
     private $in_club;
     private $black_market;

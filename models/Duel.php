@@ -8,9 +8,6 @@
  */
 class Duel extends CModel
 {
-    const LIMIT_WEAKER_OPPONENT_LEVEL_DIFF = 5;
-    const REQ_LEVEL = 10;
-
     private $caller;
     private $opponent;
     private $competitors = [];
@@ -153,8 +150,8 @@ class Duel extends CModel
             throw new CFlashException('Ahhoz, hogy párbajozhass, legalább ' . $this->caller->energyRequiredForDuel . ' energiára van szükséged.');
         }
 
-        if ($this->opponent->level < self::REQ_LEVEL) {
-            throw new CFlashException('Az ellenfél még nem párbajozhat, mivel nem érte el a szükséges ' . self::REQ_LEVEL.'. szintet.');
+        if ($this->opponent->level < Yii::app()->params['duelLevelRequirement']) {
+            throw new CFlashException('Az ellenfél még nem párbajozhat, mivel nem érte el a szükséges ' . Yii::app()->params['duelLevelRequirement'] . '. szintet.');
         }
 
         $this->validateNonChallengeGame();
@@ -168,9 +165,9 @@ class Duel extends CModel
             return true;
         }
 
-        if ($this->opponent->level < Yii::app()->player->model->level - self::LIMIT_WEAKER_OPPONENT_LEVEL_DIFF) {
+        if ($this->opponent->level < Yii::app()->player->model->level - Yii::app()->params['duelWeakerOpponentLevelDiff']) {
             if (!$this->isRevenge()) {
-                throw new CFlashException('Az ellenfél gyengébb nálad a megengedettnél (5 szint).');
+                throw new CFlashException('Az ellenfél gyengébb nálad a megengedettnél (' . Yii::app()->params['duelWeakerOpponentLevelDiff'] . ' szint).');
             }
         }
 
@@ -179,8 +176,8 @@ class Duel extends CModel
             throw new CFlashException('Az ellenfélnek nincs elég energiája a párbajhoz.');
         }
 
-        if ($this->duelsInLastHour() >= 3) {
-            throw new CFlashException('Egy adott játékost max. 3x hívhatsz párbajra egy órán keresztül. Kérlek válassz másik ellenfelet.');
+        if ($this->duelsInLastHour() >= Yii::app()->params['duelMaxCallPerHour']) {
+            throw new CFlashException('Ugyanazt a játékost max. ' . Yii::app()->params['duelMaxCallPerHour'] . 'x hívhatod párbajra egy órán keresztül. Kérlek válassz másik ellenfelet.');
         }
 
         return true;
@@ -338,12 +335,13 @@ class Duel extends CModel
 
     private function isRevenge()
     {
+        //todo: query last duel, check it's time with php
         $res = Yii::app()->db->createCommand()
             ->select('COUNT(*)')
             ->from('duel')
             ->where(
-                'caller=:caller AND opponent=:opponent AND created > DATE_SUB(NOW(), INTERVAL 12 hour)',
-                [':caller'=>$this->opponent->uid, ':opponent'=>$this->caller->uid]
+                'caller=:caller AND opponent=:opponent AND created > DATE_SUB(NOW(), INTERVAL :h hour)',
+                [':caller'=>$this->opponent->uid, ':opponent'=>$this->caller->uid, ':h' => Yii::app()->params['duelRevengeTimeLimitHours']]
             )
             ->queryScalar();
         return (boolean)($res > 0);

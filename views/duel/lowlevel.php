@@ -4,4 +4,4 @@ $this->renderPartial('/duel/nav', ['title'=>'Pecapárbaj']);
 ?>
 
 <p>Még nem vagy elég tapasztalt ahhoz, hogy párbajozz.</p>
-<p>Ne aggódj, amint eléred a szükséges <?= Duel::REQ_LEVEL; ?>. szintet, összemérheted tudásodat a többi horgásszal és akár a pénzüket is elnyerheted.</p>
+<p>Ne aggódj, amint eléred a szükséges <?= $levelRequirement; ?>. szintet, összemérheted tudásodat a többi horgásszal és akár a pénzüket is elnyerheted.</p>

@@ -26,4 +26,7 @@ return [
     'setPartFindChanceInitial' => 5,
     'setPartFindChanceTimeLimit' => 2,
     'setPartFindChanceXpLimit' => 1,
+    'mapCenterCoords' => '45.807504,17.82389',
+    'duelLevelRequirement' => 20,
+    'duelWeakerOpponentLevelDiff' => 5,
 ];

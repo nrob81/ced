@@ -8,9 +8,6 @@
  */
 class DuelList extends CModel
 {
-    const LIMIT_WEAKER_OPPONENT_LEVEL_DIFF = 5;
-    const REQ_LEVEL = 10;
-
     private $opponents = [];
     private $pagination;
     private $count;
@@ -25,7 +22,7 @@ class DuelList extends CModel
     {
         return $this->opponents;
     }
-    
+
     public function getPagination()
     {
         return $this->pagination;
@@ -58,9 +55,9 @@ class DuelList extends CModel
     {
         $player = Yii::app()->player->model;
         $limit = Yii::app()->params['listPerPage'];
-        $minLevel = $player->level - self::LIMIT_WEAKER_OPPONENT_LEVEL_DIFF;
-        if ($minLevel < self::REQ_LEVEL) {
-            $minLevel = self::REQ_LEVEL;
+        $minLevel = $player->level - Yii::app()->params['duelWeakerOpponentLevelDiff'];
+        if ($minLevel < Yii::app()->params['duelLevelRequirement']) {
+            $minLevel = Yii::app()->params['duelLevelRequirement'];
         }
 
         $this->count = Yii::app()->db->createCommand()
@@ -82,24 +79,24 @@ class DuelList extends CModel
 
         $club = new Club();
         $duelShiel = new DuelShield();
-        
+
         foreach ($res as $item) {
             $duelShiel->uid = $item['uid'];
             if ($duelShiel->lifeTime > 0) {
                 $item['energy'] = 0;
             }
-            
+
             $item['disabled'] = 0;
             if ($item['energy'] <= $item['energy_max'] / 10) {
                 $item['disabled'] = 1; //low energy
             }
             $item['prize'] = round($item['dollar'] / 10);
             $item['clubName'] = $this->getClubName($club, $item['in_club']);
-            
+
             $this->opponents[$item['uid']] = $item;
         }
     }
-    
+
     public function fetchCommonRivals()
     {
         $player = Yii::app()->player->model;
@@ -129,7 +126,7 @@ class DuelList extends CModel
             foreach ($p as $k => $v) {
                 $item[$k] = $v;
             }
-            
+
             $duelShiel->uid = $item['uid'];
             if ($duelShiel->lifeTime > 0) {
                 $item['energy'] = 0;
@@ -140,7 +137,7 @@ class DuelList extends CModel
                 $item['disabled'] = 1; //low energy
             }
 
-            if ($player->level - $item['level'] > self::LIMIT_WEAKER_OPPONENT_LEVEL_DIFF) {
+            if ($player->level - $item['level'] > Yii::app()->params['duelWeakerOpponentLevelDiff']) {
                 $item['disabled'] = 2; //too weak
             }
 
@@ -149,7 +146,7 @@ class DuelList extends CModel
             $this->opponents[$item['uid']] = $item;
         }
     }
-    
+
     public function fetchLastRivals()
     {
         $player = Yii::app()->player->model;
@@ -187,7 +184,7 @@ class DuelList extends CModel
             foreach ($p as $k => $v) {
                 $item[$k] = $v;
             }
-            
+
             $duelShiel->uid = $item['uid'];
             if ($duelShiel->lifeTime > 0) {
                 $item['energy'] = 0;

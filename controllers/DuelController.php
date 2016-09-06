@@ -5,8 +5,10 @@ class DuelController extends GameController
     {
         parent::beforeAction($action);
 
-        if (Yii::app()->player->model->level < DuelList::REQ_LEVEL) {
-            $this->render('lowlevel');
+        if (Yii::app()->player->model->level < Yii::app()->params['duelLevelRequirement']) {
+            $this->render('lowlevel', [
+                'levelRequirement' => Yii::app()->params['duelLevelRequirement']
+            ]);
             return false;
         }
         return true;
