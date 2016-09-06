@@ -212,8 +212,8 @@ class Club extends CModel implements ISubject
     public function joinRequest($id)
     {
         $player = Yii::app()->player->model;
-        if ($player->level < 15) {
-            throw new CFlashException('Ahhoz, hogy csatlakozhass, min. 15-ös szintre kell fejlődnöd.');
+        if ($player->level < Yii::app()->params['clubJoinLevelRequirement']) {
+            throw new CFlashException('Ahhoz, hogy csatlakozhass, el kell érned a ' . Yii::app()->params['clubJoinLevelRequirement'] . '. szintet.');
         }
 
         if ($player->in_club) {
@@ -224,8 +224,8 @@ class Club extends CModel implements ISubject
             throw new CFlashException('Már jelentkeztél egy másik klubba.');
         }
 
-        if (count($this->entrants) + count($this->members) >= 8) {
-            throw new CFlashException('A klubtagok és jelentkezők száma elérte a 8-et, ezért nem jelentkezhetnek többen.');
+        if (count($this->entrants) + count($this->members) >= Yii::app()->params['clubMaxMembers']) {
+            throw new CFlashException('A klubtagok és jelentkezők száma elérte a maximumot (' . Yii::app()->params['clubMaxMembers'] . '), ezért nem jelentkezhetnek többen.');
         }
 
         Yii::app()->db->createCommand()
@@ -327,7 +327,7 @@ class Club extends CModel implements ISubject
         }
 
         $cnt = count($this->members) + 1; //with owner
-        if ($cnt >= 8) {
+        if ($cnt >= Yii::app()->params['clubMaxMembers']) {
             return false;
         }
 

@@ -56,8 +56,8 @@ class ClubAR extends CActiveRecord
 
     public function levelRequirement($attribute, $params)
     {
-        if (Yii::app()->player->model->level < 30) {
-            $this->addError($attribute, 'Saját klub indításához minimum 30-as szintre kell fejlődnöd.');
+        if (Yii::app()->player->model->level < Yii::app()->params['clubCreateLevelRequirement']) {
+            $this->addError($attribute, 'Saját klub indításához minimum ' . Yii::app()->params['clubCreateLevelRequirement'] . '. szintre kell fejlődnöd.');
         }
     }
 
@@ -78,17 +78,6 @@ class ClubAR extends CActiveRecord
         if ($clubWithSameName) {
             $this->addError($attribute, 'Ez a név már foglalt.');
         }
-    }
-
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-        );
     }
 
     /**

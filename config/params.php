@@ -33,4 +33,7 @@ return [
     'duelRevengeTimeLimitHours' => 12,
     'competitorCompensatorMin' => 33,
     'competitorCompensatorMax' => 66,
+    'clubJoinLevelRequirement' => 30,
+    'clubMaxMembers' => 8,
+    'clubCreateLevelRequirement' => 45,
 ];
