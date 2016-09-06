@@ -78,7 +78,7 @@ class MissionsController extends GameController
         $location = new Location();
         $visited = $location->listVisited();
 
-        $center = '45.807504,17.82389'; //id 1
+        $center = Yii::app()->params['mapCenterCoords']; //id 1
         $last = [];
         $locations = [];
         foreach ($visited as $v) {
