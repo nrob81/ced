@@ -63,7 +63,7 @@ class Account extends CActiveRecord
             array('password', 'authenticate', 'on'=>'login'),
             array('verifyCode, verified', 'safe', 'on'=>'completeSignup'),
             array('resetPasswordCode, passwordReset', 'safe', 'on'=>'completeResetPassword'),
-            array('acceptTerms', 'required', 'on'=>array('completeSignup', 'signupNoMail'), 'requiredValue'=>1, 'message'=>'A regisztrációhoz el kell fogadni az általános felhasználói szabályzatot.'),
+            array('acceptTerms', 'required', 'on'=>array('completeSignup', 'signupNoMail'), 'requiredValue'=>1, 'message'=>'A regisztrációhoz el kell fogadni az általános felhasználói feltételeket.'),
         );
     }
 
@@ -75,7 +75,7 @@ class Account extends CActiveRecord
             'password' => 'jelszó',
             'oldPassword' => 'régi jelszó',
             'confirmPassword' => 'jelszó újra',
-            'acceptTerms' => 'Elfogadom az ÁFSZ-ot',
+            'acceptTerms' => 'Elfogadom az ÁFF-et',
             ];
         if ($this->scenario == 'login') {
             $attributes['email'] = 'e-mail vagy felh.név';
