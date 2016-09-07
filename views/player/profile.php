@@ -4,13 +4,13 @@ $this->pageTitle='Adatlap: ' . $player->user;
 <div class="nav">
     <div class="right">
         <div data-role="controlgroup" data-type="horizontal" data-mini="true">
-        <?php 
+        <?php
         if ($player->itsMe()) {
             echo CHtml::link('e-mail', ['/setup/email'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
             echo CHtml::link('jelszó', ['/setup/password'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
         } else {
             $cssClass = '';
-            if ($player->level < Duel::REQ_LEVEL) $cssClass .= ' ui-disabled';
+            if ($player->level < Yii::app()->params['duelLevelRequirement']) $cssClass .= ' ui-disabled';
             echo CHtml::link('párbajra hívom', ['duel/go', 'opponentId'=>$player->uid], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>$cssClass]);
         }
         ?>
@@ -53,7 +53,7 @@ $this->pageTitle='Adatlap: ' . $player->user;
             </tbody>
         </table>
 
-    
+
         <h2>Részletek</h2>
         <table class="table-stripe">
             <tbody>
