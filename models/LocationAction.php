@@ -1,12 +1,12 @@
 <?php
-/* 
+/*
  * @property integer $completedId
  */
 class LocationAction extends CModel
 {
     private $location;
     private $completedId = 0;
-    
+
     public function attributeNames()
     {
         return [];
@@ -16,7 +16,7 @@ class LocationAction extends CModel
     {
         $this->location = $location;
     }
-    
+
     public function getCompletedId()
     {
         return $this->completedId;
@@ -74,7 +74,7 @@ class LocationAction extends CModel
             $this->visitNewLocation($m);
         }
     }
-    
+
     private function allMissionRoutinesAreFull()
     {
         foreach ($this->location->missions as $mission) {
@@ -111,18 +111,18 @@ class LocationAction extends CModel
         //add routine awards
         $this->addAwardForRoutine();
     }
-    
+
     private function addAwardForRoutine()
     {
         if ($this->location->routine == 9) { //gold
-            $this->addAward(1, 30, 'az arany');
+            $this->addAward(1, Yii::app()->params['routineAwardForGold'], 'az arany');
         }
 
         if ($this->location->routine == 81) { //diamant
-            $this->addAward(1, 100, 'a gyémánt');
+            $this->addAward(1, Yii::app()->params['routineAwardForDiamant'], 'a gyémánt');
         }
     }
-    
+
     /**
      * @param integer $sp
      * @param integer $gold
@@ -142,8 +142,10 @@ class LocationAction extends CModel
         Yii::app()->user->setFlash('info', "Gratulálok, elérted <strong> {$title} </strong> helyszínrutint!<br/>Jutalmad: {$sp} státuszpont és {$gold} arany.");
 
         $logger->addToSet('after: ' . $player->status_points . 'sp, ' . $player->gold . 'gold');
+
+        Yii::app()->gameLogger->log(['type'=>'routine_award', 'water_id'=>$this->location->id, 'routine'=>$this->location->routine]);
     }
-    
+
     private function visitNewLocation($mission)
     {
         if ($mission->gate_visited) {
