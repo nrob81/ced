@@ -1,5 +1,5 @@
 <div class="nav subhead">
-    <?= CHtml::link('térkép', ['map'], ['id'=>'map', 'class'=>'right spr']); ?>
+    <?= CHtml::link('térkép', ['map'], ['id'=>'map', 'class'=>'right spr', 'rel'=>'external']); ?>
 
     <div data-role="popup" id="popupMenu">
         <ul data-role="listview" data-inset="true" style="min-width:210px;">
