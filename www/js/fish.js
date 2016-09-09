@@ -1,5 +1,5 @@
 $(document).on("mobileinit", function(){
-  $.mobile.ajaxEnabled = false;
+  $.mobile.ajaxEnabled = true;
 });
 
 $(document).on("pageinit", function(event){
