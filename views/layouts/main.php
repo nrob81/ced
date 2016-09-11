@@ -12,24 +12,18 @@
 
         <div data-role="header" id="game-header">
                 <?php
-                $attr = ['id'=>'nav', 'data-icon'=>'bars', 'data-iconpos'=>'notext'];
-                $clubsAttr = $clubsBubble = '';
-                $contestAttr = $contestBubble = '';
+                $attr = ['id'=>'nav', 'class'=>'ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext'];
+
+                $clubsBubble = $contestBubble = '';
                 //check active contest
                 if (Yii::app()->player->newContest) {
-                    $attr['data-icon'] = 'alert';
-                    $attr['class'] = 'nav-alert';
-
-                    $contestAttr = ' data-icon="alert"';
+                    $attr['class'] = 'nav-alert ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext';
                     $contestBubble = '<span class="menu-club-challenge"> !!</span>';
                 }
 
                 //check clubchallenge
                 if (Yii::app()->player->clubChallenge) {
-                    $attr['data-icon'] = 'alert';
-                    $attr['class'] = 'nav-alert';
-
-                    $clubsAttr = ' data-icon="alert"';
+                    $attr['class'] = 'nav-alert ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext';
                     $clubsBubble = '<span class="menu-club-challenge"> - verseny</span>';
                 }
 
@@ -65,8 +59,8 @@
             </div><!-- /collapsible -->
 
             <ul data-role="listview">
-                <li<?= $clubsAttr; ?>><?= CHtml::link('Klubok'.$clubsBubble, ['/club']); ?></li>
-                <li<?= $contestAttr; ?>><?= CHtml::link('Horgászverseny'.$contestBubble, ['/contest']); ?></li>
+                <li><?= CHtml::link('Klubok'.$clubsBubble, ['/club']); ?></li>
+                <li><?= CHtml::link('Horgászverseny'.$contestBubble, ['/contest']); ?></li>
                 <li><?= CHtml::link('Ranglisták', ['/leaderboard']); ?></li>
                 <li><?= CHtml::link('Profil', ['/player']); ?></li>
                 <li><?= CHtml::link('Súgó', ['/site/help']); ?></li>

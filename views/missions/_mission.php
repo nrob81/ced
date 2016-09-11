@@ -46,7 +46,7 @@
             <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
                 <input type="hidden" name="mission_id" value="<?= $data['id']; ?>">
 
-                <a href="#popupInfo<?= $data->id ?>" data-rel="popup" data-transition="pop" data-icon="info" data-iconshadow="false" data-theme="e" data-iconpos="notext" class="ui-btn ui-icon-nodisc ui-icon-alt">Teljes szöveg</a>
+                <a href="#popupInfo<?= $data->id ?>" data-rel="popup" data-transition="pop" class="ui-btn ui-btn-icon-notext ui-icon-info" data-theme="e">.Teljes szöveg</a>
                 <input type="submit" value="<?= $data['chance']==100 ? 'mehet' : 'próba' ?>" data-inline="true"<?= $data['routine'] >= 100 ? ' disabled=""' : '' ?>>
             </div>
             </form>

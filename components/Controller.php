@@ -12,6 +12,7 @@ class Controller extends CController
 
         //CSS
         $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/brown.css');
+        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.external-png-1.4.5.min.css');
         $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.structure-1.4.5.min.css');
         $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/game.css?3');
 
