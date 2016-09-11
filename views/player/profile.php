@@ -6,12 +6,12 @@ $this->pageTitle='Adatlap: ' . $player->user;
         <div data-role="controlgroup" data-type="horizontal" data-mini="true">
         <?php
         if ($player->itsMe()) {
-            echo CHtml::link('e-mail', ['/setup/email'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
-            echo CHtml::link('jelszó', ['/setup/password'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
+            echo CHtml::link('e-mail', ['/setup/email'], ['class'=>'ui-btn']);
+            echo CHtml::link('jelszó', ['/setup/password'], ['class'=>'ui-btn']);
         } else {
             $cssClass = '';
-            if ($player->level < Yii::app()->params['duelLevelRequirement']) $cssClass .= ' ui-disabled';
-            echo CHtml::link('párbajra hívom', ['duel/go', 'opponentId'=>$player->uid], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>$cssClass]);
+            if ($player->level < Yii::app()->params['duelLevelRequirement']) $cssClass .= 'ui-state-disabled';
+            echo CHtml::link('párbajra hívom', ['duel/go', 'opponentId'=>$player->uid], ['class'=>'ui-btn ' . $cssClass]);
         }
         ?>
         </div>

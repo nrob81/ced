@@ -1,5 +1,5 @@
 <div class="nav">
-    <?= CHtml::link('összes érme', ['player/badges'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>'right']); ?>
+    <?= CHtml::link('összes érme', ['player/badges'], ['class'=>'right ui-btn ui-mini ui-btn-inline ui-corner-all']); ?>
     <h3>Legújabb érméim</h3>
 </div>
 <div class="prog-bar">
@@ -14,9 +14,9 @@
 $i = 1;
 foreach ($badgeList->owned as $k => $v): ?>
     <p><span class="badge badge-<?= $v['level']; ?>"></span><?= isset($v['body']) ? $v['body'] : '...'; ?></p>
-<?php 
+<?php
     if ($i >= 5) break;
     $i++;
-endforeach; 
+endforeach;
 ?>
 </div>

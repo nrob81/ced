@@ -3,7 +3,7 @@ $this->pageTitle = 'Készítők';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('vissza', '/', ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>'right']); ?>
+    <?= CHtml::link('vissza', '/', ['class'=>'right ui-btn ui-mini']); ?>
     <h1>Készítők</h1>
 </div>
 

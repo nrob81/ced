@@ -74,9 +74,9 @@
 
             <?php
                 if (Yii::app()->params['isPartOfWline']) {
-                    echo CHtml::link('wline.hu', ['/gate/logout'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']);
+                    echo CHtml::link('wline.hu', ['/gate/logout'], ['class'=>'ui-btn', 'data-theme'=>'d', 'data-mini'=>'true']);
                 } else {
-                    echo CHtml::link('kilépés', ['/site/logout'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']);
+                    echo CHtml::link('kilépés', ['/site/logout'], ['class'=>'ui-btn', 'data-theme'=>'d', 'data-mini'=>'true']);
                 }
             ?>
         </div><!-- /panel -->

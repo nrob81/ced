@@ -3,7 +3,7 @@ $this->pageTitle = 'Versenytörténet';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('vissza', ['club/details', 'id'=>$club->id], ['data-role'=>'button', 'data-mini'=>'true', 'class'=>'right']); ?>
+    <?= CHtml::link('vissza', ['club/details', 'id'=>$club->id], ['class'=>'right ui-btn ui-mini']); ?>
     <h1><?= $club->name ?> legutóbbi versenyei</h1>
 </div>
 

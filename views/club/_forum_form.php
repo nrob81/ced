@@ -5,7 +5,7 @@
         <input type="checkbox" name="private" id="private">
         <label for="private">csak tagoknak</label>
         <?= CHtml::submitButton('küldés', ['data-theme'=>'c', 'data-inline'=>'false']); ?>
-        <?= CHtml::link('Frissítés', ['', 'id'=>$clubID, 't'=>time()], ['data-role'=>'button', 'data-icon'=>'refresh', 'data-iconpos'=>'notext', 'data-inline'=>'false', 'class'=>'refresh']); ?>
+        <?= CHtml::link('Frissítés', ['', 'id'=>$clubID, 't'=>time()], ['class'=>'refresh ui-btn ui-btn-icon-notext ui-icon-refresh']); ?>
     </fieldset>
 </form>
 <?php endif; ?>

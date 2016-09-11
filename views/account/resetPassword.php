@@ -24,5 +24,5 @@ echo $form->errorSummary($model, '');
 </div><!-- form -->
 
 <div class="c">
-<?= CHtml::link('vissza', '/', ['data-role'=>'button', 'data-inline'=>'true', 'data-theme'=>'e']); ?>
+<?= CHtml::link('vissza', '/', ['class'=>'ui-btn ui-btn-inline', 'data-theme'=>'e']); ?>
 </div>

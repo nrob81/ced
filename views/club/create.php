@@ -3,7 +3,7 @@ $this->pageTitle = 'Klub létrehozása';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('Klubok', ['/club/list'], ['data-role'=>'button', 'data-mini'=>'true', 'class'=>'right']); ?>
+    <?= CHtml::link('Klubok', ['/club/list'], ['class'=>'right ui-btn ui-mini']); ?>
     <h1>A saját klubod</h1>
 </div>
 

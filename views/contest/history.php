@@ -1,5 +1,5 @@
 <div class="nav">
-    <?= CHtml::link('vissza', ['/contest'], ['data-role'=>'button', 'data-mini'=>'true', 'data-inline'=>'true', 'class'=>'right']); ?>
+    <?= CHtml::link('vissza', ['/contest'], ['class'=>'right ui-btn', 'data-mini'=>'true', 'data-inline'=>'true']); ?>
     <h1>Horgászversenyek</h1>
 </div>
 
