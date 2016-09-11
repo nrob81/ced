@@ -25,7 +25,7 @@ echo $form->errorSummary($model, '');
 </div>
 <div data-role="fieldcontain">
 	<?= $form->labelEx($model,'acceptTerms'); ?>
-	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'slider']); ?>
+	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'flipswitch']); ?>
 </div>
 <?= CHtml::submitButton('Regisztráció'); ?>
 
