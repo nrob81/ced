@@ -76,4 +76,4 @@ console.log(last);
 ", CClientScript::POS_END);
 ?>
 
-<div id="map_canvas" data-role="content" style="height:100%; width:100%;"></div>
+<div id="map_canvas" class="ui-content" role="main" style="height:100%; width:100%;"></div>

@@ -1,5 +1,5 @@
 <?php $this->beginContent('//layouts/main'); ?>
-<div data-role="content" class="game-content <?= $this->contentClass; ?>">
+<div role="main" class="ui-content game-content <?= $this->contentClass; ?>">
     <div id="content">
     <?php
     foreach(Yii::app()->user->getFlashes() as $key => $message) {

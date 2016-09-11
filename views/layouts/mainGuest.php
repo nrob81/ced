@@ -17,7 +17,7 @@
             </div>
         </div><!-- header -->
 
-        <div data-role="content" class="game-content <?= $this->contentClass; ?>">
+        <div role="main" class="ui-content game-content <?= $this->contentClass; ?>">
             <?php
                 foreach(Yii::app()->user->getFlashes() as $key => $message) {
                     echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
