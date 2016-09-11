@@ -43,11 +43,11 @@
         </div>
         <div class="ui-block-d"><p class="btn-cell">
             <form action="<?= $this->createUrl('missions/list', ['id'=>$data['water_id']]); ?>" method="post">
-            <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
                 <input type="hidden" name="mission_id" value="<?= $data['id']; ?>">
 
-                <a href="#popupInfo<?= $data->id ?>" data-rel="popup" data-role="button" data-transition="pop" data-icon="info" data-iconshadow="false" data-theme="e" data-iconpos="notext" data-mini="true" class="ui-icon-nodisc ui-icon-alt">Teljes szöveg</a>
-                <input type="submit" value="<?= $data['chance']==100 ? 'mehet' : 'próba' ?>" data-mini="true" data-inline="true"<?= $data['routine'] >= 100 ? ' disabled=""' : '' ?>>
+                <a href="#popupInfo<?= $data->id ?>" data-rel="popup" data-transition="pop" data-icon="info" data-iconshadow="false" data-theme="e" data-iconpos="notext" class="ui-btn ui-icon-nodisc ui-icon-alt">Teljes szöveg</a>
+                <input type="submit" value="<?= $data['chance']==100 ? 'mehet' : 'próba' ?>" data-inline="true"<?= $data['routine'] >= 100 ? ' disabled=""' : '' ?>>
             </div>
             </form>
         </p></div>

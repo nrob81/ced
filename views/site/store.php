@@ -13,7 +13,7 @@ $this->pageTitle='Arany felhasználása';
     <div class="ui-block-a">
         <h2>Aranyad: <?= Yii::app()->player->model->gold; ?>
         <?php if (Yii::app()->params['isPartOfWline']): ?>
-        <a href="<?= $this->createUrl('gate/bank'); ?>" data-role="button" data-inline="true" data-mini="true" data-theme="e">Szerezz aranyat zsetonnal</a></h2>
+        <a href="<?= $this->createUrl('gate/bank'); ?>" class="ui-btn ui-btn-inline ui-mini" data-theme="e">Szerezz aranyat zsetonnal</a></h2>
         <?php endif; ?>
 
         <h3>újdonság: Hiányzó szett elem vásárlása</h3>

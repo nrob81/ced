@@ -4,7 +4,7 @@ $this->pageTitle='Klub: ' . $club->name;
 ?>
 <div class="nav">
     <div class="right">
-        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+        <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
             <?= CHtml::link('klubok', ['club/list'], ['class'=>'ui-btn']); ?>
             <?php
             if (Yii::app()->player->model->in_club) {

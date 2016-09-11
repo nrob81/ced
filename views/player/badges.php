@@ -3,7 +3,7 @@ $this->pageTitle='Összes érme';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('profilom', ['/player'], ['class'=>'right ui-btn', 'data-inline'=>'true', 'data-mini'=>'true']); ?>
+    <?= CHtml::link('profilom', ['/player'], ['class'=>'right ui-btn ui-mini', 'data-inline'=>'true']); ?>
     <h1>Összes érme</h1>
 </div>
 

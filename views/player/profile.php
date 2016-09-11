@@ -3,7 +3,7 @@ $this->pageTitle='Adatlap: ' . $player->user;
 ?>
 <div class="nav">
     <div class="right">
-        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+        <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
         <?php
         if ($player->itsMe()) {
             echo CHtml::link('e-mail', ['/setup/email'], ['class'=>'ui-btn']);
@@ -24,7 +24,7 @@ $this->pageTitle='Adatlap: ' . $player->user;
     <li>
         <p><strong class="success">Fejlődtél!</strong> A státuszpontjaid felhasználásával megnövelheted az itt látható tulajdonságaidat vagy pénzedet.</p>
         <form action="<?= $this->createUrl(''); ?>" method="post">
-            <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
                 <button name="increment_id" value="1">+1 max. energia</button>
                 <button name="increment_id" value="2">+<?= $advancement->skillImprovement ?> szakértelem</button>
                 <button name="increment_id" value="3">+2 teherbírás</button>

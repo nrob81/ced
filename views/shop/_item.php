@@ -1,7 +1,7 @@
 <li>
     <?php $paramPage = $page ? ['page'=>$page] : []; ?>
     <form action="<?= $this->createUrl('', $paramPage) ?>" method="post" data-ajax="false">
-    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+    <fieldset class="ui-mini" data-role="controlgroup" data-type="horizontal">
     <input type="hidden" name="item_id" value="<?= $item->id ?>" />
     <?php foreach ($item->buy_amount as $amount => $enabled): ?>
         <?php if ($enabled): ?>
@@ -25,7 +25,7 @@
         <?php if ($item->errors['freeSlots']): ?><p class="error">Csak annyi felszerelést és csalit vásárolhatsz, amekkora a teherbírásod.</p><?php endif; ?>
         <?php if ($item->success): ?><p class="success">Köszönöm, hogy nálam vásároltál!</p><?php endif; ?>
     <?php endif; ?>
-    
+
     <p>+<?= $item->skill ?> SzP, <?= $item->price ?>$</p>
     <?php if ($item->owned): ?>
     <p>saját: <?= $item->owned ?>db</p>

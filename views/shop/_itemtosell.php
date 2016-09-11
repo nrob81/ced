@@ -1,7 +1,7 @@
 <li>
     <?php $paramPage = $page ? ['page'=>$page] : []; ?>
     <form action="<?= $this->createUrl('', $paramPage) ?>" method="post" data-ajax="false">
-    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+    <fieldset class="ui-mini" data-role="controlgroup" data-type="horizontal">
     <input type="hidden" name="item_id" value="<?= $item->id ?>" />
     <?php foreach ($item->sell_amount as $amount => $enabled): ?>
         <?php if ($enabled): ?>

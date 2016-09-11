@@ -2,7 +2,7 @@
 class JqmLinkPager extends CLinkPager
 {
     public $header = '';
-    public $htmlOptions = array('class'=>'', 'data-role'=>'controlgroup', 'data-type'=>'horizontal', 'data-mini'=>'true');
+    public $htmlOptions = array('class'=>'ui-mini', 'data-role'=>'controlgroup', 'data-type'=>'horizontal');
     public $maxButtonCount=5;
     public $nextPageLabel = '>';
     public $prevPageLabel = '<';
