@@ -19,7 +19,7 @@ $this->pageTitle = 'Klub létrehozása';
                     'enableAjaxValidation'=>false,
                 )); ?>
 
-                    <div data-role="fieldcontain">
+                    <div class="ui-field-contain">
                         <?= $form->error($model,'name'); ?>
                         <?= $form->labelEx($model,'name'); ?>
                         <?= $form->textField($model,'name'); ?>

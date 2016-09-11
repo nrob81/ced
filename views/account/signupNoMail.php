@@ -11,19 +11,19 @@ $this->pageTitle = 'Regisztráció';
 echo $form->errorSummary($model, '');
 ?>
 
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'username'); ?>
 	<?= $form->textField($model,'username'); ?>
 </div>
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'confirmPassword'); ?>
 	<?= $form->passwordField($model,'confirmPassword'); ?>
 </div>
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'acceptTerms'); ?>
 	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'flipswitch']); ?>
 </div>

@@ -20,12 +20,12 @@ echo $form->errorSummary($model, '');
 </ul>
 <p>
 Az e-mail megváltoztatáshoz először add meg a jelenlegi jelszavadat:
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>
 .. majd add meg az új e-mail címet:
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'email'); ?>
 	<?= $form->textField($model,'email'); ?>
 </div>

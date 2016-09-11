@@ -11,7 +11,7 @@ $this->pageTitle = 'Regisztráció';
 echo $form->errorSummary($model, '');
 ?>
 
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'email'); ?>
 	<?= $form->textField($model,'email'); ?>
 </div>

@@ -13,11 +13,11 @@ $this->pageTitle=Yii::app()->name;
 echo $form->errorSummary($model, '');
 ?>
 
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'email'); ?>
 	<?= $form->textField($model,'email'); ?>
 </div>
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>

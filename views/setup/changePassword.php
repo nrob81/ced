@@ -12,16 +12,16 @@
 echo $form->errorSummary($model, '');
 ?>
 A jelszó megváltoztatáshoz először add meg a jelenlegi jelszavadat:
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'oldPassword'); ?>
 	<?= $form->passwordField($model,'oldPassword'); ?>
 </div>
 .. majd add meg az új jelszót:
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model,'confirmPassword'); ?>
 	<?= $form->passwordField($model,'confirmPassword'); ?>
 </div>

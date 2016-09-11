@@ -13,7 +13,7 @@ echo $form->errorSummary($model, '');
 
 <p>Add meg az felhasználónevedhez tartozó e-mail címet, hogy elküldhessük a jelszó visszaállításához szükséges információkat.</p>
 
-<div data-role="fieldcontain">
+<div class="ui-field-contain">
 	<?= $form->labelEx($model, 'email'); ?>
 	<?= $form->textField($model, 'email'); ?>
 </div>
