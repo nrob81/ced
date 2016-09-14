@@ -8,8 +8,7 @@ class SiteController extends GameController
         $wall->fetchPosts();
 
         if (Yii::app()->player->model->level < 2) {
-            Yii::app()->user->setFlash('info', 'Kezdetnek teljesíts pár megbízást. :) A megbízásokat a '. CHtml::link('Navigáció', ['#left-panel'], ['class'=>'ui-btn ui-btn-inline ui-corner-all ui-icon-bars ui-btn-icon-notext', 'id'=>'nav']) . ' ikon lenyomásával érheted el.');
-            //Yii::app()->user->setFlash('info', '<a href="index.html" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Delete</a>');
+            Yii::app()->user->setFlash('info', 'Kezdetnek teljesíts pár megbízást. :) A megbízásokat a '. CHtml::link('Navigáció', ['#left-panel'], ['data-role'=>'button', 'data-inline'=>'true', 'id'=>'nav', 'data-icon'=>'bars', 'data-iconpos'=>'notext']) . ' ikon lenyomásával érheted el.');
         }
 
         $this->render('index', [

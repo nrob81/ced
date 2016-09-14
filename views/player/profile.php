@@ -3,15 +3,15 @@ $this->pageTitle='Adatlap: ' . $player->user;
 ?>
 <div class="nav">
     <div class="right">
-        <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
+        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
         <?php
         if ($player->itsMe()) {
-            echo CHtml::link('e-mail', ['/setup/email'], ['class'=>'ui-btn']);
-            echo CHtml::link('jelszó', ['/setup/password'], ['class'=>'ui-btn']);
+            echo CHtml::link('e-mail', ['/setup/email'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
+            echo CHtml::link('jelszó', ['/setup/password'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true']);
         } else {
             $cssClass = '';
-            if ($player->level < Yii::app()->params['duelLevelRequirement']) $cssClass .= 'ui-state-disabled';
-            echo CHtml::link('párbajra hívom', ['duel/go', 'opponentId'=>$player->uid], ['class'=>'ui-btn ' . $cssClass]);
+            if ($player->level < Yii::app()->params['duelLevelRequirement']) $cssClass .= ' ui-disabled';
+            echo CHtml::link('párbajra hívom', ['duel/go', 'opponentId'=>$player->uid], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>$cssClass]);
         }
         ?>
         </div>
@@ -24,7 +24,7 @@ $this->pageTitle='Adatlap: ' . $player->user;
     <li>
         <p><strong class="success">Fejlődtél!</strong> A státuszpontjaid felhasználásával megnövelheted az itt látható tulajdonságaidat vagy pénzedet.</p>
         <form action="<?= $this->createUrl(''); ?>" method="post">
-            <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
+            <div data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <button name="increment_id" value="1">+1 max. energia</button>
                 <button name="increment_id" value="2">+<?= $advancement->skillImprovement ?> szakértelem</button>
                 <button name="increment_id" value="3">+2 teherbírás</button>

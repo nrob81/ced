@@ -3,7 +3,7 @@ $this->pageTitle = 'Klub megszüntetése';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('vissza', ['/club'], ['class'=>'right ui-btn ui-mini']); ?>
+    <?= CHtml::link('vissza', ['/club'], ['data-role'=>'button', 'data-mini'=>'true', 'class'=>'right']); ?>
     <h1><?= $club->name; ?> bezárása</h1>
 </div>
 
@@ -28,8 +28,8 @@ $this->pageTitle = 'Klub megszüntetése';
             <div class="form">
                 <?php if (Yii::app()->player->model->uid == $club->owner): ?>
                     <form action="<?= $this->createUrl('club/close');?>" method="post">
-                    <input type="password" name="pass" id="pass" placeholder="jelszavad" value="" autocomplete="off">
-                    <input type="submit" value="Klub megszüntetése">
+                    <input type="password" name="pass" id="pass" placeholder="jelszavad" value="">
+                    <input type="submit" value="Klub megszüntetése"> 
                     </form>
                 <?php endif; ?>
             </div><!-- form -->

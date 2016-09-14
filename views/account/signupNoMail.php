@@ -11,21 +11,21 @@ $this->pageTitle = 'Regisztráció';
 echo $form->errorSummary($model, '');
 ?>
 
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'username'); ?>
 	<?= $form->textField($model,'username'); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'confirmPassword'); ?>
 	<?= $form->passwordField($model,'confirmPassword'); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'acceptTerms'); ?>
-	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'flipswitch']); ?>
+	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'slider']); ?>
 </div>
 <?= CHtml::submitButton('Regisztráció'); ?>
 
@@ -35,5 +35,5 @@ echo $form->errorSummary($model, '');
 
 <div class="c">
 Már regisztráltál?
-<?= CHtml::link('Belépés', '/', ['class'=>'ui-btn ui-corner-all ui-btn-inline', 'data-theme'=>'e']); ?>
+<?= CHtml::link('Belépés', '/', ['data-role'=>'button', 'data-inline'=>'true', 'data-theme'=>'e']); ?>
 </div>

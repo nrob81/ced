@@ -6,11 +6,11 @@
             <li data-role="divider">Merre szeretnél utazni?</li>
             <?php
                 foreach ($nav as $link) {
+                    $data_icon = $link['type']=='prev' ? ' data-icon="arrow-l"' : '';
                     $disabled = !$link['active'] ? ' class="ui-disabled"' : '';
-                    $data_icon = $link['type']=='prev' ? ' data-icon="carat-l"' : '';
                     $url = $link['active'] ? $widget->createUrl('missions/list', ['id'=>$link['id']]) : '#';
 
-                    echo '<li' . $disabled . $data_icon . '>';
+                    echo '<li' . $data_icon . $disabled . '>';
                     echo CHtml::link($link['title'], $url);
                     echo '</li>';
                 }

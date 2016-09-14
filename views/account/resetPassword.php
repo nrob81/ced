@@ -13,7 +13,7 @@ echo $form->errorSummary($model, '');
 
 <p>Add meg az felhasználónevedhez tartozó e-mail címet, hogy elküldhessük a jelszó visszaállításához szükséges információkat.</p>
 
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model, 'email'); ?>
 	<?= $form->textField($model, 'email'); ?>
 </div>
@@ -24,5 +24,5 @@ echo $form->errorSummary($model, '');
 </div><!-- form -->
 
 <div class="c">
-<?= CHtml::link('vissza', '/', ['class'=>'ui-btn ui-btn-inline', 'data-theme'=>'e']); ?>
+<?= CHtml::link('vissza', '/', ['data-role'=>'button', 'data-inline'=>'true', 'data-theme'=>'e']); ?>
 </div>

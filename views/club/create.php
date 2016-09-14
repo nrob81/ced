@@ -3,7 +3,7 @@ $this->pageTitle = 'Klub létrehozása';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('Klubok', ['/club/list'], ['class'=>'right ui-btn ui-mini']); ?>
+    <?= CHtml::link('Klubok', ['/club/list'], ['data-role'=>'button', 'data-mini'=>'true', 'class'=>'right']); ?>
     <h1>A saját klubod</h1>
 </div>
 
@@ -19,7 +19,7 @@ $this->pageTitle = 'Klub létrehozása';
                     'enableAjaxValidation'=>false,
                 )); ?>
 
-                    <div class="ui-field-contain">
+                    <div data-role="fieldcontain">
                         <?= $form->error($model,'name'); ?>
                         <?= $form->labelEx($model,'name'); ?>
                         <?= $form->textField($model,'name'); ?>

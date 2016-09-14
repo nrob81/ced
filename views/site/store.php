@@ -13,7 +13,7 @@ $this->pageTitle='Arany felhasználása';
     <div class="ui-block-a">
         <h2>Aranyad: <?= Yii::app()->player->model->gold; ?>
         <?php if (Yii::app()->params['isPartOfWline']): ?>
-        <a href="<?= $this->createUrl('gate/bank'); ?>" class="ui-btn ui-btn-inline ui-mini" data-theme="e">Szerezz aranyat zsetonnal</a></h2>
+        <a href="<?= $this->createUrl('gate/bank'); ?>" data-role="button" data-inline="true" data-mini="true" data-theme="e">Szerezz aranyat zsetonnal</a></h2>
         <?php endif; ?>
 
         <h3>újdonság: Hiányzó szett elem vásárlása</h3>
@@ -33,7 +33,7 @@ $this->pageTitle='Arany felhasználása';
         <h3>Párbaj-pajzs</h3>
         <p>Ha nem szeretnéd, hogy párbajra hívjanak, kapcsold be a pajzsot. Nyugi, a többi horgász csak annyit lát majd, hogy nincs energiád és ezért nem hívhat párbajra.</p>
         <?php if ($duelShield->getLifetime() > 0): ?>
-        <a href="<?= $this->createUrl(''); ?>" class="ui-btn ui-btn-icon-right ui-icon-refresh" data-theme="d">Jelenleg aktív a pajzsod. Az élettartama: <span id="shieldLifeTime"><?= Time::secondsToDifference($duelShield->lifeTime) ?></span></a>
+        <a href="<?= $this->createUrl(''); ?>" data-role="button" data-theme="d" data-icon="refresh">Jelenleg aktív a pajzsod. Az élettartama: <span id="shieldLifeTime"><?= Time::secondsToDifference($duelShield->lifeTime) ?></span></a>
         <?php
             Yii::app()->clientScript->registerScript('cntr', "
                 $('#shieldLifeTime').countdown({

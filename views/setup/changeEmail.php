@@ -1,5 +1,5 @@
 <div class="nav">
-    <?= CHtml::link('vissza', ['/player'], ['class'=>'right ui-btn ui-mini']); ?>
+    <?= CHtml::link('vissza', ['/player'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>'right']); ?>
     <h1>E-mail beállítása</h1>
 </div>
 
@@ -20,12 +20,12 @@ echo $form->errorSummary($model, '');
 </ul>
 <p>
 Az e-mail megváltoztatáshoz először add meg a jelenlegi jelszavadat:
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>
 .. majd add meg az új e-mail címet:
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'email'); ?>
 	<?= $form->textField($model,'email'); ?>
 </div>

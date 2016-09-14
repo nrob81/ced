@@ -11,13 +11,13 @@
     <div data-role="page" id="index">
 
         <div data-role="header" id="game-header">
-            <?= CHtml::link('Navigáció', ['#left-panel'], ['id'=>'nav', 'class'=>'ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext']); ?>
+            <?= CHtml::link('Navigáció', ['#left-panel'], ['id'=>'nav', 'data-icon'=>'bars', 'data-iconpos'=>'notext']); ?>
             <div id="attributes" class="attributes">
                 <h1>Carp-e Diem :: Élj a halnak!</h1>
             </div>
         </div><!-- header -->
 
-        <div role="main" class="ui-content game-content <?= $this->contentClass; ?>">
+        <div data-role="content" class="game-content <?= $this->contentClass; ?>">
             <?php
                 foreach(Yii::app()->user->getFlashes() as $key => $message) {
                     echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";

@@ -36,4 +36,6 @@ return [
     'clubJoinLevelRequirement' => 30,
     'clubMaxMembers' => 8,
     'clubCreateLevelRequirement' => 45,
+    'routineAwardForGold' => 30,
+    'routineAwardForDiamant' => 100,
 ];

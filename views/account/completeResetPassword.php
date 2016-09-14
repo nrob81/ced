@@ -11,11 +11,11 @@ $this->pageTitle = 'Elfelejtett jelszó';
 echo $form->errorSummary($model, '');
 ?>
 
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password', ['autocomplete'=>'off']); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'confirmPassword'); ?>
 	<?= $form->passwordField($model,'confirmPassword', ['autocomplete'=>'off']); ?>
 </div>

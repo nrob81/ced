@@ -6,7 +6,7 @@
     'htmlOptions'=>['data-ajax'=>'false'],
 )); ?>
 
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
     <?= $form->error($model,'name'); ?>
 	<?= $form->labelEx($model,'name'); ?>
 	<?= $form->textField($model,'name'); ?>

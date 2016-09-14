@@ -5,9 +5,9 @@ $this->pageTitle='Saját klubom: ' . $club->name;
 
 <div class="nav">
     <div class="right">
-        <div class="ui-mini" data-role="controlgroup" data-type="horizontal">
-            <?= CHtml::link('klubok', ['club/list'], ['class'=>'ui-btn']); ?>
-            <?= CHtml::link('bezárás', ['club/close'], ['class'=>'ui-btn']); ?>
+        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <?= CHtml::link('klubok', ['club/list'], ['data-role'=>'button']); ?>
+            <?= CHtml::link('bezárás', ['club/close'], ['data-role'=>'button']); ?>
         </div>
     </div>
     <h1><?= $club->name; ?></h1>
@@ -17,7 +17,7 @@ $this->pageTitle='Saját klubom: ' . $club->name;
 <?php if (count($club->entrants)) $this->renderPartial('_members', ['club'=>$club, 'moderation'=>$moderation, 'editable'=>true]); ?>
 <?php if ($challenge->active) $this->renderPartial('_challenge', ['club'=>$club, 'challenge'=>$challenge]); ?>
 
-<?php
+<?php 
 $this->renderPartial('_forum_list', [
     'list'=>$list,
     'page'=>$page,

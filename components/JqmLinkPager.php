@@ -2,7 +2,7 @@
 class JqmLinkPager extends CLinkPager
 {
     public $header = '';
-    public $htmlOptions = array('class'=>'ui-mini', 'data-role'=>'controlgroup', 'data-type'=>'horizontal');
+    public $htmlOptions = array('class'=>'', 'data-role'=>'controlgroup', 'data-type'=>'horizontal', 'data-mini'=>'true');
     public $maxButtonCount=5;
     public $nextPageLabel = '>';
     public $prevPageLabel = '<';
@@ -19,9 +19,9 @@ class JqmLinkPager extends CLinkPager
         }
 
         if ($selected) {
-            $class = 'ui-state-disabled';
+            $class = 'ui-disabled';
         }
 
-        return CHtml::link($label, $this->createPageUrl($page), ['class'=>'ui-btn ' . $class, 'data-ajax'=>'false']);
+        return CHtml::link($label, $this->createPageUrl($page), ['data-role'=>'button', 'data-ajax'=>'false', 'class'=>$class]);
     }
 }

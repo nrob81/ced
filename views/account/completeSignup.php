@@ -11,17 +11,17 @@ $this->pageTitle = 'Játékos mentése';
 echo $form->errorSummary($model, '');
 ?>
 
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'username'); ?>
 	<?= $form->textField($model,'username'); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->textField($model,'password'); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'acceptTerms'); ?>
-	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'flipswitch']); ?>
+	<?= $form->dropdownList($model,'acceptTerms', ['nem', 'igen'], ['data-role'=>'slider']); ?>
 </div>
 <?= CHtml::submitButton('Mentés'); ?>
 

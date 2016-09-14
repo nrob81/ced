@@ -1,5 +1,5 @@
 <div class="nav">
-    <?= CHtml::link('versenyek', ['contest/history'], ['class'=>'right ui-btn ui-mini']); ?>
+    <?= CHtml::link('versenyek', ['contest/history'], ['data-role'=>'button', 'data-mini'=>'true', 'data-inline'=>'true', 'class'=>'right']); ?>
     <h1>Horgászverseny</h1>
 </div>
 
@@ -14,9 +14,9 @@
 
 <div class="grid-board ui-grid-a ui-responsive">
     <div class="ui-block-a">
-        <ul data-role="listview" data-inset="true">
-            <?php $this->renderPartial('_state', ['active'=>$contestList->isActive, 'secUntilEnd'=>$contestList->secUntilEnd]); ?>
-            <?php $this->renderPartial('_trophy', ['contestList'=>$contestList]); ?>
+        <ul data-role="listview" data-inset="true">                        
+            <?php $this->renderPartial('_state', ['active'=>$contestList->isActive, 'secUntilEnd'=>$contestList->secUntilEnd]); ?> 
+            <?php $this->renderPartial('_trophy', ['contestList'=>$contestList]); ?> 
         </ul>
     </div>
     <div class="block ui-block-b">
@@ -26,7 +26,7 @@
             <?php if (count($contestList->list)): ?>
                 <?php foreach($contestList->list as $rank => $item): ?>
                 <li>
-                <p><strong><?= $rank ?>. </strong>
+                <p><strong><?= $rank ?>. </strong> 
                 <?php
                     if ($item['name']) {
                         echo CHtml::link($item['name'], ['/player/profile', 'uid'=>$item['id']]);

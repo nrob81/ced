@@ -3,8 +3,8 @@ $this->pageTitle = 'Klubok';
 ?>
 
 <div class="nav">
-    <?= CHtml::link('Saját klub', ['club/create'], ['class'=>'right ui-btn ui-mini']); ?>
-
+    <?= CHtml::link('Saját klub', ['club/create'], ['data-role'=>'button', 'data-mini'=>'true', 'class'=>'right']); ?>
+       
     <h1>Klubok</h1>
 </div>
 
@@ -18,7 +18,7 @@ $this->pageTitle = 'Klubok';
 </ul>
 
 <div class="center-wrapper">
-<?php
+<?php 
 $this->widget('JqmLinkPager', array(
     'currentPage'=>$pagination->getCurrentPage(),
     'itemCount'=>$count,

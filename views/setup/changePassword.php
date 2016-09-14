@@ -1,5 +1,5 @@
 <div class="nav">
-    <?= CHtml::link('vissza', ['/player'], ['class'=>'right ui-btn ui-mini']); ?>
+    <?= CHtml::link('vissza', ['/player'], ['data-role'=>'button', 'data-inline'=>'true', 'data-mini'=>'true', 'class'=>'right']); ?>
     <h1>Jelszócsere</h1>
 </div>
 
@@ -12,16 +12,16 @@
 echo $form->errorSummary($model, '');
 ?>
 A jelszó megváltoztatáshoz először add meg a jelenlegi jelszavadat:
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'oldPassword'); ?>
 	<?= $form->passwordField($model,'oldPassword'); ?>
 </div>
 .. majd add meg az új jelszót:
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'password'); ?>
 	<?= $form->passwordField($model,'password'); ?>
 </div>
-<div class="ui-field-contain">
+<div data-role="fieldcontain">
 	<?= $form->labelEx($model,'confirmPassword'); ?>
 	<?= $form->passwordField($model,'confirmPassword'); ?>
 </div>

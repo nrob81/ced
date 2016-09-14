@@ -12,18 +12,24 @@
 
         <div data-role="header" id="game-header">
                 <?php
-                $attr = ['id'=>'nav', 'class'=>'ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext'];
-
-                $clubsBubble = $contestBubble = '';
+                $attr = ['id'=>'nav', 'data-icon'=>'bars', 'data-iconpos'=>'notext'];
+                $clubsAttr = $clubsBubble = '';
+                $contestAttr = $contestBubble = '';
                 //check active contest
                 if (Yii::app()->player->newContest) {
-                    $attr['class'] = 'nav-alert ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext';
+                    $attr['data-icon'] = 'alert';
+                    $attr['class'] = 'nav-alert';
+
+                    $contestAttr = ' data-icon="alert"';
                     $contestBubble = '<span class="menu-club-challenge"> !!</span>';
                 }
 
                 //check clubchallenge
                 if (Yii::app()->player->clubChallenge) {
-                    $attr['class'] = 'nav-alert ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext';
+                    $attr['data-icon'] = 'alert';
+                    $attr['class'] = 'nav-alert';
+
+                    $clubsAttr = ' data-icon="alert"';
                     $clubsBubble = '<span class="menu-club-challenge"> - verseny</span>';
                 }
 
@@ -59,8 +65,8 @@
             </div><!-- /collapsible -->
 
             <ul data-role="listview">
-                <li><?= CHtml::link('Klubok'.$clubsBubble, ['/club']); ?></li>
-                <li><?= CHtml::link('Horgászverseny'.$contestBubble, ['/contest']); ?></li>
+                <li<?= $clubsAttr; ?>><?= CHtml::link('Klubok'.$clubsBubble, ['/club']); ?></li>
+                <li<?= $contestAttr; ?>><?= CHtml::link('Horgászverseny'.$contestBubble, ['/contest']); ?></li>
                 <li><?= CHtml::link('Ranglisták', ['/leaderboard']); ?></li>
                 <li><?= CHtml::link('Profil', ['/player']); ?></li>
                 <li><?= CHtml::link('Súgó', ['/site/help']); ?></li>
@@ -68,9 +74,9 @@
 
             <?php
                 if (Yii::app()->params['isPartOfWline']) {
-                    echo CHtml::link('wline.hu', ['/gate/logout'], ['class'=>'ui-btn ui-mini', 'data-theme'=>'d']);
+                    echo CHtml::link('wline.hu', ['/gate/logout'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']);
                 } else {
-                    echo CHtml::link('kilépés', ['/site/logout'], ['class'=>'ui-btn ui-mini', 'data-theme'=>'d']);
+                    echo CHtml::link('kilépés', ['/site/logout'], ['data-role'=>'button', 'data-theme'=>'d', 'data-mini'=>'true']);
                 }
             ?>
         </div><!-- /panel -->
