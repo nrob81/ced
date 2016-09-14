@@ -1,11 +1,12 @@
 $(document).on("mobileinit", function(){
-  $.mobile.ajaxEnabled = true;
+    $.mobile.ajaxEnabled = false;
 });
 
 $(document).on("pageinit", function(event){
     updateRefillTime();
     advancementForm();
 }); 
+
 
 function advancementForm() {
     if (justAdvanced == true) {
