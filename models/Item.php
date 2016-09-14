@@ -26,6 +26,7 @@ class Item extends CModel
     private $level;
     private $title;
     private $price;
+    private $parts;
     private $owned;
     private $buy_amount = [];
     private $sell_amount = [];
