@@ -24,7 +24,7 @@ echo $form->errorSummary($model, '');
 
 <fieldset class="ui-grid-a">
     <div class="ui-block-b"><?= CHtml::submitButton('Bejelentkezés'); ?></div>
-    <div class="ui-block-b"><?= CHtml::link('Regisztráció', ['account/signup'], ['class'=>'ui-btn', 'data-theme'=>'e']); ?></div>
+    <div class="ui-block-b"><?= CHtml::link('Regisztráció', ['account/signup'], ['class'=>'ui-btn ui-corner-all']); ?></div>
 </fieldset>
 
 <?php $this->endWidget(); ?>

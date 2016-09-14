@@ -8,13 +8,13 @@ $this->pageTitle=Yii::app()->name;
 </ul>
 
 <?php if ($banner): ?>
-<ul data-role="listview" data-inset="true" data-theme="d">
+<ul data-role="listview" data-inset="true">
 <li class="alert-info"><?= $banner; ?></li>
 </ul>
 <?php endif; ?>
 
 <h2>Játéknapló</h2>
-<ul class="gamelog" data-role="listview" data-inset="true" data-theme="d">
+<ul class="gamelog" data-role="listview" data-inset="true">
     <?php
     if (count($posts)) {
     foreach ($posts as $post) {

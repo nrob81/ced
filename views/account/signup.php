@@ -23,5 +23,5 @@ echo $form->errorSummary($model, '');
 
 <div class="c">
 Már regisztráltál?
-<?= CHtml::link('Belépés', '/', ['class'=>'ui-btn ui-btn-inline', 'data-theme'=>'e']); ?>
+<?= CHtml::link('Belépés', '/', ['class'=>'ui-btn ui-corner-all ui-btn-inline', 'data-theme'=>'e']); ?>
 </div>

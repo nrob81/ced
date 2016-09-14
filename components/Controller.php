@@ -11,10 +11,11 @@ class Controller extends CController
         $cs = Yii::app()->getClientScript();
 
         //CSS
-        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/brown.css');
         $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.external-png-1.4.5.min.css');
+        //$cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/brown.css');
+        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/kuler2.css');
         $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.structure-1.4.5.min.css');
-        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/game.css?3');
+        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/game.css?4');
 
         //js
         $cs->registerCoreScript('jquery');
