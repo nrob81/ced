@@ -10,17 +10,10 @@ class Controller extends CController
     {
         $cs = Yii::app()->getClientScript();
 
-        //CSS
-        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.external-png-1.4.5.min.css');
-        //$cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/brown.css');
-        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/kuler2.css');
-        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.structure-1.4.5.min.css');
-        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/game.css?4');
-
         //js
         $cs->registerCoreScript('jquery');
-        //$cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.countdown.min.js', CClientScript::POS_HEAD);
-        //$cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/fish.js', CClientScript::POS_HEAD);
+        $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.countdown.min.js', CClientScript::POS_HEAD);
+        $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/fish.js', CClientScript::POS_HEAD);
         $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.mobile-1.4.5.min.js', CClientScript::POS_HEAD);
         $cs->registerScript(
             'vars',
@@ -30,8 +23,10 @@ class Controller extends CController
             CClientScript::POS_HEAD
         );
 
-
-
+        //CSS
+        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/themes/brown.css');
+        //$cs->registerCssFile(Yii::app()->request->baseUrl . '/css/jquery.mobile.structure-1.3.2.min.css');
+        $cs->registerCssFile(Yii::app()->request->baseUrl . '/css/game.css?4');
         return true;
     }
 }
