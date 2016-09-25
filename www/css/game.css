@@ -1,4 +1,6 @@
-body, html{background:#0F0;}
+body, html{
+    background: url('wood.png') repeat 0% 0%;
+}
 
 /* common */
 .ui-btn-up-c {
@@ -20,9 +22,6 @@ div.ui-input-text {
     background: -ms-linear-gradient(top, rgba(236,177,0,0.7) 0%,rgba(171,128,0,0.7) 100%); /* IE10+ */
     background: linear-gradient(to bottom, rgba(236,177,0,0.7) 0%,rgba(171,128,0,0.7) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3ecb100', endColorstr='#b3ab8000',GradientType=0 ); /* IE6-9 */
-}
-body {
-    background: url('wood.png') repeat 0% 0%;
 }
 .ui-body-c {
     background: url('wood.png') repeat 0% 0%;
