@@ -22,15 +22,10 @@ echo $form->errorSummary($model, '');
 	<?= $form->passwordField($model,'password'); ?>
 </div>
 
-<div style="text-align:center">
+<div class="c">
 <?= CHtml::submitButton('Bejelentkezés', ['data-inline' => 'true']); ?><br/>
 <?= CHtml::link('Regisztráció', ['account/signup'], ['data-inline'=>'true', 'data-role'=>'button', 'data-theme'=>'e']); ?>
 </div>
-
-<fieldset class="ui-grid-a">
-    <div class="ui-block-b"></div>
-    <div class="ui-block-b"></div>
-</fieldset>
 
 <?php $this->endWidget(); ?>
 
