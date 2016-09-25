@@ -1,3 +1,5 @@
+body, html{background:#0F0;}
+
 /* common */
 .ui-btn-up-c {
     background-color: #FFF;
@@ -343,6 +345,9 @@ a#map {
     width: 50%;
     margin-bottom: 0.2em;
 }
+.missions .ui-block-c { 
+    clear:left;
+}
 
 @media all and (min-width: 31em) {
     .missions .ui-block-a,
@@ -351,6 +356,9 @@ a#map {
     .missions .ui-block-d {
         width: 25%;
         margin-bottom: 0.2em;
+    }
+    .missions .ui-block-c { 
+        clear: none;
     }
 }
 
