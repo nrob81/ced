@@ -32,9 +32,6 @@ return array(
 
         // application components
         'components'=>array(
-            'clientScript'=>[
-            'class'=>'vendor.limi7less.minscript.components.ExtMinScript',
-            ],
             'user'=>[
             'allowAutoLogin'=>false,
             ],

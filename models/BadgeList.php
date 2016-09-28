@@ -52,7 +52,7 @@ class BadgeList extends Badge
             $this->owned[$item] = $b;
         }
     }
-    
+
     public function fetchAll()
     {
         if (!$this->uid) {

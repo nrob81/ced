@@ -9,10 +9,14 @@ class Controller extends CController
     public function beforeRender($view)
     {
         $cs = Yii::app()->getClientScript();
+        /*
         $cs->registerCoreScript('jquery');
         $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.countdown.min.js', CClientScript::POS_HEAD);
         $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/fish.js', CClientScript::POS_HEAD);
         $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/jquery.mobile-1.3.2.min.js', CClientScript::POS_HEAD);
+         */
+        $cs->registerScriptFile(Yii::app()->request->baseUrl . '/js/game.min.js', CClientScript::POS_HEAD);
+
         $cs->registerScript(
             'vars',
             'var justAdvanced = ' . (Yii::app()->player->model->justAdvanced?'true':'false') . ';

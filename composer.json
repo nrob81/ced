@@ -23,7 +23,6 @@
         "php": ">=5.5.0",
         "malyshev/yii-debug-toolbar": "dev-master",
         "codemix/yiiredis": "dev-master",
-        "limi7less/minscript": "dev-arturf/composerjson-1399303780468",
         "yiisoft/yii": "dev-master"
     },
     "autoload": {
