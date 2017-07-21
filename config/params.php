@@ -1,6 +1,6 @@
 <?php
 return [
-    'adminEmail'=>'natkay.robert@nrcode.com',
+    'adminEmail'=>'admin@yourdomain.com',
     'isPartOfWline' => true,
     'maxtime'=>1800, //30min
     'cacheDuration'=>3600,
